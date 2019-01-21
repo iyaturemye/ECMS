@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 public class PoliceController {
-
+    
     private List<Police> list = new PoliceImpl().getAll();
     private Police police = new Police();
     private User user = new User();
