@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      >
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Garage LTD</title>
+        <link rel="stylesheet" href="layout/css/bootstrap.css"/>
+        <link rel="stylesheet" href="layout/css/mystyle.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+        <div class="loginForms">
+            <h3 class="loginh1">#{msg['loginLabel']}</h3>
+            <p:messages globalOnly="true"/>
+            <c:if test="#{loginController.isFrom()}">
+                <div class="alert alert-info alert-dismissible">
+                  <i class="fas fa-info"></i>  Your Must Login first before you continue
+                </div>
+            </c:if>
+
+            <h:form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <i class="fa fa-envelope  inputIcon"></i>
+                        <h:inputText value="#{loginController.user.userName}" pt:placeholder="#{msg['emailPlaceholder']}"  class="loginTxt email" required="true" requiredMessage="E-mail is required" id="email"/>
+                        <h:message for="email" class="text text-danger"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <i class="fa fa-unlock-alt  inputIcon"></i>
+                        <h:inputSecret  value="#{loginController.user.password}" pt:placeholder="#{msg['password']}" class="loginTxt pass" id="password" required="true" requiredMessage="Password is required"/>
+
+                        <!--<input type="password" placeholder="Enter Password" class="loginTxt"/>-->
+                        <h:message for="password" class="text text-danger"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <h:commandButton value="#{msg['loginBtn']}" class="login" action="#{loginController.login()}"/>
+                        <!--<input type="submit" class="login" value="Login" />-->
+                    </div>
+                </div>
+            </h:form>
+            <div class="loginpart2">
+                <span class="loginWith">#{msg['loginWith']}<br/> </span>
+                <button type="submit" class="socialMediabtn"><i class="fab fa-google"  aria-hidden="true"></i>Google</button>
+                <button type="submit" class="socialMediabtn"><i class="fab fa-facebook-square"></i> Facebook</button>
+            </div>
+            <div class="loginpart3">
+                <p>#{msg['notAmember']} <a href="broken.xhtml">#{msg['signUp']} </a></p>
+            </div>
+        </div>
+        <script src="layout/js/jquery.js"></script>
+        <script src="layout/js/bootstrap.js"/>
+    </h:body>
+</html>
+

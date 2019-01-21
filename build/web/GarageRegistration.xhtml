@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Garage LTD</title>
+        <link rel="stylesheet" href="layout/css/bootstrap.css"/>
+        <link rel="stylesheet" href="layout/css/mystyle.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+        #{changeLanguage.changeLanguage()}
+        <div class="loginForms">
+            <h3 class="loginh1"> #{msg['garageRegistration']}</h3>
+            <p:messages globalOnly="true"/>
+            <h:form class="form-horizontal">
+                <h6><i class="fa fa-user"></i> #{msg['ownerInfo']} </h6>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <i class="fa fa-envelope inputIcon "></i>
+                        <h:inputText value="#{garageController.user.userName}" pt:placeholder="#{msg['emailPlaceholder']}" class="loginTxt email" required="true" requiredMessage="E-mail is required" id="email"/>
+                        <h:message for="email" class="text text-danger"/>
+                    </div>
+                </div>
+                <h:panelGroup id="ownerInfo">
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <i class="fa fa-user  inputIcon"></i>
+                            <h:inputText pt:placeholder="#{msg['namePlaceholder']}" required="true" value="#{garageController.garageOwner.name}"  class="loginTxt name"  requiredMessage="Name is required" id="name"/>
+                            <h:message for="name" class="text text-danger"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <i class="fa fa-phone  inputIcon"></i>
+                            <p:inputMask mask="+250 999 999 999" class="loginTxt phone" pt:placeholder="#{msg['phoneNumber']}" style="box-shadow: none !important;" value="#{garageController.garageOwner.phoneNumber}" required="true" requiredMessage="Phone is required"/>
+                            <h:message for="phone" class="text text-danger"/>
+                        </div>
+                    </div>
+                </h:panelGroup>
+                <br/>
+                <h6><i class="fa fa-wrench"></i>#{msg['garageInfo']}</h6>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <i class="fa fa-info   inputIcon"></i>
+                        <h:inputText pt:placeholder="#{msg['garageNamePlaceholder']}" value="#{garageController.garage.name}"  class="loginTxt dob" required="true" requiredMessage="Dob is required" id="dob"/>
+                        <h:message for="dob" class="text text-danger"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <i class="fa fa-map-marker-alt   inputIcon"></i>
+                        <h:inputText id="location" onfocus="geolocate()"  pt:placeholder="#{msg['garageLocation']}" value="#{garageController.garage.location}"  class="loginTxt location" required="true" requiredMessage="Location is required"/>
+
+                        <h:message for="location" class="text text-danger"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <i class="fa fa-money-bill-alt inputIcon"></i>
+                        <h:inputText id="creditCardNumber" pt:placeholder="#{msg['tinNumber']}" value="#{garageController.garage.creditCardNumber}"  class="loginTxt" required="true" requiredMessage="Tin Number is required"/>
+                        <!--<input type="password" placeholder="Enter Password" class="loginTxt"/>-->
+                        <h:message for="creditCardNumber" class="text text-danger"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <i class="fa fa-unlock-alt  inputIcon"></i>
+                        <h:inputText pt:placeholder="#{msg['garageWebsite']}" value="#{garageController.garage.website}"  class="loginTxt" required="true" requiredMessage="Website is required"/>
+                        <!--<input type="password" placeholder="Enter Password" class="loginTxt"/>-->
+                        <h:message for="dob" class="text text-danger"/>
+                    </div>
+                </div>
+                #{msg['serviceProvided']}:
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <h:inputTextarea class="loginTxt dob" value="#{garageController.garage.background}" style="padding:5px !important;" cols="3" rows="5"/>
+                        <h:message for="dob" class="text text-danger"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <h:commandButton value="#{msg['registerBtn']}" class="login" action="#{garageController.create()}"/>
+                    </div>
+                </div>
+            </h:form>
+            <div class="loginpart2">
+                <span class="loginWith">#{msg['alreadyHaveAccount']}<br/> </span><br/>
+                <h:commandButton value="#{msg['loginBtn']}" class="login" style="background:white;color:#41a1ff;" action="#{loginController.login()}"/>
+            </div>
+        </div>
+        <script src="layout/js/jquery.js"></script>
+        <script src="layout/js/bootstrap.js"/>
+        <script>
+
+                            $(".location").attr("id", "location");
+                            var placeSearch, autocomplete;
+                            function initAutocomplete() {
+                                // Create the autocomplete object, restricting the search to geographical
+                                // location types.
+                                autocomplete = new google.maps.places.Autocomplete(
+                                        /** @type {!HTMLInputElement} */(document.getElementById('location')),
+                                        {types: ['geocode']});
+                            }
+
+
+
+                            // Bias the autocomplete object to the user's geographical location,
+                            // as supplied by the browser's 'navigator.geolocation' object.
+                            function geolocate() {
+                                if (navigator.geolocation) {
+                                    navigator.geolocation.getCurrentPosition(function (position) {
+                                        var geolocation = {
+                                            lat: position.coords.latitude,
+                                            lng: position.coords.longitude
+                                        };
+                                        var circle = new google.maps.Circle({
+                                            center: geolocation,
+                                            radius: position.coords.accuracy
+                                        });
+                                        autocomplete.setBounds(circle.getBounds());
+                                    });
+                                }
+                            }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeSCcKQT5CXALcxSTxhc9REI3oF6gBowM&amp;libraries=places&amp;callback=initAutocomplete"></script>
+    </h:body>
+</html>
+

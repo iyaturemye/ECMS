@@ -1,0 +1,155 @@
+body{
+    background: #fcfcfc;
+}
+thead{
+    background:#f3f3f3;
+}
+.dashboardContainer{
+    box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+    margin-top: 60px;background: white;border:1px solid #ddd;padding: 5px;
+}
+.boxz{
+    background: white;
+    padding: 10px;
+    box-shadow: 1px 1px 3px .1px #ddd;
+    border-radius: 4px;
+    margin: 5px;
+}
+.bigIconStyle{
+    font-size: 30px;
+    border-radius: 50%;
+    padding: 10px;
+    margin-top: 10px;
+}
+.spanTitle{
+    font-size: 15px;
+    font-family: initial;
+    font-weight: bold;
+    color:#0000ab;
+}
+
+.cont {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 100%;
+    color: white;
+    padding: 8px;
+    background: #41a1ff;
+}
+
+.profileImage {
+    width: 40px;
+    float: right;
+}
+
+.myNavStyle {
+    border-bottom: 1px solid #ddd;
+    box-shadow: .1px .5px 4px .1px #ddd;
+    width:100%;
+    font-size: 12px;
+}
+.myNavStyle > li >a{
+    color: #7e7e7e;
+    font-weight: bold;
+    font-family: Times New Roman;
+
+}
+.first,.second,.third,.fourth{
+    height:120px;
+    margin-left:8px;
+}
+.first{
+    background:#00aeff;
+}
+.second{
+    background:#00801d;
+}
+.third{
+    background:#e79b16;
+}
+.fourth{
+    background:#00ff39;
+}
+.allApplied{
+    border: 1px solid #ddd;
+    height: auto;
+}
+.allApplied > ul{
+    margin:0px;
+    padding:0px;
+}
+.allApplied > ul > li{
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    list-style: none;
+}
+
+.secondParty{
+    width: 580px;
+    margin-bottom: 15px;
+}
+
+.ui-corner-top{
+    background: none;
+}
+.filters{
+    border:1px solid #ddd;
+}
+#filter{
+    display: none;
+}
+
+.afterLoading,.forSub{
+    display: none;
+}
+.ui-fileupload-upload{
+
+}
+.logout li{
+    float: left;
+    margin-right: 10px;
+    margin-top: 7px;
+    list-style: none;
+}
+.logout a{
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+.logout a:hover{
+    color: white;
+    text-decoration: none;
+}
+.textrepresent{
+    color: white;
+    font-size: 30px;
+}
+.myicon:hover{
+    text-decoration: none;
+}
+.mybtnStyle{
+    background: #03baf6 !important;
+    border: none !important;
+    color: white !important;
+}
+.btn-primary{
+    background: #03baf6 !important;
+    border: none !important;
+    color: white !important;
+}
+.searchTxt{
+    float: right;
+    margin-right: 30px;
+    width: 100%;
+    padding: 5px;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+    padding-left: 35px;
+}
+.searchIcon{
+    position: absolute;
+    font-size: 15px;
+    color: #cbcbcb;
+    margin-left: -20px !important;
+    margin-top: 10px;
+}

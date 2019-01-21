@@ -1,0 +1,360 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+
+      xmlns:p="http://primefaces.org/ui">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Garage Dashboard(#{garageController.approvedList.size() + garageController.listNewVehicleDetails.size() >0 ? garageController.approvedList.size() + garageController.listNewVehicleDetails.size():'' })</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <script src="../
+        vnlayout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <div class="container">
+            <div class="rows">
+                <div class="col-lg-2 boxz">
+                    <span class="spanTitle">
+                        New Bid
+                    </span>
+                    <i class="fa fa-car bigIconStyle pull-right" style="background:#dffaff !important;color: #25d5f2 !important"></i>
+                    <h3>#{garageController.listOfBid.size()}</h3>
+                </div>
+                <div class="col-lg-2 boxz">
+                    <span class="spanTitle">
+                        Approved Bid
+                    </span>
+
+                    <i class="fa fa-wrench bigIconStyle pull-right" style="background:#dbdeff !important;color: #5969ff !important"></i>
+                    <h3>#{garageController.allApproved.size()} </h3>
+                </div>
+                <div class="col-lg-2 boxz">
+                    <span class="spanTitle">
+                        Transaction
+                    </span>
+
+                    <i class="fa fa-money-bill-alt bigIconStyle pull-right" style="background:#ffdbe6 !important;color: #ff407b !important"></i>
+                    <h3>#{garageController.garageList.size()}</h3>
+
+
+                </div>
+                <div class="col-lg-2 boxz">
+                    <span class="spanTitle">
+                        New Expectise 
+                    </span>
+                    <i class="fas fa-car-crash bigIconStyle pull-right" style="background:#fff2d5 !important;color: #ffc750 !important"></i>
+                    <h3>#{garageController.listNewVehicleDetails.size()}</h3>
+                </div>
+                <div class="col-lg-2 boxz">
+                    <span class="spanTitle">
+                        Not Paid Amount
+                    </span>
+                    <i class="fa fa-money-bill-alt bigIconStyle pull-right" style="background:#abfdd7 !important;color: #75b970 !important"></i>
+                    <h4>
+                        <h:outputText value="#{garageController.notpaidAmount}">
+                            <f:convertNumber pattern="###,###,###"/>
+                        </h:outputText>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="margin-top: 60px;background: white;border:1px solid #ddd;padding: 5px;">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <div class="title">
+                        <div class="container" style="margin-bottom: 10px;">
+                            <div  class="rows">
+                                <div class="col-lg-12">
+                                    <h3> New Approved Bid</h3>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <p:messages  globalOnly="true"/>
+                    <h:panelGroup id="table">
+                        <c:if test="#{garageController.allApproved.size()>0}">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Insurance</th>
+                                        <th>Total Price</th>
+                                        <th>Owner Contact</th>
+                                        <th>Broken Car Location</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="#{garageController.allApproved}" var="item" varStatus="status">
+                                            <tr>
+                                                <td>${status.index + 1}</td>
+                                                <td>#{item.insuranceName}</td>
+                                                <td>
+                                                    <h:outputFormat value="#{item.totalPrice + insuranceController.calculatePercent(item.totalPrice)}">
+                                                        <f:convertNumber pattern="###,###,###"/>
+                                                    </h:outputFormat>
+                                                </td>
+                                                <td>
+                                                    #{item.phoneNumber}
+                                                </td>
+                                                <td>#{item.location}</td>
+                                                <td>
+                                                    <span class="label  #{item.status.equalsIgnoreCase('clientSide')? 'label-danger':'label-success'}">
+                                                        #{item.status.equalsIgnoreCase('clientSide')? 'New':'Opened'}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink class="btn btn-info readmore tooltip-show" action="#{garageController.respondToApproved(item.bidId)}" title="View more and also approve that the work done">
+                                                            View More
+                                                            <f:ajax listener="#{insuranceController.readMore(item.bidId,'garage')}" render="infoPanel"/>
+                                                        </h:commandLink>
+                                                    </h:form>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </c:if>
+                    </h:panelGroup>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 60px;background: white;border:1px solid #ddd;padding: 5px;">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <c:if test="#{garageController.listNewVehicleDetails.size()>0}">
+
+                        <div class="title">
+                            <div class="container" style="margin-bottom: 10px;">
+                                <div class="col-lg-6">
+                                    <h3>List Of New Broken Car</h3>
+                                </div>
+                            </div> 
+                        </div>
+                        <h:messages class="alert alert-info" globalOnly="true"/>
+                        <h:panelGroup id="tables">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Client </th>
+                                        <th>Phone Number</th>
+                                        <th>Plate Number</th>
+                                        <th>Name</th>
+                                        <th>Policy Number</th>
+                                        <th>Location</th>
+                                        <th>Publication Date</th>
+                                        <th>Description</th>
+                                        <th>Read More</th>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="i"  items="#{garageController.listNewVehicleDetails}" varStatus="status">
+                                            <tr>
+                                                <td>${status.index + 1}</td>
+                                                <td>#{i.client.fname}&nbsp; #{i.client.lname}</td>
+                                                <td>#{i.client.phoneNumber}</td>
+                                                <td>#{i.vehicle.plateNum}</td>
+                                                <td>#{i.vehicle.name}</td>
+                                                <td>#{i.vehicle.policyNumber}</td>
+                                                <td>#{i.location}</td>
+                                                <td>
+                                                    <h:outputFormat value="#{i.createdAt}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss"/>
+                                                    </h:outputFormat>
+                                                </td>
+                                                <td>
+                                                    <h:outputFormat  escape="false" value="#{(i.whatHappen.length()>38)?  i.whatHappen.substring(0,38): i.whatHappen}"/>
+                                                    <h:outputFormat  escape="false" value="#{(i.whatHappen.length()>38)? '...': ''}"/>
+
+                                                </td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="Read more" action="#{insuranceController.readMore(i)}" class="btn btn-primary">
+                                                        </h:commandLink>
+                                                    </h:form> 
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </h:panelGroup>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+            <h:form id="infoPanel">
+                <h:panelGroup >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="col-lg-12" style="background:white;border-bottom: 1px solid #ddd;margin-bottom: 15px;padding-bottom: 15px;">
+                                <div class="companiesInfos">
+                                    <h1 style="color:#41a1ff; "><center><b>PURCHASE ORDER</b></center></h1>
+                                    <div class="pull-right">
+                                        <h5>Date:
+                                            <h:outputFormat value="#{insuranceController.billing.createAt}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputFormat>
+                                        </h5>
+                                    </div>
+                                    <div class="garageInfo">
+                                        <h3>#{insuranceController.billing.garage.name.toUpperCase()}</h3>
+                                        <h5><b>Address:</b>&nbsp;&nbsp;location</h5>
+                                        <h5><b>Phone Number:</b>&nbsp;&nbsp;#{insuranceController.billing.garage.garageOwner.phoneNumber}</h5>
+                                        <h5><b>Website:</b>&nbsp;&nbsp;#{insuranceController.billing.garage.website}</h5>
+                                    </div>
+                                </div>
+                                <div class="companiesInfo2">
+                                    <div class="rows">
+                                        <div  class="col-lg-4" style="padding: 0px !important;">
+                                            <h3 class="leftOne"><b>Insurance</b></h3>
+                                            <div class="garageInfo">
+                                                <h3>#{insuranceController.insurance.name.toUpperCase()}</h3>
+                                                <h5>Phone Number:#{insuranceController.insurance.phoneNumber}</h5>
+                                            </div>
+                                        </div>
+                                        <div  class="col-lg-4 col-lg-offset-4" style="padding: 0px !important;">
+                                            <h3 class="leftOne"><b>Car Information</b></h3>
+                                            <div class="garageInfo">
+                                                <h3>#{insuranceController.billing.vehicleDetails.vehicle.name.toUpperCase()}</h3>
+                                                <h5>Policy Number:#{insuranceController.billing.vehicleDetails.vehicle.policyNumber}</h5>
+                                                <h5>Plate Number:#{insuranceController.billing.vehicleDetails.vehicle.plateNum}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tableInfo">
+                                    <table class="table mytableStyle">
+                                        <thead>
+                                            <th>ITEM</th>
+                                            <th>DESCRIPTION</th>
+                                            <th>QTY</th>
+                                            <th>UNIT PRICE</th>
+                                            <th>TOTAL PRICE</th>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="#{insuranceController.quotation}" var="i" varStatus="status">
+                                                <tr>
+                                                    <td>${status.index + 1}</td>
+                                                    <td>#{i.jobDescription}</td>
+                                                    <td>#{i.quantity}</td>
+                                                    <td>
+                                                        <h:outputFormat value="#{i.price}">
+                                                            <f:convertNumber pattern="###,###,###"/>
+                                                        </h:outputFormat>FRW
+                                                    </td>
+                                                    <td>
+                                                        <h:outputFormat value="#{i.price*i.quantity}">
+                                                            <f:convertNumber pattern="###,###,###"/>
+                                                        </h:outputFormat>
+                                                        FRW
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="totalDiv">
+                                    <div class="rows" >
+
+                                        <div class="col-lg-5 " style="padding: 0px;text-align: right;">
+                                            <table class="table mysecondTable">
+                                                <tr>
+                                                    <td><b>SUBTOTAL</b></td>
+                                                    <td>
+                                                        <h:outputFormat value="#{insuranceController.subTotal}">
+                                                            <f:convertNumber pattern="###,###,###"/>
+                                                        </h:outputFormat> FRW 
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>TAX</b></td>
+                                                    <td>
+                                                        <h:outputFormat value="#{insuranceController.calculatePercent(insuranceController.subTotal)}">
+                                                            <f:convertNumber pattern="###,###,###"/>
+                                                        </h:outputFormat> FRW 
+                                                    </td>
+                                                </tr >
+                                                <tr style="border-top: 5px solid #ddd;">
+                                                    <td><b>TOTAL:</b></td>
+                                                    <td>
+                                                        <h:outputFormat value="#{insuranceController.subTotal + insuranceController.calculatePercent(insuranceController.subTotal) }">
+                                                            <f:convertNumber pattern="###,###,###"/>
+                                                        </h:outputFormat> FRW 
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-6 col-lg-offset-1">
+                                            <label>Comment or Special Instruction</label>
+                                            <h:inputTextarea cols="2" rows="4" value="#{garageController.completedCar.comment}" class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="border-top: 1px solid #ddd;">
+                                <h:commandButton value="Submit Work" class="btn btn-default" action="#{garageController.completeWork(insuranceController.billing.bidId)}">
+
+                                </h:commandButton>  
+                                <button type="button" class="btn btn-primary"   data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </h:panelGroup>
+            </h:form>
+        </div>
+
+        <script src="../layout/js/jquery.js"/>
+        <script src="../layout/js/bootstrap.js"/>
+        <script>
+            function redirect() {
+                window.location = "dashboard.xhtml";
+            }
+            $(function () {
+                $('.readmore').attr("data-placement", "bottom");
+                $(".print").click(function () {
+                    alert("is working boss we");
+                    window.location = "dashboard.xhtml";
+                });
+            });
+            $('.readmore').click(function () {
+                $('#myModal').modal('show');
+            });
+            $(function () {
+                $('.myhumbe').click(function () {
+                    $('.navs').toggle("slow");
+                });
+            });
+            var loadPdfModal = function loadit(data) {
+                if (data.status === 'success') {
+                    $("#invoiceModal").modal("show");
+                    // $("#myModal").modal("hide");
+                }
+
+            }
+
+        </script>
+    </h:body>
+</html>

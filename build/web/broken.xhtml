@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Garage LTD</title>
+        <link rel="stylesheet" href="layout/css/bootstrap.css"/>
+        <link rel="stylesheet" href="layout/css/mystyle.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet"/>
+        <style>
+            .insurance:hover{
+                text-decoration: none;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+        <div class="loginForms brokenOne">
+            <div class="container" style="width: 100%;background: #f2f2f2;padding-left: 0px;padding-right: 0px;">
+                <div class="rows">
+                    <div class="forComputer">
+                        <div class="col-lg-6 mycol6" style="background: white;">
+                            #{msg['clientRegistration']}
+                        </div>
+                        <div class="col-lg-4 mycol6">
+                            <a href="insuranceRegistration.xhtml" class="insurance" style="color:black;"> Insurance Company</a>
+                        </div>
+                    </div>
+                    <div class="forPhone">
+                        <table class="tableClassd">
+                            <tr>
+                                <td>
+                                    <div class="col-lg-6 mycol6" style="background: white;">
+                                        #{msg['clientRegistration']}
+                                    </div> 
+                                </td>
+                                <td>
+                                    <div class="col-lg-4 mycol6">
+                                        <a href="insuranceRegistration.xhtml" class="insurance" style="color:black;"> #{msg['insuranceRegistration']}</a>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="allOfThem">
+                <h3 class="loginh1"> #{msg['clientRegistration']}</h3>
+                <p:messages globalOnly="true"/>
+                <h:form class="form-horizontal" id="form">
+                    <div class="form-group">
+                        <label class="col-lg-3">#{msg['email']}</label>
+                        <div class="col-lg-8">
+                            <h:inputText value="#{vehicleController.user.userName}"  pt:placeholder="example@gmail.com"  class="form-control" required="true" requiredMessage="E-mail is required is required" id="email" validatorMessage="Invalid E-mail Address (eg:johndoen@gmail.com)">
+                                <!--<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />-->
+                                <f:ajax listener="#{vehicleController.checkIfExist()}"   execute="email" render="info" event="keyup"/>
+                            </h:inputText>
+                            <h:message class="text text-danger" for="email"/>
+                        </div>
+                    </div>
+                    <h:panelGroup id="info">
+                        <div class="form-group">
+                            <label class="col-lg-3">#{msg['fname']}:</label>
+                            <div class="col-lg-8">
+                                <h:inputText value="#{vehicleController.client.fname}" pt:placeholder="name 1"  class="form-control" required="true" requiredMessage="Fname  is required" id="fname"/>
+                                <h:message class="text text-danger" for="fname"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">#{msg['lname']}</label>
+                            <div class="col-lg-8">
+                                <h:inputText value="#{vehicleController.client.lname}" pt:placeholder="name 2"  class="form-control" required="true" requiredMessage="Lname  is required" id="lname"/>
+                                <h:message class="text text-danger" for="lname"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">#{msg['phoneNumber']}:</label>
+                            <div class="col-lg-8">
+                                <p:inputMask value="#{vehicleController.client.phoneNumber}" pt:placeholder="+250722320568" mask="+250 999 999 9999" required="true" requiredMessage="Phone Number is required" class="form-control" id="phone"/>
+                                <h:message class="text text-danger" for="phone"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">#{msg['password']}:</label>
+                            <div class="col-lg-8">
+                                <h:inputSecret value="#{vehicleController.user.password}"   class="form-control" required="true" requiredMessage="Lname  is required" id="password"/>
+                                <h:message class="text text-danger" for="password"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">#{msg['retypePassword']}:</label>
+                            <div class="col-lg-8">
+                                <h:inputSecret value="#{vehicleController.retypePassword}" class="form-control" required="true" requiredMessage="Retype Password  is required" id="rpassword"/>
+                                <h:message class="text text-danger" for="rpassword"/>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                    <div class="form-group">
+                        <div class="col-lg-3 col-lg-offset-3">
+                            <h:commandButton value="#{msg['registerBtn']}" action="#{vehicleController.next()}" class="login" style="padding: 5px;"/>
+
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+        <script src="layout/js/jquery.js"></script>
+        <script src="layout/js/bootstrap.js"/>
+    </h:body>
+</html>
+

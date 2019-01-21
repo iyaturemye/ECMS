@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <style>
+            .badge{
+                background:#17a0d7;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div>
+            <div class="header">
+                <div class="container cont">
+                    <div class="rows">
+                        <div class="forComputer">
+                            <div class="col-lg-6">
+                                <span style="margin-top: 8px;"><h6><b>INSURANCE PANEL</b></h6></span>
+                            </div>
+                            <div class="col-lg-3 col-lg-offset-1"
+                                 style="text-align: right; margin-top: 8px;">
+                                <span>You Signed in as #{loginController.user.userName}</span>
+                            </div>
+                            <div class="col-lg-2">
+                                <ul class="logout">
+                                    <li>
+                                        <h:form>
+                                            <h:commandLink action="#{loginController.logout()}">
+                                                <i class="fa fa-power-off " aria-hidden="true"></i>
+                                            </h:commandLink>
+                                        </h:form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--end man-->
+                    </div>
+                </div>
+                <nav class="navbar navs" role="navigation">
+                    <div>
+                        <ul class="nav navbar-nav  myNavStyle">
+                            <li><a href="dashboard.xhtml"><i class="fa fa-tachometer-alt   carIcon"  aria-hidden="true"></i>  Dashboard</a></li>
+                            <li class="dropdown"><a href="carRepair.xhtml"> <i class="fa fa-car  carIcon"  aria-hidden="true"></i> Car repair</a>
+                            </li>
+                            <li class="dropdown"><a href="listOfNotApprovedCar.xhtml"><i class="fas fa-car-crash"></i> Broken Car</a>
+                            </li>
+                            <li><a href="profile.xhtml"><i class="fas fa-users"></i> Change Profile</a></li>
+                            <li class="dropdown"><a href="changePassword.xhtml"> <i class="fa fa-user  carIcon"  aria-hidden="true"></i> Change Password</a>
+                            </li>
+                            <li class="dropdown"><a href="notification.xhtml"> <i class="far fa-bell carIcon"></i> Notification <span class="badge">#{insuranceController.newOne.size() + insuranceController.listNewVehicleDetails.size()}</span></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="bidds.xhtml"><i class="fas fa-hand-holding-usd carIcon"></i> Bids</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="listOfG.xhtml"><i class="fa fa-wrench  carIcon"  aria-hidden="true"></i> Garage</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="completed.xhtml"><i class="far fa-check-circle carIcon"></i> Completed Car</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="transaction.xhtml"><i class="fas fa-money-check"></i> Transaction</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-file-pdf"></i> Report <i class="fas fa-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Annual Report</a></li>
+                                    <li><a href="#">Not Paid Report</a></li>
+                                    <li><a href="#">Money paid Report</a></li>
+                                    <li><a href="#"></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </h:body>
+</html>

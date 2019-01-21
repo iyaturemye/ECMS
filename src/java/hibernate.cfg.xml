@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">
+            com.mysql.jdbc.Driver
+        </property>
+        <property name="connection.url">
+            <!--jdbc:mysql://mysql3000.mochahost.com/claude_garage-->
+            jdbc:mysql://localhost/garage
+        </property>
+        <property name="connection.username">
+            <!--claude_root-->
+            root
+        </property>
+        <property name="connection.password">
+            <!--kgltech-->
+        </property>
+        <property name="dialect">
+            org.hibernate.dialect.MySQL5Dialect
+        </property>
+        <property name="show_sql">false</property>
+<!--        <property name="hbm2ddl.auto">none</property>-->
+        <mapping class="com.ebaza.tech.domain.Client"/>
+        <mapping class="com.ebaza.tech.domain.PayForBid"/>
+        <mapping class="com.ebaza.tech.domain.Garage"/>
+        <mapping class="com.ebaza.tech.domain.GarageOwner"/>
+        <mapping class="com.ebaza.tech.domain.InsuranceCompany"/>
+        <mapping class="com.ebaza.tech.domain.Payment"/>
+        <mapping class="com.ebaza.tech.domain.Quotation"/>
+        <mapping class="com.ebaza.tech.domain.User"/>
+        <mapping class="com.ebaza.tech.domain.Vehicle"/>
+        <mapping class="com.ebaza.tech.domain.VehicleDetail"/>
+        <mapping class="com.ebaza.tech.domain.VehicleImage"/>
+        <mapping class="com.ebaza.tech.domain.Bidding"/>
+        <mapping class="com.ebaza.tech.domain.CompletedCar"/>
+        <mapping class="com.ebaza.tech.domain.ThirdParty"/>
+        <mapping class="com.ebaza.tech.domain.PoliceReport"/>
+        <mapping class="com.ebaza.tech.domain.ExpectiseGarage"/>
+        <mapping class="com.ebaza.tech.domain.Police"/>
+    </session-factory>
+</hibernate-configuration>

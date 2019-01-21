@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Admin Dashboard</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <script src="../layout/js/jquery-3.3.1.min.js"/>
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <div class="container dashboardContainer">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <div class="title">
+                        <div class="container" style="margin-bottom: 10px;">
+                            <div  class="rows">
+                                <div class="col-lg-3">
+                                    <a class="btn btn-primary addnew" href="newPolice.xhtml" >Add New</a>
+                                    <h3>List of Police Member</h3>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="allElement">
+                        <p:messages  globalOnly="true"/>
+                        <h:panelGroup id="tables">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>#</th>
+                                    <th>First name</th>                                        
+                                    <th>Last name</th>
+                                    <th>Emial</th>
+                                    <th>Title</th>
+                                    <th>Action</th>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="i"  items="#{policeController.list}" varStatus="status">
+                                        <tr>
+                                            <td>${status.index +1}</td>
+                                            <td>#{i.fname}</td>
+                                            <td>#{i.lname}</td>
+                                            <td>#{i.user.userName}</td>
+                                            <td>#{i.title}</td>
+                                            <td>
+                                                <h:commandButton class="btn btn-primary" value="Action"/>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Police Registration
+                        </h4>
+                    </div>
+                    <h:form class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-lg-3">First name</label>
+                                <div class="col-lg-8">
+                                    <h:inputText required="true" id="fname" class="form-control fname" value="#{policeController.police.fname}"/>   
+                                </div>
+                            </div> 
+
+                            <div class="form-group">
+                                <label class="col-lg-3">Last name</label>
+                                <div class="col-lg-8">
+                                    <h:inputText required="true" id="lname" class="form-control lname" value="#{policeController.police.lname}"/>   
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-lg-3">Username</label>
+                                <div class="col-lg-8">
+                                    <h:inputText required="true" id="username" class="form-control username" value="#{policeController.user.userName}"/>   
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-lg-3">Title</label>
+                                <div class="col-lg-8">
+                                    <h:inputText required="true" id="title" class="form-control title" value="#{policeController.police.title}"/>   
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default"  data-dismiss="modal">Close
+                            </button>
+                            <h:commandButton  disabled="true" class="btn btn-primary send" value="Send">
+                                <f:ajax listener="#{policeController.create()}" onevent="output" execute="@form"/>
+                            </h:commandButton>
+                        </div>
+                    </h:form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </h:body>
+</html>
+

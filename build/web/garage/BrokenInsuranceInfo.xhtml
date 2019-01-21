@@ -1,0 +1,709 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <script src="../layout/js/jquery.js"/>
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+        <style>
+            .mytableStyle th{
+                background:#41a1ff;
+                color:white;
+                border-bottom: 2px solid #41a1ff !important;
+            }
+            .mytableStyle td{
+                border: 2px solid #41a1ff;
+                border-collapse: collapse;
+            }
+            .mytableStyle{
+                border: 2px solid #41a1ff;
+            }
+            .mysecondTable td{
+                border:none !important;
+            }
+            .leftOne{
+                background:#41a1ff;
+                color:white;
+                padding: 5px;
+            }
+            .table td{
+                border:none !important;
+            }
+            .mytitle a{
+                font-size: 12px;
+                font-weight: bold;
+            }
+            .myheading{
+                padding:4px !important;
+            }
+            .mypanelbody{
+                font-size: 10px !important;
+            }
+            pre{
+                min-height: 150px !important;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <div class="container" style="background: white;border:1px solid #ddd;padding: 5px;">
+            <p:messages globalOnly="true"/>
+            <div class="rows">
+                <div class="col-lg-4">
+                    <table class="table">
+                        <tr>
+                            <td><b>Client Name:</b></td>
+                            <td>#{insuranceController.vehicleDetail.client.fname}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phone Number:</b></td>
+                            <td>#{insuranceController.vehicleDetail.client.phoneNumber}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Plate Number:</b></td>
+                            <td>#{insuranceController.vehicleDetail.vehicle.plateNum}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Name:</b></td>
+                            <td>#{insuranceController.vehicleDetail.vehicle.name}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Policy Number:</b></td>
+                            <td>#{insuranceController.vehicleDetail.vehicle.policyNumber}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Location:</b></td>
+                            <td>#{insuranceController.vehicleDetail.location}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Published At:</b></td>
+                            <td>
+                                <h:outputFormat value="#{insuranceController.vehicleDetail.createdAt}">
+                                    <f:convertDateTime pattern="dd-MMM-yyyy"/>
+                                </h:outputFormat>
+                            </td>
+                        </tr>
+                    </table>
+                    <label><b>Reason</b></label>
+                    <pre>
+                        <h:outputFormat value="#{insuranceController.vehicleDetail.whatHappen}" escape="false"/>
+                    </pre>
+                </div>
+                <div class="col-lg-8" >
+                    <div class="brokencarImage">
+                        <label>Picture</label><br/>
+                        <c:forEach var="i" items="#{insuranceController.getImages(insuranceController.vehicleDetail)}">
+                            
+                            <img style="width: 200px; margin: 5px;" class="image img-thumbnail img-responsive" src="../layout/image/blockenCar/#{i.image}"/>
+                        </c:forEach>
+                        <!--                            <img style="width: 200px; margin: 5px;" class="image img-thumbnail img-responsive" src="../layout/image/blockenCar/295307aa-7920-4982-88c4-7f8c6b9505b8.jpg"/>
+                                                    <img style="width: 200px;  margin: 5px;" class="image img-thumbnail img-responsive" src="../layout/image/blockenCar/295307aa-7920-4982-88c4-7f8c6b9505b8.jpg"/>
+                                                    <img style="width: 200px;  margin: 5px;" class="image img-thumbnail img-responsive" src="../layout/image/blockenCar/295307aa-7920-4982-88c4-7f8c6b9505b8.jpg"/>
+                                                    <img style="width: 200px;  margin: 5px;" class="image img-thumbnail img-responsive" src="../layout/image/blockenCar/295307aa-7920-4982-88c4-7f8c6b9505b8.jpg"/>-->
+                    </div>
+                    <!--Statement of Vehicle start here-->
+
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#collapseOne">
+                                                ENGINE &amp; EMISSIONS
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="one" class="paneld">
+                                                    <c:forEach items="#{insuranceController.engineList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforeng')}" execute="@form" render=":one" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforeng" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforeng')}" execute="@form" render=":one" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+
+                                                    <h:message for="addforeng" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#collapseTwo">
+                                                Body
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="two" class="paneld">
+                                                    <c:forEach items="#{insuranceController.bodyList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforbody')}" execute="@form" render=":two" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforbody" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforbody')}" execute="@form" render=":two" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addforbody" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#collapseThree">
+                                                FUEL SYSTEM
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+
+
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="three" class="paneld">
+                                                    <c:forEach items="#{insuranceController.fuelList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforfuel')}" execute="@form" render=":three" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforfuel" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforfuel')}" execute="@form" render=":three" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addforfuel" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end of third row-->
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#gearbox">
+                                                GEARBOX/FINAL DRIVE
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="gearbox" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="four" class="paneld">
+                                                    <c:forEach items="#{insuranceController.gearboxList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforgear')}" execute="@form" render=":four" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforgear" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforgear')}" execute="@form" render=":four" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addforgear" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#steering">
+                                                STEERING &amp; SUSPENSION
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="steering" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="five" class="paneld">
+                                                    <c:forEach items="#{insuranceController.steeringList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforsteer')}" execute="@form" render=":five" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforsteer" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforsteer')}" execute="@form" render=":five" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addforsteer" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#breaking">
+                                                BREAKING
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="breaking" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="six" class="paneld">
+                                                    <c:forEach items="#{insuranceController.breakingList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforbreak')}" execute="@form" render=":six" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforbreak" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforbreak')}" execute="@form" render=":six" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addforbreak" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#wheels">
+                                                WHEELS &amp; TYRES
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="wheels" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="seven" class="paneld">
+                                                    <c:forEach items="#{insuranceController.wheelsList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforwheel')}" execute="@form" render=":seven" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforwheel" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforwheel')}" execute="@form" render=":seven" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addforwheel" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#coolant">
+                                                COOLANT SYSTEM
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="coolant" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="eight" class="paneld">
+                                                    <c:forEach items="#{insuranceController.coolantList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforcoolant')}" execute="@form" render=":eight" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforcoolant" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforcoolant')}" execute="@form" render=":eight" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addforcoolant" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#clutch">
+                                                CLUTCH
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="clutch" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="nine" class="paneld">
+                                                    <c:forEach items="#{insuranceController.cluthList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addforcluth')}" execute="@form" render=":nine" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addforcluth" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addforcluth')}" execute="@form" render=":nine" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addforcluth" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#instruments">
+                                                INSTRUMENTS &amp; OTHERS
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="instruments" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="ten" class="paneld">
+                                                    <c:forEach items="#{insuranceController.instrumentList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addinstrument')}" execute="@form" render=":ten" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addinstrument" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addinstrument')}" execute="@form" render=":ten" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addinstrument" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#electrical">
+                                                ELECTRICAL
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="electrical" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+                                            
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="eleven" class="paneld">
+                                                    <c:forEach items="#{insuranceController.electricalList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addelectrical')}" execute="@form" render=":eleven" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addelectrical" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addelectrical')}" execute="@form" render=":eleven" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addelectrical" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading myheading">
+                                        <h4 class="panel-title mytitle">
+                                            <a data-toggle="collapse" data-parent="#accordion" 
+                                               href="#under">
+                                                UNDER FRAME
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="under" class="panel-collapse collapse">
+                                        <div class="panel-body mypanelbody">
+                                            
+                                            <ul class="listOfElment">
+                                                <div class="loadingImg">
+                                                    <img class="imgLoad" src="../layout/image/Ripple-1s-200px.gif"/>
+                                                </div>
+                                                <h:panelGroup id="twelve" class="paneld">
+                                                    <c:forEach items="#{insuranceController.underFameList}" var="i">
+                                                        <li>
+                                                            #{i}
+                                                            <h:form>
+                                                                <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                    <f:ajax  listener="#{insuranceController.removeFromList(i,'addunder')}" execute="@form" render=":twelve" onevent="out"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li>
+                                                        <h:form>        
+                                                            <h:inputText id="addelectrical" requiredMessage="Above Text field is required" class="addNewElement" pt:placeholder="Enter new Value" value="#{insuranceController.newValue}" required="true"/>
+                                                            <h:commandButton class="btn btn-info pull-right" value="+" style="margin-right: -5px;">
+                                                                <f:ajax listener="#{insuranceController.addNewToList('addunder')}" execute="@form" render=":twelve" onevent="out"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                    </li>
+                                                    <h:message for="addunder" class="text text-danger"/>
+                                                </h:panelGroup>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>                    
+
+                    <!--end of Statement of Vehicle-->
+                </div>
+
+            </div>
+        </div>
+        <div class="container" style="background:white;padding: 15px;border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;margin-bottom: 30px;">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <h:form>
+                        <h:commandButton class="btn btn-primary" value="Confirm" action="#{insuranceController.approveCar()}"/>
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-12">
+                <p:editor/>
+            </div>
+        </div>
+    </h:body>
+    <script>
+        var out = function (data) {
+            if (data.status === 'begin') {
+                $(".paneld").hide();
+                $(".loadingImg").show();
+
+            } else {
+                $(".loadingImg").hide();
+                $(".paneld").show();
+            }
+        };
+    </script>
+
+</html>
+

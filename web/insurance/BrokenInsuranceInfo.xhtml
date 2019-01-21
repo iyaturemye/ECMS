@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <script src="../layout/js/jquery.js"/>
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+        <style>
+            .mytableStyle th{
+                background:#41a1ff;
+                color:white;
+                border-bottom: 2px solid #41a1ff !important;
+            }
+            .mytableStyle td{
+                border: 2px solid #41a1ff;
+                border-collapse: collapse;
+            }
+            .mytableStyle{
+                border: 2px solid #41a1ff;
+            }
+            .mysecondTable td{
+                border:none !important;
+            }
+            .leftOne{
+                background:#41a1ff;
+                color:white;
+                padding: 5px;
+            }
+            .table td{
+                border:none !important;
+            }
+            .mytitle a{
+                font-size: 12px;
+                font-weight: bold;
+            }
+            .myheading{
+                padding:4px !important;
+            }
+            .mypanelbody{
+                font-size: 10px !important;
+            }
+            pre{
+                min-height: 150px !important;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <h:form>
+            <div class="container" style="background: white;border:1px solid #ddd;padding: 5px;">
+                <div class="rows">
+                    <div class="col-lg-4">
+                        <table class="table">
+                            <tr>
+                                <td><b>Client Name:</b></td>
+                                <td>#{insuranceController.vehicleDetail.client.fname}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Phone Number:</b></td>
+                                <td>#{insuranceController.vehicleDetail.client.phoneNumber}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Plate Number:</b></td>
+                                <td>#{insuranceController.vehicleDetail.vehicle.plateNum}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Name:</b></td>
+                                <td>#{insuranceController.vehicleDetail.vehicle.name}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Policy Number:</b></td>
+                                <td>#{insuranceController.vehicleDetail.vehicle.policyNumber}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Location:</b></td>
+                                <td>#{insuranceController.vehicleDetail.location}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Published At:</b></td>
+                                <td>
+                                    <h:outputFormat value="#{insuranceController.vehicleDetail.createdAt}">
+                                        <f:convertDateTime pattern="dd-MMM-yyyy"/>
+                                    </h:outputFormat>
+                                </td>
+                            </tr>
+                        </table>
+                        <label><b>Reason</b></label>
+                        <pre>
+                        <h:outputFormat value="#{insuranceController.vehicleDetail.whatHappen}" escape="false"/>
+                        </pre>
+                    </div>
+                    <div class="col-lg-8" >
+                        <div class="brokencarImage">
+                            <label>Picture</label><br/>
+                            <c:forEach  items="#{insuranceController.accidentVehicleImage}" var="item">
+                                <img style="width: 200px; margin: 5px;" class="image img-thumbnail img-responsive" src="../layout/image/blockenCar/#{item.image}"/>
+                            </c:forEach>
+                        </div>
+                        <!--Statement of Vehicle start here-->
+                        <div>
+                            <label>Statemenet Of Vehicle</label><br/>
+                            <table class="table table-responsive">
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('engine')!=null}">
+                                    <tr>
+                                        <td><b class="title"> ENGINE:</b></td>
+                                        <td>
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('engine').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('engine')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('engine').size()-1)?'':','}
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('body')!=null}">
+                                    <tr>
+                                        <td><b class="title"> BODY:</b></td>
+                                        <td>
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('body').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('body')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('body').size()-1)?'':','}
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('break')!=null}">
+                                    <tr>
+                                        <td><b class="title"> BREAK:</b></td>
+                                        <td>
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('break').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('break')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('break').size()-1)?'':','}
+                                            </c:forEach>
+
+                                        </td>
+
+                                    </tr>
+                                </c:if>
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('cluth')!=null}">
+                                    <tr>
+                                        <td><b class="title"> CLUTH:</b></td>
+                                        <td>
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('cluth').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('cluth')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('cluth').size()-1)?'':','}
+                                            </c:forEach>
+                                        </td>
+
+                                    </tr>
+                                </c:if>
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('coolant')!=null}">
+                                    <tr>
+                                        <td><b class="title"> COOLANT:</b></td>
+                                        <td>
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('coolant').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('coolant')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('coolant').size()-1)?'':','}
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('wheelsList')!=null}">
+                                    <tr>
+                                        <td><b class="title"> WHEELS </b></td>
+                                        <td>
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('wheelsList').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('wheelsList')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('wheelsList').size()-1)?'':','}
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('instrument')!=null}">
+                                    <tr>
+                                        <td><b class="title"> INSTRUMENT:</b></td>
+                                        <td>
+
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('instrument').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('instrument')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('instrument').size()-1)?'':','}
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('coolant')!=null}">
+                                    <tr>
+                                        <td>
+                                            <b class="title"> ELECTRICAL:</b>  
+                                        </td>
+                                        <td>
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('coolant').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('coolant')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('coolant').size()-1)?'':','}
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('underFame')!=null}">
+                                    <tr>
+                                        <td>
+                                            <b class="title"> UNDERFRAME:</b>
+                                        </td>
+                                        <td>
+                                            <c:forEach var="i" step="1" begin="0" end="#{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('underFame').size()-1}">
+                                                #{vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('underFame')[i]}#{(i==vehicleController.decodeJson(insuranceController.vehicleDetail.statementOfVehicle).get('underFame').size()-1)?'':','}
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                            </table>
+                            <label>Posted By :</label>#{insuranceController.vehicleDetail.expectiseGarage.garage.name}
+
+                        </div>
+                        <!--end of Statement of Vehicle-->
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="container" style="background:white;padding: 15px;border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                <div class="rows">
+                    <div class="col-lg-12">
+                        <c:if test="#{insuranceController.policeReportElement.size()>0}">
+                            <b>Police Report</b><br/>
+                            <c:forEach items="#{insuranceController.policeReportElement}" var="element">
+                                <div class="rows">
+                                    <div class="col-lg-3" style="border-right: 1px solid #ddd;">
+                                        <h4>Damaged Car A</h4>
+                                        <table class="table">
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>#{element.iyagonzeVehicle.name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Plate Number</td>
+                                                <td>#{element.iyagonzeVehicle.plateNum}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chasis Number</td>
+                                                <td>#{element.iyagonzeVehicle.chasisNum}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-3" style="border-right: 1px solid #ddd;">
+                                        <h4>Damaged Car B</h4>
+                                        <table class="table">
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>#{element.iyagonzweVehicle.name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Plate Number</td>
+                                                <td>#{element.iyagonzweVehicle.plateNum}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chasis Number</td>
+                                                <td>#{element.iyagonzweVehicle.chasisNum}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-3" style="border-right: 1px solid #ddd;">
+                                        <h4>Third Party</h4>
+                                        <table class="table">
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>#{element.thirdParty.name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>National Id</td>
+                                                <td>#{element.thirdParty.nationalId}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <h4>Cause of Accident</h4>
+                                        <h:outputText value="#{element.description}"/><br/>
+                                        Reported By :#{element.police.title} &nbsp; #{element.police.fname}&nbsp;#{element.police.lname}<br/>
+                                        Additional Document<br/>
+                                        <a href="../layout/reportDocument/#{element.additionalDocument}" target="_blank">Open File</a>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="#{insuranceController.policeReportElement.size()==0}">
+                            <h4>Yet there is no Police Report</h4>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container" style="background:white;padding: 15px;border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;margin-bottom: 30px;">
+                <div class="rows">
+                    <div class="col-lg-12">
+                        <h:commandButton class="btn btn-primary" value="Approve" action="#{insuranceController.approved()}"/>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <div class="form-group">
+            <div class="col-lg-12">
+                <p:editor/>
+            </div>
+        </div>
+    </h:body>
+
+</html>
+

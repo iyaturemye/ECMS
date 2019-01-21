@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Garage LTD</title>
+        <link rel="stylesheet" href="layout/css/bootstrap.css"/>
+        <link rel="stylesheet" href="layout/css/mystyle.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet"/>
+        <style>
+            .container{
+
+                margin-top: 10%;
+
+            }
+            .containAllElement{
+                width: 2000px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+        <div class="container myContainer2" >
+            <div class="rows">
+                <div class="col-lg-6 col-lg-offset-3" style="background:white;border:1px solid #ddd;overflow: hidden;">
+                    <div class="containAllElement" data-attr="0" times="0">
+                        <h:form class="form-horizontal">
+                            <div class="col-lg-3 col-xs-2 col-sm-3 col-md-3">
+                                <h4 style="margin-bottom: 30px;"><center>Damaged Car A</center></h4>
+                                <p:messages/>
+                                <div class="form-group">
+                                    <label class="col-lg-3 ">Plate Number</label>
+                                    <div class="col-lg-8">
+                                        <h:inputText value="#{policeReportController.iyagonze.plateNum}" pt:placeholder="RAD320R"  class="form-control pnum" onblur="validate('.pnum', 'no', '.iyagonzeBtn')" required="true" requiredMessage="Plate Number  is required" id="pnum">
+                                            <f:ajax listener="#{policeReportController.searchForCar('iyagonze')}" render="info" event="blur"/>
+                                        </h:inputText>
+                                        <h:message class="text text-danger" for="pnum"/>
+                                    </div>
+                                </div>
+                                <h:panelGroup id="info">
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Policy Number</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{policeReportController.iyagonze.policyNumber}" onblur="validate('.policyNumber', 'no', '.iyagonzeBtn')"  pt:placeholder="Policy Number"  class="form-control policyNumber" required="true" requiredMessage="Policy Number  is required" id="policyNumber">
+                                            </h:inputText>
+                                            <h:message class="text text-danger" for="policyNumber"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Name</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{policeReportController.iyagonze.name}"  pt:placeholder="eg:Benz,Toyota"  class="form-control" onblur="validate('.name', 'no', '.iyagonzeBtn')" required="true" requiredMessage="Name  is required" id="name">
+                                            </h:inputText>
+                                            <h:message class="text text-danger" for="name"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Chasis Number:</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{policeReportController.iyagonze.chasisNum}" onblur="validate('.chasisnum', 'no', '.iyagonzeBtn')" pt:placeholder="Enter Chasis Number"  class="form-control chasisnum" required="true" requiredMessage="Chasis Number  is required" id="chasisnum"/>
+                                            <h:message class="text text-danger" for="chasisnum"/>
+                                        </div>
+                                    </div>
+
+                                </h:panelGroup>
+                                <div class="form-group">
+                                    <label class="col-lg-6">
+                                        Broken Car Image
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <p:fileUpload   fileUploadListener="#{vehicleController.Upload}" mode="advanced" dragDropSupport="false"
+                                                        sizeLimit="1000000000000" fileLimit="5" invalidFileMessage="Invalid Image Type"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-3"></div>
+                                    <div class="col-lg-8">
+                                        <button type="button" disabled="true" class="btn btn-primary nextBtn iyagonzeBtn" value="Next">
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-lg-3 col-xs-2 col-xs-offset-2 col-sm-3 col-md-3 col-lg-offset-1">
+                                <h4><center>Damaged Car B Form</center></h4>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Plate Number</label>
+                                    <div class="col-lg-8">
+                                        <h:inputText value="#{policeReportController.iyagonzwe.plateNum}" pt:placeholder="RAD320R" onblur="validate('.iyagonzwepnum', 'yes', '.iyagonzweBtn')"  class="form-control iyagonzwepnum" required="true" requiredMessage="Plate Number  is required" id="Iyagonzwepnum">
+                                            <f:ajax listener="#{policeReportController.searchForCar('iyagonzwe')}" render="info2" event="blur"/>
+                                        </h:inputText>
+                                        <h:message class="text text-danger" for="Iyagonzwepnum"/>
+                                    </div>
+                                </div>
+                                <h:panelGroup id="info2">
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Policy Number</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{policeReportController.iyagonzwe.policyNumber}" onblur="validate('.icyagonzwepolicyNumber', 'yes', '.iyagonzweBtn')"  pt:placeholder="Policy Number"  class="form-control icyagonzwepolicyNumber" required="true" requiredMessage="Policy Number  is required" id="IyagonzwepolicyNumber">
+                                            </h:inputText>
+                                            <h:message class="text text-danger" for="IyagonzwepolicyNumber"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Name</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{policeReportController.iyagonzwe.name}" onblur="validate('.iyagonzwename', 'yes', '.iyagonzweBtn')"  pt:placeholder="eg:Benz,Toyota"  class="form-control iyagonzwename" required="true" requiredMessage="Name  is required" id="Iyagonzwename">
+                                            </h:inputText>
+                                            <h:message class="text text-danger" for="Iyagonzwename"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Chasis Number:</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{policeReportController.iyagonzwe.chasisNum}" pt:placeholder="Enter Chasis Number" onblur="validate('.Iyagonzwechasisnum', 'yes', '.iyagonzweBtn')"   class="form-control Iyagonzwechasisnum" required="true" requiredMessage="Chasis Number  is required" id="Iyagonzwechasisnum"/>
+                                            <h:message class="text text-danger" for="Iyagonzwechasisnum"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-6">
+                                            Broken Car Image
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-12">
+                                            <p:fileUpload   fileUploadListener="#{vehicleController.Upload}" mode="advanced" dragDropSupport="false"
+                                                            sizeLimit="1000000000000" fileLimit="5" invalidFileMessage="Invalid Image Type"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                                        </div>
+                                    </div>
+
+                                </h:panelGroup>
+                                <div class="form-group">
+                                    <div class="col-lg-3"></div>
+                                    <div class="col-lg-8">
+                                        <button type="button" class="btn btn-default back" value="Next">
+                                            Go Back
+                                        </button>
+                                        <button type="button" disabled="true" class="btn btn-primary nextBtn iyagonzweBtn" value="Next">
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div> 
+                            <div class="col-lg-3 col-xs-2  col-xs-offset-2 col-sm-3 col-md-3 col-lg-offset-1" style="padding-bottom: 15px;">
+                                <h4><center>Third Party Form</center></h4>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Name</label>
+                                    <div class="col-lg-8">
+                                        <h:inputText id="thirdname" value="#{policeReportController.thirdParty.name}" required="true" requiredMessage="Name is required" class="form-control"/>
+                                        <h:message for="thirdname" class="text text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3">National ID</label>
+                                    <div class="col-lg-8">
+                                        <h:inputText id="nationalId" value="#{policeReportController.thirdParty.nationalId}" required="true"  requiredMessage="NationalID  is required" class="form-control"/>
+                                        <h:message for="nationalId" class="text text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Location</label>
+                                    <div class="col-lg-8">
+                                        <h:inputText value="#{policeReportController.policeReport.location}" id="autocomplete" onfocus="geolocate()"  pt:placeholder="Kigali,Nyarugenge,Muhima kn5"  class="form-control autocomplete" required="true" requiredMessage="Location  is required"/>
+                                        <h:message class="text text-danger autocomplete" for="autocomplete"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3">What Happen</label>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-lg-12">
+                                        <p:editor id="description" value="#{policeReportController.policeReport.description}" required="true" requiredMessage="Reason is required"/>
+                                        <h:message for="description" class="text text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Additional Document</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <p:fileUpload id="file"   fileUploadListener="#{policeReportController.Upload}" mode="advanced" dragDropSupport="false"
+                                                      sizeLimit="1000000000000" fileLimit="1" invalidFileMessage="Invalid Image Type"  allowTypes="/(\.|\/)(pdf)$/" />
+                                        <h:message for="file" class="text-danger"/>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-default back" value="Next">
+                                    Go Back
+                                </button>
+                                <h:commandButton action="#{policeReportController.create()}" value="Save" class="btn btn-primary">
+                                </h:commandButton>
+
+                            </div> 
+                        </h:form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script src="layout/js/bootstrap.js"/>
+        <script>
+
+                                            function validate(input, isAbbr, btn) {
+                                                var output = $(input).val();
+                                                console.log(checkInput(isAbbr));
+                                                if (checkInput(isAbbr)) {
+                                                    $(btn).removeAttr("disabled");
+                                                } else {
+                                                    $(btn).attr("disabled", "true");
+                                                }
+                                            }
+                                            function checkInput(yesOrNo) {
+                                                if (yesOrNo === "no") {
+                                                    var plateNumber = $(".pnum").val();
+                                                    var policyNumber = $(".policyNumber").val();
+                                                    var name = $(".name").val();
+                                                    if (plateNumber === "" || policyNumber === "" || name === "") {
+                                                        return false;
+                                                    }
+                                                    return true;
+                                                } else {
+                                                    var plateNumber = $(".iyagonzwepnum").val();
+                                                    var policyNumber = $(".iyagonzwepolicyNumber").val();
+                                                    var name = $(".iyagonzwename").val();
+                                                    if (plateNumber === "" || policyNumber === "" || name === "") {
+                                                        return false;
+                                                    }
+                                                    return true;
+
+                                                }
+
+                                            }
+                                            $(function () {
+                                                $(".nextBtn").click(function () {
+
+                                                    var lastLocation = $(".containAllElement").attr("data-attr");
+                                                    var position = $(".containAllElement").attr("times");
+                                                    $(".containAllElement").animate({
+                                                        "margin-left": lastLocation - 660
+                                                    }, 1000);
+                                                    $(".containAllElement").removeAttr("data-attr");
+                                                    $(".containAllElement").removeAttr("times");
+                                                    $(".containAllElement").attr("data-attr", lastLocation - 660);
+                                                    $(".containAllElement").attr("times", position + 1);
+
+                                                });
+                                                $(".back").click(function () {
+                                                    var lastLocation = $(".containAllElement").attr("data-attr");
+                                                    var position = $(".containAllElement").attr("times");
+                                                    console.log(parseInt(lastLocation) + 660);
+
+                                                    $(".containAllElement").animate({
+                                                        "margin-left": parseInt(lastLocation) + 660
+                                                    }, 1000);
+                                                    $(".containAllElement").removeAttr("data-attr");
+                                                    $(".containAllElement").removeAttr("times");
+                                                    $(".containAllElement").attr("data-attr", parseInt(lastLocation) + 660);
+                                                    $(".containAllElement").attr("times", parseInt(position) - 1);
+                                                });
+                                            });
+        </script>
+    </h:body>
+</html>
+

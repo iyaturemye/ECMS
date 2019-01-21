@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Garage LTD</title>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
+        <div class="loginForms brokenOne">
+            <div class="allOfThem">
+                <h3 class="loginh1"> Car Registration</h3>
+                <p:messages globalOnly="true"/>
+                <h:form class="form-horizontal" id="form" >
+                    <div class="form-group">
+                        <label class="col-lg-3">Plate Number</label>
+                        <div class="col-lg-8">
+                            <h:inputText value="#{vehicleController.vehicle.plateNum}" pt:placeholder="RAD320R"  class="form-control pnum" required="true" requiredMessage="Plate Number  is required" id="pnum">
+                                <f:ajax listener="#{vehicleController.searchForCar()}" execute="@this" render="info" event="blur"/>
+                            </h:inputText>
+                            <h:message class="text text-danger" for="pnum"/>
+                        </div>
+                    </div>
+                    <h:panelGroup id="info">
+                        <div class="form-group">
+                            <label class="col-lg-3">Policy Number</label>
+                            <div class="col-lg-8">
+                                <h:inputText value="#{vehicleController.vehicle.policyNumber}"  pt:placeholder="Policy Number"  class="form-control policyNumber" required="true" requiredMessage="Policy Number  is required" id="policyNumber">
+                                </h:inputText>
+                                <h:message class="text text-danger" for="policyNumber"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">Name</label>
+                            <div class="col-lg-8">
+                                <h:inputText value="#{vehicleController.vehicle.name}"  pt:placeholder="eg:Benz,Toyota"  class="form-control" required="true" requiredMessage="Name  is required" id="name">
+                                </h:inputText>
+                                <h:message class="text text-danger" for="name"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">Chasis Number:</label>
+                            <div class="col-lg-8">
+                                
+                                <h:inputText value="#{vehicleController.vehicle.chasisNum}" pt:placeholder="Enter Chasis Number"  class="form-control" required="true" requiredMessage="Chasis Number  is required" id="chasisnum"/>
+                                <h:message class="text text-danger" for="chasisnum"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">Location</label>
+                            <div class="col-lg-8">
+                                <h:inputText value="#{vehicleController.vehicleDetails.location}" id="autocomplete" pt:placeholder="Kigali,Nyarugenge,Muhima kn5"  class="form-control autocomplete" required="true" requiredMessage="Location  is required"/>
+                                <h:message class="text text-danger autocomplete" for="autocomplete"/>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                    <div class="form-group">
+                        <label class="col-lg-3">Insurance</label>
+                        <div class="col-lg-8">
+                            <h:selectOneMenu class="form-control" id="insurance" required="true" requiredMessage="Insurance Is required" value="#{vehicleController.insurance}">
+                                <f:selectItem itemValue="" itemLabel="Choose your Insurance"/>
+                                <f:selectItems value="#{vehicleController.insuranceList}" var="item" itemLabel="#{item.name}" itemValue="#{item.uuid}"/>
+                                <f:ajax  listener="#{vehicleController.expectiseGarage()}" execute="@this" event="change" render="expirtise"  onevent="loadOutput"/>
+                            </h:selectOneMenu>
+                            <h:message class="text text-danger" for="insurance"/>
+                        </div>
+                    </div>
+                    <h:message for="selected" class="text text-danger"/>
+                    <h:panelGroup id="expirtise">
+
+                        <div class="form-group expirtiseDiv">
+                            <div class="loadingImg">
+                                <img src="layout/image/Ripple-1s-200px.gif"/>
+                            </div>
+                            <div class="allExpertise">
+                                <label>Expectise Garage</label>&nbsp;&nbsp;<a href="#">read More</a>
+                                <div class="col-lg-12 expertiseElement">
+                                    <div class="searchTextBox">
+                                        <h:inputText id="searchkeys" value="#{vehicleController.searchKey}" class="form-control" pt:placeholder="Search by Location">
+                                            <f:ajax  listener="#{vehicleController.searchExpectise()}" event="keyup" render="garages" execute="searchkeys"/>
+                                        </h:inputText>
+                                    </div>
+                                    <h:panelGroup id="garages">
+                                        <div style="margin-top: 10px;">
+                                            <c:if test="#{!vehicleController.garageExpectise.isEmpty()}">
+                                                <h:selectOneRadio id="selected"  required="true" requiredMessage="Expectise Garage is required" layout="pagedirection" value="#{vehicleController.expectiseId}">
+                                                    <f:selectItems value="#{vehicleController.garageExpectise}" var="item" itemLabel="&nbsp; #{item.garage.name} &nbsp; #{item.garage.location}" itemValue="#{item.uuid}"/>
+                                                </h:selectOneRadio>
+                                            </c:if>
+                                            <c:if test="#{vehicleController.garageExpectise.isEmpty()}">
+                                                No Result Found
+                                            </c:if>
+                                        </div>
+                                    </h:panelGroup>
+                                </div>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                    <div class="form-group">
+                        <label class="col-lg-6">Accident Description</label>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <p:editor value="#{vehicleController.vehicleDetails.whatHappen}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-6">
+                            Broken Car Image
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <p:fileUpload    fileUploadListener="#{vehicleController.Upload}" mode="advanced" dragDropSupport="false"
+                                             sizeLimit="1000000000000" fileLimit="5" invalidFileMessage="Invalid Image Type"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-3 col-lg-offset-3">
+                            <h:commandButton  value="Save" action="#{vehicleController.create()}" class="login saveBtn" style="padding: 5px;">
+
+                            </h:commandButton>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+        <script type="text/javascript" src="layout/js/bootstrap.js"></script>
+        <script>
+            var loadPage = function loadIt(data) {
+                if (data.status === 'success') {
+                    alert("is working boss we");
+                }
+//                                       window.location="CarRegistration.xhtml";
+            }
+
+            var loadOutput = function (data) {
+                if (data.status === 'begin') {
+                    $(".expirtiseDiv").show();
+                    $(".loadingImg").show();
+                } else {
+                    $(".expirtiseDiv").show();
+                    $(".allExpertise").show();
+                    $(".loadingImg").hide();
+                }
+            };
+
+
+        </script>
+    </h:body>
+</html>
+

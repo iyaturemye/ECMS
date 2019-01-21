@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Admin Dashboard</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <c:if test="#{insuranceController.allInsurance.size()>0}">
+            <div class="container dashboardContainer">
+                <div class="rows">
+                    <div class="col-lg-12">
+                        <div class="title">
+                            <div class="container" style="margin-bottom: 10px;">
+                                <div  class="rows">
+                                    <div class="col-lg-3">
+                                        <h3>List of Insurance</h3>
+                                    </div>
+
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="allElement">
+                            <p:messages  globalOnly="true"/>
+                            <h:panelGroup id="tables">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Insurance Name</th>                                        
+                                        <th>Phone Number</th>
+                                        <th>E-mail</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="i"  items="#{insuranceController.allInsurance}" varStatus="status">
+                                            <tr>
+                                                <td>${status.index +1}</td>
+                                                <td>#{i.name}</td>
+                                                <td>#{i.phoneNumber}</td>
+                                                <td>#{i.user.userName}</td>
+                                                <td>
+                                                    <h:outputText class="label #{i.user.status.equalsIgnoreCase('active')? 'label-success':'label-danger'}" value="#{i.user.status.equalsIgnoreCase('active')? 'Actived':'Blocked'}"/>
+                                                </td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandButton action="#{insuranceController.changeInsuranceStatus(i.user)}" class="btn #{i.user.status.equalsIgnoreCase('active')? 'btn-warning':'btn-primary'}" value="#{i.user.status.equalsIgnoreCase('active')? 'block':'active'}"/>
+                                                    </h:form>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+    </h:body>
+</html>
+
