@@ -104,7 +104,7 @@
                                             <td>#{i.garageName}</td>
                                             <td>#{i.phoneNumber}</td>
                                             <td>
-                                                <h:outputFormat value="#{i.totalAmount + insuranceController.calculatePercent(i.totalAmount)}">
+                                                <h:outputFormat value="#{i.totalAmount}">
                                                     <f:convertNumber pattern="###,###,###"/>
                                                 </h:outputFormat> FRW
                                             </td>

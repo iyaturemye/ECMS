@@ -476,7 +476,14 @@ placeholder{
     alignment-adjust: central;
 }
 .imgs{
-    height: 130px;
+    max-height: 180px;
+    min-width: 180px;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+.image2{
+    max-height: 170px;
+    align-content: center;
 }
 .imageContainer{
     margin-top: 10%;
@@ -491,7 +498,15 @@ placeholder{
     font-family: 'Slabo 27px', serif;
 }
 .inform{
-    margin-top: 20px;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 5px;
+    background: #fcfcfc;
+}
+.imgAndInform{
+    box-shadow: 1.5px 1.5px 4px 1px #ddd;
+    margin-bottom: 18px;
 }
 .video{
     width: 450px;
@@ -516,9 +531,9 @@ placeholder{
         margin-top: 30%;
         margin-bottom: 10px;
     }
-    .myOwner-6{
-        padding:0px !important;
-    }
+    /*    .myOwner-6{
+            padding:0px !important;
+        }*/
     .cont{
         margin-top: 45%;
     }
@@ -541,11 +556,11 @@ placeholder{
     .allCar h3{
         font-size: 14px;
     }
-    .carImage{
-        width: 80% !important;
-        height: auto;
-        max-width: 80%;
-    }
+    /*    .carImage{
+            width: 80% !important;
+            height: auto;
+            max-width: 80%;
+        }*/
     .imgs{
         height: 200px;
     }
@@ -626,11 +641,11 @@ placeholder{
 }
 
 @media screen and (max-width: 1200px){
-    .myOwner-6{
-        padding:0px !important;
-    }
+    /*    .myOwner-6{
+            padding:0px !important;
+        }*/
     .cont{
-        margin-top: 45%;
+
     }
     .forComputer{
         display: none !important;
@@ -651,11 +666,11 @@ placeholder{
     .allCar h3{
         font-size: 14px;
     }
-    .carImage{
-        width: 80% !important;
-        height: auto;
-        max-width: 80%;
-    }
+    /*    .carImage{
+            width: 80% !important;
+            height: auto;
+            max-width: 80%;
+        }*/
     .imgs{
         height: 200px;
     }
@@ -758,11 +773,11 @@ placeholder{
     .allCar h3{
         font-size: 14px;
     }
-    .carImage{
-        width: 80% !important;
-        height: auto;
-        max-width: 80%;
-    }
+    /*    .carImage{
+            width: 80% !important;
+            height: auto;
+            max-width: 80%;
+        }*/
     .imgs{
         height: 200px;
     }

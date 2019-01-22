@@ -3,8 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-     <meta name="viewport" content="width=device-width, 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <meta name="viewport" content="width=device-width, 
           initial-scale=1.0, 
           maximum-scale=1.0, 
           user-scalable=no"/>
@@ -20,30 +21,60 @@
             <ui:include src="header.xhtml">
             </ui:include>
         </ui:insert>    
-        <div class="container " style="margin-top: 100px;background: white;padding: 10px;border: 1px solid #ddd;">
+        <div class="container " style="margin-top: 100px;background: white;padding: 10px; border: 1px solid #ddd;">
             <div class="rows">
                 <c:forEach items="#{vehicleController.allBrokenCar}" var="items">
-                    <div class="col-lg-3" style="padding: 5px;margin: 5px;">
-                        <div class="imgs">
-                            <c:forEach items="#{vehicleController.images}" var="i">
-                                <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
-                                    <h:form>
-                                        <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                            <img class="img-responsive carImage" src="layout/image/blockenCar/#{i.image}"/>
-                                        </h:commandLink>
-                                    </h:form>
+                    <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3">
+                        <div class="imgAndInform" style="box-shadow: 1.5px 1.5px 4px 1px #ddd;">
+                            <div class="imgs">
+                                <c:forEach items="#{vehicleController.images}" var="i">
+                                    <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
+                                        <h:form>
+                                            <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
+                                                <img class="image image2 img-responsive" src="layout/image/blockenCar/#{i.image}"/>
+                                            </h:commandLink>
+                                        </h:form>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+                            <div class="inform">
+                                <h6 style="color:red;">
+                                    <b>
+                                        <h:form>
+                                            <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
+                                                #{items.vehicle.name},<span>#{items.vehicle.plateNum}</span>
+                                            </h:commandLink>
 
-                                </c:if>
-                            </c:forEach>
-                        </div>
-                        <div class="inform">
-                            <h6 style="color:red;"><b>#{items.vehicle.name}</b></h6>
-                            <span class="word">
-                                <br/>
-                            </span>
+                                        </h:form>
+                                    </b>
+                                </h6>
+                                <span class="word">
+                                    <span class="text small">
+                                        <h:outputText value="#{items.createdAt}">
+                                            <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
+                                        </h:outputText>
+                                    </span>
+                                    <br/>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </c:forEach>
+            </div>
+        </div>
+        <div class="container">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <ul class="pagination pagination-sm pull-right">
+                        <li><a href="#">&laquo;</a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </h:body>
