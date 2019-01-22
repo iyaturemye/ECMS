@@ -13,18 +13,26 @@
         <script src="../layout/js/bootstrap.js"></script>
         <link rel="styleSheet" href="css/mystyle.css"></link>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
-
+        <style>
+            .title{
+                border-bottom: 1px solid #ddd;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+        </style>
     </h:head>
     <h:body>
         <ui:insert>
             <ui:include src="menu.xhtml"/>
         </ui:insert>
         <div class="container dashboardContainer">
+            <div class="title">
+                <b>Police Registration</b>
+            </div>
             <div class="rows">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="allElement">
-                        <p:messages  />
-
+                        <p:messages  globalOnly="true" />
                         <h:form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-lg-3">First name</label>
@@ -63,7 +71,6 @@
                                 </div>
                             </div>
                         </h:form>
-
                     </div>
                 </div>
             </div>

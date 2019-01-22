@@ -383,7 +383,6 @@ public class AbstractDao<K, T> implements IRootDao<K, T> {
             session.update(model);
             t.commit();
             session.close();
-            System.out.println("Here we are boss wanjye ");
             return model;
 
         } catch (Exception j) {

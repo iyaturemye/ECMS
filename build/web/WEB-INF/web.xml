@@ -26,10 +26,10 @@
         <error-code>404</error-code>
         <location>/sec/errors/404.xhtml</location>
     </error-page>
-    <error-page>
+<!--    <error-page>
         <error-code>500</error-code>
         <location>/sec/errors/500.xhtml</location>
-    </error-page>
+    </error-page>-->
 
     <context-param>
         <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>

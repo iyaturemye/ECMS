@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Admin Dashboard</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <script src="../layout/js/jquery-3.3.1.min.js"/>
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <style>
+            .title{
+                border-bottom: 1px solid #ddd;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <div class="container dashboardContainer">
+            <div class="title">
+                <b>Car Part Registration</b>
+            </div>
+            <div class="rows">
+                <div class="col-lg-6">
+
+                    <div class="allElement">
+                        <p:messages  globalOnly="true" />
+                        <h:form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-3">Name</label>
+                                <div class="col-lg-8">
+                                    <h:inputText required="true" id="fname" class="form-control fname" value="#{carpartController.carsparepart.name}" requiredMessage="Name is required"/>   
+                                    <h:message for="fname" class="text text-danger"/>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-lg-3">Type</label>
+                                <div class="col-lg-8">
+                                    <h:selectOneMenu id="type" requiredMessage="Type is required"  class="form-control" required="true"  value="#{carpartController.choosenOne}">
+                                        <f:selectItem itemLabel="Select Type" itemValue=""/>
+                                        <f:selectItem itemLabel="Parent" itemValue="parent"/>
+                                        <f:selectItems value="#{carpartController.allOfThem}" var="item" itemLabel="#{item.name}" itemValue="#{item.id}"/>
+                                    </h:selectOneMenu>
+                                    <h:message for="type" class="text text-danger"/>
+                                </div>
+                            </div> 
+
+                            <div class="form-group">
+                                <label class="col-lg-3"></label>
+                                <div class="col-lg-3">
+                                    <h:commandButton  action="#{carpartController.create()}" class="btn btn-primary send" value="#{carpartController.action}">
+                                    </h:commandButton>
+                                </div>
+                            </div>
+                        </h:form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container dashboardContainer">
+            <div class="title">
+                <b>Car Parts list</b>
+            </div>
+            <div class="rows">
+                <div class="col-lg-6">
+
+                    <div class="allElement">
+                        <h:dataTable class="table table-bordered" value="#{carpartController.allOfThem}" var="item">
+                           
+                            <h:column>
+                                <f:facet name="header">
+                                    Name
+                                </f:facet>
+                                #{item.name}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    Action
+                                </f:facet>
+                                <h:form>
+                                    <h:commandButton value="Delete" class="btn btn-default" action="#{carpartController.delete(item)}"/>&nbsp;
+                                    <h:commandButton value="Edit" class="btn btn-primary" action="#{carpartController.init(item)}"/>
+                                </h:form>
+
+                            </h:column>
+
+                        </h:dataTable>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </h:body>
+</html>
+

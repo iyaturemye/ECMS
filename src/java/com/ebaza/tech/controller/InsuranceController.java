@@ -12,6 +12,7 @@ import com.ebaza.tech.dao.generic.CompledCarDao;
 import com.ebaza.tech.dao.generic.PoliceReportDao;
 import com.ebaza.tech.dao.generic.VehicleDetailDao;
 import com.ebaza.tech.dao.impl.BiddingImpl;
+import com.ebaza.tech.dao.impl.CarsparepartImpl;
 import com.ebaza.tech.dao.impl.CompletedCarImpl;
 import com.ebaza.tech.dao.impl.ExpectiseImpl;
 import com.ebaza.tech.dao.impl.GarageImpl;
@@ -24,6 +25,7 @@ import com.ebaza.tech.dao.impl.VehicleDetailsImpl;
 import com.ebaza.tech.dao.impl.VehicleImageImpl;
 import com.ebaza.tech.domain.ApprovedTemplate;
 import com.ebaza.tech.domain.Bidding;
+import com.ebaza.tech.domain.Carsparepart;
 import com.ebaza.tech.domain.CompletedCar;
 import com.ebaza.tech.domain.ExpectiseGarage;
 import com.ebaza.tech.domain.Garage;
@@ -100,6 +102,8 @@ public class InsuranceController implements DbConstant, Serializable {
     private String username = "iyaturemye";
     private String apiKey = "6cee4a31d2456e8a28d3018acdf71ca36ca8b229448cb308ce31cd0a688063dc";
     private List<PoliceReport> policeReportElement = new ArrayList();
+    private List<Carsparepart> allParentCarsparepart = new ArrayList<>();
+    private List<Carsparepart> allChildCarsparepart = new ArrayList<>();
 
     public int numberOfCount(VehicleDetail vd) {
         return new VehicleDetailDao().getCount(vd);
@@ -204,10 +208,12 @@ public class InsuranceController implements DbConstant, Serializable {
         }
     }
 
-    public InsuranceController() {
+    public InsuranceController() throws Exception {
         allMagic();
         listOfRepairCar();
         listCompled();
+        this.allParentCarsparepart = new CarsparepartImpl().allParentsparepart();
+        this.allChildCarsparepart = new CarsparepartImpl().allChildCarsparepart();
     }
 
     public List<VehicleImage> getImages(VehicleDetail vd) {
@@ -565,12 +571,12 @@ public class InsuranceController implements DbConstant, Serializable {
                         insurance.setUser(user);
                         InsuranceCompany ins = new InsuranceImpl().create(insurance);
                         if (ins != null) {
-                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userLoggedIn", user);
-                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isInsurance", "yes");
-                            String whereCommingFrom = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("loginFrom");
-                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginFrom", null);
-                            location = (whereCommingFrom == null) ? "" : (whereCommingFrom.equalsIgnoreCase("carRegistration") ? "CarRegistration.xhtml?faces-redirect=true" : null);
-                            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Have been successfull registered", location));
+//                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userLoggedIn", user);
+//                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isInsurance", "yes");
+//                            String whereCommingFrom = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("loginFrom");
+//                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginFrom", null);
+//                            location = (whereCommingFrom == null) ? "" : (whereCommingFrom.equalsIgnoreCase("carRegistration") ? "CarRegistration.xhtml?faces-redirect=true" : null);
+//                            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Have been successfull registered", location));
                             this.user = new User();
                             this.insurance = new InsuranceCompany();
                         }
@@ -916,6 +922,22 @@ public class InsuranceController implements DbConstant, Serializable {
 
     public void setPoliceReportElement(List<PoliceReport> policeReportElement) {
         this.policeReportElement = policeReportElement;
+    }
+
+    public List<Carsparepart> getAllParentCarsparepart() {
+        return allParentCarsparepart;
+    }
+
+    public void setAllParentCarsparepart(List<Carsparepart> allParentCarsparepart) {
+        this.allParentCarsparepart = allParentCarsparepart;
+    }
+
+    public List<Carsparepart> getAllChildCarsparepart() {
+        return allChildCarsparepart;
+    }
+
+    public void setAllChildCarsparepart(List<Carsparepart> allChildCarsparepart) {
+        this.allChildCarsparepart = allChildCarsparepart;
     }
 
 }

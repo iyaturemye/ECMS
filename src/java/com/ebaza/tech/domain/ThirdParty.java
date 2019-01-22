@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -22,16 +21,15 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Godwin
  */
 @Entity
-@XmlRootElement
 public class ThirdParty implements Serializable {
 
     @Id
     private String uuid = UUID.randomUUID().toString();
     private String name;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dob;
     private String nationalId;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createAt = new Date();
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "thirdParty")
     private List<PoliceReport> policeReport;

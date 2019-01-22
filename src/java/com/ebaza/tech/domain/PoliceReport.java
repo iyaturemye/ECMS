@@ -13,14 +13,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author Godwin
  */
 @Entity
-@XmlRootElement
 public class PoliceReport implements Serializable {
     @Id
     private String uuid = UUID.randomUUID().toString();
@@ -31,6 +30,7 @@ public class PoliceReport implements Serializable {
     private Vehicle iyagonzeVehicle;
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
     @ManyToOne
     @JoinColumn(name = "thirdParty")

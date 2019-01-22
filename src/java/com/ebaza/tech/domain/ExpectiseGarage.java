@@ -32,7 +32,7 @@ public class ExpectiseGarage implements Serializable {
     @ManyToOne
     @JoinColumn(name = "garageId")
     private Garage garage;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createAt=new Date();
     private String status="active";
     @ManyToOne

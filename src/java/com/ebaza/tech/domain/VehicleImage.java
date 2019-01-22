@@ -14,19 +14,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Godwin
  */
 @Entity
-@XmlRootElement
 public class VehicleImage implements Serializable{
     @Id
     private  String vimageId=UUID.randomUUID().toString();
     private String image;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt=new Date();
     @ManyToOne
     @JoinColumn(name="vehicleDetailId")

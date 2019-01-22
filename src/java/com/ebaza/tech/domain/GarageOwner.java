@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -24,7 +23,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Godwin
  */
 @Entity
-@XmlRootElement
 public class GarageOwner implements Serializable{
     @Id
     private String ownerId=UUID.randomUUID().toString();

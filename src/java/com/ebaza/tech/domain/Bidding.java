@@ -40,10 +40,11 @@ public class Bidding {
     private List<Quotation> quotation;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bidding")
     private List<CompletedCar> completedCar;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createAt = new Date();
     private String comment = "";
     private double totalPrice;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date estimatedDate;
 
     public String getBidId() {

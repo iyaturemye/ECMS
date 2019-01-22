@@ -5,19 +5,18 @@
  */
 package com.ebaza.tech.domain;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Godwin
  */
 @Entity
-@XmlRootElement
-public class PayForBid {
+public class PayForBid implements Serializable{
     @Id
     private String uuid;
     @ManyToOne

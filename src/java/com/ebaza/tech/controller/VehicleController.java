@@ -9,6 +9,7 @@ import com.ebaza.tech.common.DbConstant;
 import com.ebaza.tech.common.FileUpload;
 import com.ebaza.tech.common.SendEmail;
 import com.ebaza.tech.dao.impl.ClientImpl;
+import com.ebaza.tech.dao.impl.DriverImpl;
 import com.ebaza.tech.dao.impl.ExpectiseImpl;
 import com.ebaza.tech.dao.impl.InsuranceImpl;
 import com.ebaza.tech.dao.impl.LoginImpl;
@@ -17,6 +18,7 @@ import com.ebaza.tech.dao.impl.VehicleDetailsImpl;
 import com.ebaza.tech.dao.impl.VehicleImageImpl;
 import com.ebaza.tech.dao.impl.VehicleImpl;
 import com.ebaza.tech.domain.Client;
+import com.ebaza.tech.domain.Driver;
 import com.ebaza.tech.domain.ExpectiseGarage;
 import com.ebaza.tech.domain.InsuranceCompany;
 import com.ebaza.tech.domain.User;
@@ -51,6 +53,8 @@ public class VehicleController implements DbConstant, Serializable {
 
     private Client client = new Client();
     private Vehicle vehicle = new Vehicle();
+    private Vehicle vehicleb = new Vehicle();
+    private Driver driver = new Driver();
     private VehicleDetail vehicleDetails = new VehicleDetail();
     private VehicleImage vehicleImage = new VehicleImage();
     private boolean isClientFound = false;
@@ -68,6 +72,7 @@ public class VehicleController implements DbConstant, Serializable {
     private List<VehicleDetail> brokenCar2 = new VehicleDetailsImpl().getBrokenCar(3);
     private String others;
     private String insurance;
+    private String insuranceOfVehicleB;
     private List<InsuranceCompany> insuranceList = new InsuranceImpl().getAll();
     private String insuranceId;
     private List<ExpectiseGarage> garageExpectise = new ArrayList<>();
@@ -177,20 +182,24 @@ public class VehicleController implements DbConstant, Serializable {
 
     }
 
-    
-
     public void Upload(FileUploadEvent event) {
-        listOfImages.add(new FileUpload().Upload(event,"layout\\image\\blockenCar\\"));
+        listOfImages.add(new FileUpload().Upload(event, "layout\\image\\blockenCar\\"));
         System.out.println("here we go boss wanjye we ");
     }
 
-    public void searchForCar() {
+    public void searchForCar(String vehicletype) {
 
         try {
-            if (!vehicle.getPlateNum().isEmpty()) {
-                Vehicle v = new VehicleImpl().getVehicle(vehicle.getPlateNum());
+            System.out.println("");
+            Vehicle vb = (vehicletype.equalsIgnoreCase("vehicleb") ? this.vehicleb : this.vehicle);
+            if (!vb.getPlateNum().isEmpty()) {
+                Vehicle v = new VehicleImpl().getVehicle(vb.getPlateNum());
                 if (v != null) {
-                    vehicle = v;
+                    if(vehicletype.equalsIgnoreCase("vehicleb")){
+                         this.vehicleb=v;
+                    }else{
+                        this.vehicle=v;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -202,84 +211,111 @@ public class VehicleController implements DbConstant, Serializable {
 
     public String create() throws Exception {
         try {
-            ExpectiseGarage exg = new ExpectiseGarage();
-            exg.setUuid(expectiseId);
-            FacesContext context = FacesContext.getCurrentInstance();
-            String isInsurance = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("isInsurance");
-            if (listOfImages.size() > 0) {
-                Vehicle v2 = new VehicleImpl().getModelWithMyHQL(new String[]{"plateNum"}, new Object[]{vehicle.getPlateNum()}, "from Vehicle");
-                if (v2 == null) {
-                    new VehicleImpl().create(vehicle);
-                } else {
-                    vehicle = v2;
-                }
-                InsuranceCompany ins = new InsuranceCompany();
-                ins.setUuid(insurance);
-                vehicleDetails.setInsurance(ins);
-                vehicleDetails.setStatus("start");
-                vehicleDetails.setVehicle(vehicle);
-                vehicleDetails.setStatementOfVehicle(null);
-                vehicleDetails.setExpectiseGarage(exg);
-                ExpectiseGarage ex = new ExpectiseImpl().getModelWithMyHQL(new String[]{"uuid"}, new Object[]{expectiseId}, "from ExpectiseGarage");
-                Client client = new Client();
-                InsuranceCompany insc = new InsuranceCompany();
-                if (isInsurance != null && !isInsurance.equalsIgnoreCase("yes")) {
-                } else {
-                    insc = new InsuranceImpl().getModelWithMyHQL(new String[]{"userId"}, new Object[]{loggedInUser.getUserId()}, "from InsuranceCompany");
-                }
-                client = new ClientImpl().getModelWithMyHQL(new String[]{"userId"}, new Object[]{loggedInUser.getUserId()}, "from Client");
-                vehicleDetails.setClient(client);
-                new VehicleDetailsImpl().create(vehicleDetails);
-                for (String v : listOfImages) {
-                    VehicleImage vim = new VehicleImage();
-                    vim.setVehicleDetail(vehicleDetails);
-                    vim.setImage(v);
-                    new VehicleImageImpl().create(vim);
-                }
-                if (isInsurance != null && !isInsurance.equalsIgnoreCase("yes")) {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Have been successfull registered", null));
-                    client = new Client();
-                } else {
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Thank u for you report will notify when your car is ready to repaired", null));
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isInsurance", "no");
-                }
-                AfricasTalkingGateway gateway = new AfricasTalkingGateway(username, apiKey);
-                try {
-                    String message = "";
-                    StringBuilder strbuilder = new StringBuilder();
-                    strbuilder.append("Mr/Mrs ");
-                    strbuilder.append(client.getFname());
-                    strbuilder.append(client.getLname());
-                    strbuilder.append("your Car");
-                    strbuilder.append(vehicleDetails.getVehicle().getName());
-                    strbuilder.append(" with plate Number of ");
-                    strbuilder.append(vehicleDetails.getVehicle().getPlateNum());
-                    strbuilder.append("with chassis Number of ");
-                    strbuilder.append(vehicleDetails.getVehicle().getChasisNum());
-                    strbuilder.append("your car will moved to Garage ");
-                    strbuilder.append(ex.getGarage().getName());
-                    strbuilder.append("located at ");
-                    strbuilder.append(ex.getGarage().getLocation());
-                    strbuilder.append(" phone number of ");
-                    strbuilder.append(ex.getGarage().getGarageOwner().getPhoneNumber());
-                    strbuilder.append("for Expectise we will notify you  from day 1 to the end thank you");
-                    String garageMsg = "Sir, There is new broken car you need to do expectise with the following information "
-                            + " Names " + client.getFname() + "   " + client.getLname() + " with vehicle " + vehicleDetails.getVehicle().getName() + " plate number of "
-                            + vehicleDetails.getVehicle().getPlateNum() + " owner PhoneNumber " + client.getPhoneNumber();
-                    System.out.println("here we go boss wanjye");
-                    JSONArray results = gateway.sendMessage(client.getPhoneNumber().replaceAll(" ", ""), strbuilder.toString());
-                    System.out.println(garageMsg + " this is msg for garage   " + ex.getGarage().getGarageOwner().getPhoneNumber());
-                    new SendEmail().sendEmail(ex.getGarage().getGarageOwner().getUser().getUserName(), "New Broken car for Expectise", garageMsg);
-                    JSONArray garageOutput = gateway.sendMessage(ex.getGarage().getGarageOwner().getPhoneNumber().replaceAll(" ", ""), garageMsg);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
-                }
-                vehicleDetails = new VehicleDetail();
-                vehicle = new Vehicle();
-                listOfImages = new ArrayList<>();
+            if (this.vehicle.getPlateNum().equalsIgnoreCase(this.vehicleb.getPlateNum())) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Car B can't be the same as Car A please verify your information", null));
             } else {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "You must atleast add image", null));
+
+                ExpectiseGarage exg = new ExpectiseGarage();
+                exg.setUuid(expectiseId);
+                FacesContext context = FacesContext.getCurrentInstance();
+                String isInsurance = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("isInsurance");
+                if (listOfImages.size() > 0) {
+                    Vehicle v2 = new VehicleImpl().getModelWithMyHQL(new String[]{"plateNum"}, new Object[]{vehicle.getPlateNum()}, "from Vehicle");
+                    Vehicle v3=new VehicleImpl().getModelWithMyHQL(new String[]{"plateNum"}, new Object[]{vehicleb.getPlateNum()}, "from Vehicle");
+                    if (v2 == null) {
+                        new VehicleImpl().create(vehicle);
+                    } else {
+                        vehicle = v2;
+                    }
+                    if (v3 == null) {
+                        new VehicleImpl().create(vehicleb);
+                    } else {
+                        vehicleb = v3;
+                    }
+                    InsuranceCompany ins = new InsuranceCompany();
+                    ins.setUuid(insurance);
+                    InsuranceCompany ins2 = new InsuranceCompany();
+                    ins2.setUuid(insuranceOfVehicleB);
+                    vehicleDetails.setVehicleb(this.vehicleb);
+                    vehicleDetails.setInsurance(ins);
+                    vehicleDetails.setInsuranceOfvehicleb(ins2);
+                    vehicleDetails.setStatus("start");
+                    vehicleDetails.setVehicle(vehicle);
+                    vehicleDetails.setStatementOfVehicle(null);
+                    // to setup a driver to 
+                    if (!this.driver.getNationalId().isEmpty()) {
+                        Driver d = new DriverImpl().getModelWithMyHQL(new String[]{"nationalId"}, new Object[]{this.driver.getNationalId()}, "from Driver");
+                        if (d == null) {
+                            d = new DriverImpl().create(driver);
+                        }
+                        vehicleDetails.setDriver(d);
+                    } else {
+                        vehicleDetails.setDriver(null);
+                    }
+                    vehicleDetails.setExpectiseGarage(exg);
+                    ExpectiseGarage ex = new ExpectiseImpl().getModelWithMyHQL(new String[]{"uuid"}, new Object[]{expectiseId}, "from ExpectiseGarage");
+                    Client client = new Client();
+                    InsuranceCompany insc = new InsuranceCompany();
+                    if (isInsurance != null && !isInsurance.equalsIgnoreCase("yes")) {
+                    } else {
+                        insc = new InsuranceImpl().getModelWithMyHQL(new String[]{"userId"}, new Object[]{loggedInUser.getUserId()}, "from InsuranceCompany");
+                    }
+                    client = new ClientImpl().getModelWithMyHQL(new String[]{"userId"}, new Object[]{loggedInUser.getUserId()}, "from Client");
+                    vehicleDetails.setClient(client);
+                    
+                    new VehicleDetailsImpl().create(vehicleDetails);
+                    for (String v : listOfImages) {
+                        VehicleImage vim = new VehicleImage();
+                        vim.setVehicleDetail(vehicleDetails);
+                        vim.setImage(v);
+                        new VehicleImageImpl().create(vim);
+                    }
+                    if (isInsurance != null && !isInsurance.equalsIgnoreCase("yes")) {
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Have been successfull registered", null));
+                        client = new Client();
+                    } else {
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Thank u for you report will notify when your car is ready to repaired", null));
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isInsurance", "no");
+                    }
+                    AfricasTalkingGateway gateway = new AfricasTalkingGateway(username, apiKey);
+                    try {
+                        String message = "";
+                        StringBuilder strbuilder = new StringBuilder();
+                        strbuilder.append("Mr/Mrs ");
+                        strbuilder.append(client.getFname());
+                        strbuilder.append(client.getLname());
+                        strbuilder.append("your Car");
+                        strbuilder.append(vehicleDetails.getVehicle().getName());
+                        strbuilder.append(" with plate Number of ");
+                        strbuilder.append(vehicleDetails.getVehicle().getPlateNum());
+                        strbuilder.append("with chassis Number of ");
+                        strbuilder.append(vehicleDetails.getVehicle().getChasisNum());
+                        strbuilder.append("your car will moved to Garage ");
+                        strbuilder.append(ex.getGarage().getName());
+                        strbuilder.append("located at ");
+                        strbuilder.append(ex.getGarage().getLocation());
+                        strbuilder.append(" phone number of ");
+                        strbuilder.append(ex.getGarage().getGarageOwner().getPhoneNumber());
+                        strbuilder.append("for Expectise we will notify you  from day 1 to the end thank you");
+                        String garageMsg = "Sir, There is new broken car you need to do expectise with the following information "
+                                + " Names " + client.getFname() + "   " + client.getLname() + " with vehicle " + vehicleDetails.getVehicle().getName() + " plate number of "
+                                + vehicleDetails.getVehicle().getPlateNum() + " owner PhoneNumber " + client.getPhoneNumber();
+                        System.out.println("here we go boss wanjye");
+                        JSONArray results = gateway.sendMessage(client.getPhoneNumber().replaceAll(" ", ""), strbuilder.toString());
+                        System.out.println(garageMsg + " this is msg for garage   " + ex.getGarage().getGarageOwner().getPhoneNumber());
+                        new SendEmail().sendEmail(ex.getGarage().getGarageOwner().getUser().getUserName(), "New Broken car for Expectise", garageMsg);
+                        JSONArray garageOutput = gateway.sendMessage(ex.getGarage().getGarageOwner().getPhoneNumber().replaceAll(" ", ""), garageMsg);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
+                    }
+                    vehicleDetails = new VehicleDetail();
+                    vehicle = new Vehicle();
+                    listOfImages = new ArrayList<>();
+                } else {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "You must atleast add image", null));
+                }
+
             }
             return "CarRegistration.xhtml";
         } catch (Exception e) {
@@ -293,8 +329,6 @@ public class VehicleController implements DbConstant, Serializable {
     public void expirtise() {
 
     }
-
-    
 
     public Client getClient() {
         return client;
@@ -486,6 +520,46 @@ public class VehicleController implements DbConstant, Serializable {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public Vehicle getVehicleb() {
+        return vehicleb;
+    }
+
+    public void setVehicleb(Vehicle vehicleb) {
+        this.vehicleb = vehicleb;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getInsuranceOfVehicleB() {
+        return insuranceOfVehicleB;
+    }
+
+    public void setInsuranceOfVehicleB(String insuranceOfVehicleB) {
+        this.insuranceOfVehicleB = insuranceOfVehicleB;
     }
 
 }

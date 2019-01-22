@@ -1,0 +1,27 @@
+<div class="form-group">
+                                    <label class="col-lg-6">Accident Description</label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <p:editor value="#{vehicleController.vehicleDetails.whatHappen}" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-6">
+                                        Broken Car Image
+                                    </label>
+                                </div> 
+
+<div class="form-group">
+                                    <div class="col-lg-12">
+                                        <p:fileUpload    fileUploadListener="#{vehicleController.Upload}" mode="advanced" dragDropSupport="false"
+                                                         sizeLimit="1000000000000" fileLimit="5" invalidFileMessage="Invalid Image Type"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-3 col-lg-offset-3">
+                                        <h:commandButton  value="Save" action="#{vehicleController.create()}" class="login saveBtn" style="padding: 5px;">
+
+                                        </h:commandButton>
+                                    </div>
+                                </div>

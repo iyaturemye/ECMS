@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -23,7 +22,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Godwin
  */
 @Entity
-@XmlRootElement
 public class InsuranceCompany implements Serializable {
 
     @Id
@@ -37,8 +35,10 @@ public class InsuranceCompany implements Serializable {
     private String phoneNumber;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "insurance")
     private List<VehicleDetail> insuranceCompanyVehicle;
-     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "insurance")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "insurance")
     private List<ExpectiseGarage> expectiseGarage;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "insuranceOfvehicleb")
+    private List<VehicleDetail> vehicleDetails;
 
     public String getUuid() {
         return uuid;
@@ -105,5 +105,14 @@ public class InsuranceCompany implements Serializable {
     public void setExpectiseGarage(List<ExpectiseGarage> expectiseGarage) {
         this.expectiseGarage = expectiseGarage;
     }
+
+    public List<VehicleDetail> getVehicleDetails() {
+        return vehicleDetails;
+    }
+
+    public void setVehicleDetails(List<VehicleDetail> vehicleDetails) {
+        this.vehicleDetails = vehicleDetails;
+    }
     
+
 }

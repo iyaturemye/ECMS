@@ -33,7 +33,7 @@ public class CompletedCar implements Serializable {
     @JoinColumn(name = "bidding")
     private Bidding bidding;
     private String comment;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date CreatedAt = new Date();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "completedCar")
     private List<Payment> payment;

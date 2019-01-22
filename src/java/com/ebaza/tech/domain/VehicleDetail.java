@@ -17,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -25,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Godwin
  */
 @Entity
-@XmlRootElement
+
 public class VehicleDetail implements Serializable {
 
     @Id
@@ -33,6 +32,9 @@ public class VehicleDetail implements Serializable {
     @ManyToOne
     @JoinColumn(name = "vehicleId")
     private Vehicle vehicle;
+    @ManyToOne
+    @JoinColumn(name = "vehiclebId")
+    private Vehicle vehicleb;
     @ManyToOne
     @JoinColumn(name = "clientId")
     private Client client;
@@ -45,16 +47,25 @@ public class VehicleDetail implements Serializable {
     private String whatHappen;
     @Column(columnDefinition = "TEXT")
     private String statementOfVehicle;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date UpdatedAt = new Date();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicleDetail")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicleDetail", orphanRemoval = true)
     private List<VehicleImage> vehicleImage;
-    private String readOrUnread="unread";
+    private String readOrUnread = "unread";
     @ManyToOne
-    @JoinColumn(name="expectiseGarageId")
+    @JoinColumn(name = "expectiseGarageId")
     private ExpectiseGarage expectiseGarage;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicleDetails", orphanRemoval = true)
+    private List<BrokenCarPart> brokencarpart;
+    @ManyToOne
+    @JoinColumn(name = "driverId")
+    private Driver driver;
+    private String mastakeOwner;
+    @ManyToOne
+    @JoinColumn(name = "insuranceOfVehicleb")
+    private InsuranceCompany insuranceOfvehicleb;
 
     public String getUuid() {
         return uuid;
@@ -159,6 +170,47 @@ public class VehicleDetail implements Serializable {
 
     public void setExpectiseGarage(ExpectiseGarage expectiseGarage) {
         this.expectiseGarage = expectiseGarage;
-    } 
+    }
+
+    public List<BrokenCarPart> getBrokencarpart() {
+        return brokencarpart;
+    }
+
+    public void setBrokencarpart(List<BrokenCarPart> brokencarpart) {
+        this.brokencarpart = brokencarpart;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public String getMastakeOwner() {
+        return mastakeOwner;
+    }
+
+    public void setMastakeOwner(String mastakeOwner) {
+        this.mastakeOwner = mastakeOwner;
+    }
+
+    public InsuranceCompany getInsuranceOfvehicleb() {
+        return insuranceOfvehicleb;
+    }
+
+    public void setInsuranceOfvehicleb(InsuranceCompany insuranceOfvehicleb) {
+        this.insuranceOfvehicleb = insuranceOfvehicleb;
+    }
+
+    public Vehicle getVehicleb() {
+        return vehicleb;
+    }
+
+    public void setVehicleb(Vehicle vehicleb) {
+        this.vehicleb = vehicleb;
+    }
+    
 
 }

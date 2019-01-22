@@ -18,131 +18,264 @@
         <ui:insert>
             <ui:include src="header.xhtml"/>
         </ui:insert>
-        <div class="loginForms brokenOne">
-            <div class="allOfThem">
-                <h3 class="loginh1"> Car Registration</h3>
-                <p:messages globalOnly="true"/>
-                <h:form class="form-horizontal" id="form" >
-                    <div class="form-group">
-                        <label class="col-lg-3">Plate Number</label>
-                        <div class="col-lg-8">
-                            <h:inputText value="#{vehicleController.vehicle.plateNum}" pt:placeholder="RAD320R"  class="form-control pnum" required="true" requiredMessage="Plate Number  is required" id="pnum">
-                                <f:ajax listener="#{vehicleController.searchForCar()}" execute="@this" render="info" event="blur"/>
-                            </h:inputText>
-                            <h:message class="text text-danger" for="pnum"/>
+        <div class="container ourcontainer">
+            <h:form class="form-horizontal" id="form" >
+                <div class="rows">
+                    <div class="col-lg-6" style="border-right: 1px solid #ddd;">
+                        <div class="title">
+                            <span class="titletext">Car Registration A</span> <span class="small">iyi form niyi modoka yawe,apana iyo mwagonganye</span>
                         </div>
-                    </div>
-                    <h:panelGroup id="info">
-                        <div class="form-group">
-                            <label class="col-lg-3">Policy Number</label>
-                            <div class="col-lg-8">
-                                <h:inputText value="#{vehicleController.vehicle.policyNumber}"  pt:placeholder="Policy Number"  class="form-control policyNumber" required="true" requiredMessage="Policy Number  is required" id="policyNumber">
-                                </h:inputText>
-                                <h:message class="text text-danger" for="policyNumber"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-3">Name</label>
-                            <div class="col-lg-8">
-                                <h:inputText value="#{vehicleController.vehicle.name}"  pt:placeholder="eg:Benz,Toyota"  class="form-control" required="true" requiredMessage="Name  is required" id="name">
-                                </h:inputText>
-                                <h:message class="text text-danger" for="name"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-3">Chasis Number:</label>
-                            <div class="col-lg-8">
-                                
-                                <h:inputText value="#{vehicleController.vehicle.chasisNum}" pt:placeholder="Enter Chasis Number"  class="form-control" required="true" requiredMessage="Chasis Number  is required" id="chasisnum"/>
-                                <h:message class="text text-danger" for="chasisnum"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-3">Location</label>
-                            <div class="col-lg-8">
-                                <h:inputText value="#{vehicleController.vehicleDetails.location}" id="autocomplete" pt:placeholder="Kigali,Nyarugenge,Muhima kn5"  class="form-control autocomplete" required="true" requiredMessage="Location  is required"/>
-                                <h:message class="text text-danger autocomplete" for="autocomplete"/>
-                            </div>
-                        </div>
-                    </h:panelGroup>
-                    <div class="form-group">
-                        <label class="col-lg-3">Insurance</label>
-                        <div class="col-lg-8">
-                            <h:selectOneMenu class="form-control" id="insurance" required="true" requiredMessage="Insurance Is required" value="#{vehicleController.insurance}">
-                                <f:selectItem itemValue="" itemLabel="Choose your Insurance"/>
-                                <f:selectItems value="#{vehicleController.insuranceList}" var="item" itemLabel="#{item.name}" itemValue="#{item.uuid}"/>
-                                <f:ajax  listener="#{vehicleController.expectiseGarage()}" execute="@this" event="change" render="expirtise"  onevent="loadOutput"/>
-                            </h:selectOneMenu>
-                            <h:message class="text text-danger" for="insurance"/>
-                        </div>
-                    </div>
-                    <h:message for="selected" class="text text-danger"/>
-                    <h:panelGroup id="expirtise">
-
-                        <div class="form-group expirtiseDiv">
-                            <div class="loadingImg">
-                                <img src="layout/image/Ripple-1s-200px.gif"/>
-                            </div>
-                            <div class="allExpertise">
-                                <label>Expectise Garage</label>&nbsp;&nbsp;<a href="#">read More</a>
-                                <div class="col-lg-12 expertiseElement">
-                                    <div class="searchTextBox">
-                                        <h:inputText id="searchkeys" value="#{vehicleController.searchKey}" class="form-control" pt:placeholder="Search by Location">
-                                            <f:ajax  listener="#{vehicleController.searchExpectise()}" event="keyup" render="garages" execute="searchkeys"/>
+                        <div class="">
+                            <div class="allOfThem">
+                                <p:messages globalOnly="true"/>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Plate Number</label>
+                                    <div class="col-lg-8">
+                                        <h:inputText value="#{vehicleController.vehicle.plateNum}" pt:placeholder="RAD320R"  class="form-control pnum" required="true" requiredMessage="Plate Number  is required" id="pnum">
+                                            <f:ajax listener="#{vehicleController.searchForCar('vehiclea')}" execute="@this" render="info" event="blur"/>
                                         </h:inputText>
+                                        <h:message class="text text-danger" for="pnum"/>
                                     </div>
-                                    <h:panelGroup id="garages">
-                                        <div style="margin-top: 10px;">
-                                            <c:if test="#{!vehicleController.garageExpectise.isEmpty()}">
-                                                <h:selectOneRadio id="selected"  required="true" requiredMessage="Expectise Garage is required" layout="pagedirection" value="#{vehicleController.expectiseId}">
-                                                    <f:selectItems value="#{vehicleController.garageExpectise}" var="item" itemLabel="&nbsp; #{item.garage.name} &nbsp; #{item.garage.location}" itemValue="#{item.uuid}"/>
-                                                </h:selectOneRadio>
-                                            </c:if>
-                                            <c:if test="#{vehicleController.garageExpectise.isEmpty()}">
-                                                No Result Found
-                                            </c:if>
+                                </div>
+                                <h:panelGroup id="info">
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Policy Number</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{vehicleController.vehicle.policyNumber}"  pt:placeholder="Policy Number"  class="form-control policyNumber" required="true" requiredMessage="Policy Number  is required" id="policyNumber">
+                                            </h:inputText>
+                                            <h:message class="text text-danger" for="policyNumber"/>
                                         </div>
-                                    </h:panelGroup>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Name</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{vehicleController.vehicle.name}"  pt:placeholder="eg:Benz,Toyota"  class="form-control" required="true" requiredMessage="Name  is required" id="name">
+                                            </h:inputText>
+                                            <h:message class="text text-danger" for="name"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Chasis Number:</label>
+                                        <div class="col-lg-8">
+                                            <p:inputMask mask="aaaaaaaaaaaaaaaaa"  pt:placeholder="9 AAB HADER MNX 198726" class="form-control" required="true" requiredMessage="Chasis Number  is required" id="chasisnum"/>
+                                            <h:message class="text text-danger" for="chasisnum"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Location</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{vehicleController.vehicleDetails.location}" id="autocomplete" pt:placeholder="Kigali,Nyarugenge,Muhima kn5"  class="form-control autocomplete" required="true" requiredMessage="Location  is required"/>
+                                            <h:message class="text text-danger autocomplete" for="autocomplete"/>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Insurance</label>
+                                    <div class="col-lg-8">
+                                        <h:selectOneMenu class="form-control" id="insurance" required="true" requiredMessage="Insurance Is required" value="#{vehicleController.insurance}">
+                                            <f:selectItem itemValue="" itemLabel="Choose your Insurance"/>
+                                            <f:selectItems value="#{vehicleController.insuranceList}" var="item" itemLabel="#{item.name}" itemValue="#{item.uuid}"/>
+                                            <f:ajax  listener="#{vehicleController.expectiseGarage()}" execute="@this" event="change" render="expirtise"  onevent="loadOutput"/>
+                                        </h:selectOneMenu>
+                                        <h:message class="text text-danger" for="insurance"/>
+                                    </div>
+                                </div>
+                                <h:message for="selected" class="text text-danger"/>
+                                <h:panelGroup id="expirtise">
+                                    <div class="form-group expirtiseDiv">
+                                        <div class="loadingImg">
+                                            <img src="layout/image/Ripple-1s-200px.gif"/>
+                                        </div>
+                                        <div class="allExpertise">
+                                            <label>Expectise Garage</label>&nbsp;&nbsp;<a href="#">read More</a>
+                                            <div class="col-lg-12 expertiseElement">
+                                                <div class="searchTextBox">
+                                                    <h:inputText id="searchkeys" value="#{vehicleController.searchKey}" class="form-control" pt:placeholder="Search by Location">
+                                                        <f:ajax  listener="#{vehicleController.searchExpectise()}" event="keyup" render="garages" execute="searchkeys"/>
+                                                    </h:inputText>
+                                                </div>
+                                                <h:panelGroup id="garages">
+                                                    <div style="margin-top: 10px;">
+                                                        <c:if test="#{!vehicleController.garageExpectise.isEmpty()}">
+                                                            <h:selectOneRadio id="selected"  required="true" requiredMessage="Expectise Garage is required" layout="pagedirection" value="#{vehicleController.expectiseId}">
+                                                                <f:selectItems value="#{vehicleController.garageExpectise}" var="item" itemLabel="&nbsp; #{item.garage.name} &nbsp; #{item.garage.location}" itemValue="#{item.uuid}"/>
+                                                            </h:selectOneRadio>
+                                                        </c:if>
+                                                        <c:if test="#{vehicleController.garageExpectise.isEmpty()}">
+                                                            No Result Found
+                                                        </c:if>
+                                                    </div>
+                                                </h:panelGroup>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="title">
+                            <span class="titletext">Car Registration B</span> <span class="small">
+                                Iyi form niyuwo mwagonganye</span>
+                        </div>
+                        <div class="">
+                            <div class="allOfThem">
+                                <div class="form-group">
+                                    <label class="col-lg-3">Plate Number</label>
+                                    <div class="col-lg-8">
+                                        <h:inputText value="#{vehicleController.vehicleb.plateNum}" pt:placeholder="RAD320R"  class="form-control pnum" required="true" requiredMessage="Plate Number  is required" id="pnumb">
+                                            <f:ajax listener="#{vehicleController.searchForCar('vehicleb')}" execute="@this" render="info2" event="blur"/>
+                                        </h:inputText>
+                                        <h:message class="text text-danger" for="pnumb"/>
+                                    </div>
+                                </div>
+                                <h:panelGroup id="info2">
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Policy Number</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{vehicleController.vehicleb.policyNumber}"  pt:placeholder="Policy Number"  class="form-control policyNumber" required="true" requiredMessage="Policy Number  is required" id="policyNumberb">
+                                            </h:inputText>
+                                            <h:message class="text text-danger" for="policyNumberb"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Name</label>
+                                        <div class="col-lg-8">
+                                            <h:inputText value="#{vehicleController.vehicleb.name}"  pt:placeholder="eg:Benz,Toyota"  class="form-control" required="true" requiredMessage="Name  is required" id="nameb">
+                                            </h:inputText>
+                                            <h:message class="text text-danger" for="nameb"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3">Chasis Number:</label>
+                                        <div class="col-lg-8">
+                                            <p:inputMask mask="aaaaaaaaaaaaaaaaa" value="#{vehicleController.vehicleb.chasisNum}"  pt:placeholder="9 AAB HADER MNX 198726" class="form-control" required="true" requiredMessage="Chasis Number  is required" id="chasisnumb"/>
+                                            <h:message class="text text-danger" for="chasisnumb"/>
+                                        </div>
+                                    </div>
+
+                                </h:panelGroup>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Insurance</label>
+                                    <div class="col-lg-8">
+                                        <h:selectOneMenu class="form-control" id="insuranceb" required="true" requiredMessage="Insurance Is required" value="#{vehicleController.insuranceOfVehicleB}">
+                                            <f:selectItem itemValue="" itemLabel="Choose your Insurance"/>
+                                            <f:selectItems value="#{vehicleController.insuranceList}" var="item" itemLabel="#{item.name}" itemValue="#{item.uuid}"/>
+                                        </h:selectOneMenu>
+                                        <h:message class="text text-danger" for="insuranceb"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="learline" style="border-bottom:1px solid #ddd;"></div>
+                </div>
+                <div class="rows">
+                    <div class="col-lg-12" style="margin-top: 10px;margin-bottom: 10px;">
+                        <div class="title" data-toggle="collapse" data-target="#demo">
+                            <span class="titletext text-danger" style="font-size: 15px;">
+                                Click to fill this information if the one who made an accident is not the owner
+
+                            </span>
+                        </div>
+                        <div id="demo" class="collapse out" style="margin-top: 20px;">
+
+                            <div class="col-lg-6">
+                                <h4>Driver Information</h4>
+                                <div class="form-group">
+                                    <label class="col-lg-3">
+                                        Name
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <h:inputText value="#{vehicleController.driver.name}" class="form-control" id="drivername"/>
+                                        <h:message for="drivername" class="text text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3">
+                                        Phone Number
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <p:inputMask class="form-control" value="#{vehicleController.driver.phoneNumber}" mask="(+250) 999 999 9999"  id="driverphoneNumber"/>
+                                        <h:message for="driverphoneNumber" class="text text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3">
+                                        National ID
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <p:inputMask class="form-control" value="#{vehicleController.driver.nationalId}" mask="1 1999 9 9999999 9 99"  id="driverNationalID"/>
+                                        <h:message for="driverNationalID" class="text text-danger"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </h:panelGroup>
-                    <div class="form-group">
-                        <label class="col-lg-6">Accident Description</label>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-12">
-                            <p:editor value="#{vehicleController.vehicleDetails.whatHappen}" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-6">
-                            Broken Car Image
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-12">
-                            <p:fileUpload    fileUploadListener="#{vehicleController.Upload}" mode="advanced" dragDropSupport="false"
-                                             sizeLimit="1000000000000" fileLimit="5" invalidFileMessage="Invalid Image Type"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-3 col-lg-offset-3">
-                            <h:commandButton  value="Save" action="#{vehicleController.create()}" class="login saveBtn" style="padding: 5px;">
 
-                            </h:commandButton>
                         </div>
                     </div>
-                </h:form>
-            </div>
+                </div>
+                <div class="rows">
+                    <div class="col-lg-12">
+                        <div class="title" style="margin-bottom: 10px;">
+                            <span class="titletext">Additional information</span> <span class="small">This form is mandotory please fill all need information</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3">
+                                Who you think made the mistake?
+                            </label>
+                            <div class="col-lg-5">
+                                <h:selectOneRadio required="true" id="answer" requiredMessage="Your answer is required" layout="pagedirection" value="#{vehicleController.vehicleDetails.mastakeOwner}">
+                                    <f:selectItem itemLabel="You" itemValue="me"/>
+                                    <f:selectItem itemLabel="Him/her" itemValue="Her"/>
+                                </h:selectOneRadio>
+                                <h:message for="answer" class="text text-danger"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-6">Accident Description</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <p:editor value="#{vehicleController.vehicleDetails.whatHappen}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-6">
+                                Broken Car Image
+                            </label>
+                        </div> 
+
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <p:fileUpload    fileUploadListener="#{vehicleController.Upload}" mode="advanced" dragDropSupport="false"
+                                                 sizeLimit="1000000000000" fileLimit="5" invalidFileMessage="Invalid Image Type"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-1">
+                                <h:commandButton  value="Save" action="#{vehicleController.create()}" class="login saveBtn" style="padding: 5px;">
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
         </div>
+
+
         <script type="text/javascript" src="layout/js/bootstrap.js"></script>
         <script>
             var loadPage = function loadIt(data) {
                 if (data.status === 'success') {
                     alert("is working boss we");
                 }
-//                                       window.location="CarRegistration.xhtml";
+                //                                       window.location="CarRegistration.xhtml";
             }
 
             var loadOutput = function (data) {

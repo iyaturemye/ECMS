@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -22,16 +21,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Godwin
  */
 @Entity
-@XmlRootElement
 public class Vehicle implements Serializable {
 
     @Id
     private String vehicleId = UUID.randomUUID().toString();
     private String name;
-    @Column(unique = true)
     private String plateNum;
     private String chasisNum;
-    @Column(unique = true)
     private String policyNumber;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "vehicle")
     private List<VehicleDetail> vehicleDetails;
@@ -39,6 +35,8 @@ public class Vehicle implements Serializable {
     private List<PoliceReport> iyagonzwe;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "iyagonzeVehicle")
     private List<PoliceReport> iyagonze;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "vehicleb")
+    private List<VehicleDetail> vehicleDetail;
 
     public String getVehicleId() {
         return vehicleId;
@@ -106,5 +104,16 @@ public class Vehicle implements Serializable {
     public void setIyagonze(List<PoliceReport> iyagonze) {
         this.iyagonze = iyagonze;
     }
+
+    public List<VehicleDetail> getVehicleDetail() {
+        return vehicleDetail;
+    }
+
+    public void setVehicleDetail(List<VehicleDetail> vehicleDetail) {
+        this.vehicleDetail = vehicleDetail;
+    }
+    
+    
+    
 
 }
