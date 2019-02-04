@@ -7,6 +7,7 @@ package com.ebaza.tech.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -20,13 +21,13 @@ import javax.persistence.Temporal;
 public class BrokenCarPart implements Serializable {
 
     @Id
-    private String id;
+    private String id=UUID.randomUUID().toString();
     @ManyToOne
     private Carsparepart carsparepart;
     @ManyToOne
     private VehicleDetail vehicleDetails;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Date createdAt=new Date();
 
     public String getId() {
         return id;

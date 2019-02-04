@@ -10,6 +10,12 @@ select.form-control {
     border: 1px solid #d2d2e4;
     border-radius: 2px;
 }
+.brokenCarPart{
+    padding-left: 40px;
+    background: black;
+    overflow-x: hidden;
+    max-height: 300px;
+}
 
 .boxz{
     background: white;

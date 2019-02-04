@@ -70,6 +70,19 @@
                                     </div>
                                 </h:panelGroup>
                                 <div class="form-group">
+                                    <label class="col-lg-3">Your insurance Date</label>
+                                    <div class="col-lg-4">
+                                        <label>From </label><br/>
+                                        <h:inputText id="carafrom" value="#{vehicleController.vehicleDetails.vehicleaEnsuranceStartDate}" required="true" requiredMessage="From is required" class="form-control datepicker"/>
+                                        <h:message for="carafrom" class="text text-danger"/>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label>End At </label><br/>
+                                        <h:inputText required="true" id="caraendat" value="#{vehicleController.vehicleDetails.vehicleaEnsuranceStartDate}" requiredMessage="End At is mandatory" class="form-control datepicker"/>
+                                        <h:message for="caraendat" class="text text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-lg-3">Insurance</label>
                                     <div class="col-lg-8">
                                         <h:selectOneMenu class="form-control" id="insurance" required="true" requiredMessage="Insurance Is required" value="#{vehicleController.insurance}">
@@ -155,7 +168,6 @@
                                             <h:message class="text text-danger" for="chasisnumb"/>
                                         </div>
                                     </div>
-
                                 </h:panelGroup>
                                 <div class="form-group">
                                     <label class="col-lg-3">Insurance</label>
@@ -165,6 +177,19 @@
                                             <f:selectItems value="#{vehicleController.insuranceList}" var="item" itemLabel="#{item.name}" itemValue="#{item.uuid}"/>
                                         </h:selectOneMenu>
                                         <h:message class="text text-danger" for="insuranceb"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Your insurance Date</label>
+                                    <div class="col-lg-4">
+                                        <label>From </label><br/>
+                                        <h:inputText id="carbfrom" value="#{vehicleController.vehicleDetails.vehiclebEnsuranceStartDate}" required="true" requiredMessage="From is required" class="form-control datepicker"/>
+                                        <h:message for="carbfrom" class="text text-danger"/>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label>End At </label><br/>
+                                        <h:inputText required="true" id="carbendat" value="#{vehicleController.vehicleDetails.vehiclebEnsuranceEndingDate}" requiredMessage="End At is mandatory" class="form-control datepicker"/>
+                                        <h:message for="carbendat" class="text text-danger"/>
                                     </div>
                                 </div>
 
@@ -270,6 +295,8 @@
 
 
         <script type="text/javascript" src="layout/js/bootstrap.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script>
             var loadPage = function loadIt(data) {
                 if (data.status === 'success') {
@@ -288,6 +315,11 @@
                     $(".loadingImg").hide();
                 }
             };
+        </script>
+        <script>
+            $(function () {
+                $(".datepicker").datepicker();
+            });
         </script>
     </h:body>
 </html>

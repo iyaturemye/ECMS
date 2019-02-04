@@ -66,6 +66,14 @@ public class VehicleDetail implements Serializable {
     @ManyToOne
     @JoinColumn(name = "insuranceOfVehicleb")
     private InsuranceCompany insuranceOfvehicleb;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date vehicleaEnsuranceStartDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date vehicleaEnsuranceEndingDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date vehiclebEnsuranceStartDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date vehiclebEnsuranceEndingDate;
 
     public String getUuid() {
         return uuid;
@@ -211,6 +219,36 @@ public class VehicleDetail implements Serializable {
     public void setVehicleb(Vehicle vehicleb) {
         this.vehicleb = vehicleb;
     }
-    
 
+    public Date getVehicleaEnsuranceStartDate() {
+        return vehicleaEnsuranceStartDate;
+    }
+
+    public void setVehicleaEnsuranceStartDate(Date vehicleaEnsuranceStartDate) {
+        this.vehicleaEnsuranceStartDate = vehicleaEnsuranceStartDate;
+    }
+
+    public Date getVehicleaEnsuranceEndingDate() {
+        return vehicleaEnsuranceEndingDate;
+    }
+
+    public void setVehicleaEnsuranceEndingDate(Date vehicleaEnsuranceEndingDate) {
+        this.vehicleaEnsuranceEndingDate = vehicleaEnsuranceEndingDate;
+    }
+
+    public Date getVehiclebEnsuranceStartDate() {
+        return vehiclebEnsuranceStartDate;
+    }
+
+    public void setVehiclebEnsuranceStartDate(Date vehiclebEnsuranceStartDate) {
+        this.vehiclebEnsuranceStartDate = vehiclebEnsuranceStartDate;
+    }
+
+    public Date getVehiclebEnsuranceEndingDate() {
+        return vehiclebEnsuranceEndingDate;
+    }
+
+    public void setVehiclebEnsuranceEndingDate(Date vehiclebEnsuranceEndingDate) {
+        this.vehiclebEnsuranceEndingDate = vehiclebEnsuranceEndingDate;
+    }
 }

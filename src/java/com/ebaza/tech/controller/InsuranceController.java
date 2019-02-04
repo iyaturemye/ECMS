@@ -12,6 +12,7 @@ import com.ebaza.tech.dao.generic.CompledCarDao;
 import com.ebaza.tech.dao.generic.PoliceReportDao;
 import com.ebaza.tech.dao.generic.VehicleDetailDao;
 import com.ebaza.tech.dao.impl.BiddingImpl;
+import com.ebaza.tech.dao.impl.BrokenCarPartImpl;
 import com.ebaza.tech.dao.impl.CarsparepartImpl;
 import com.ebaza.tech.dao.impl.CompletedCarImpl;
 import com.ebaza.tech.dao.impl.ExpectiseImpl;
@@ -25,6 +26,7 @@ import com.ebaza.tech.dao.impl.VehicleDetailsImpl;
 import com.ebaza.tech.dao.impl.VehicleImageImpl;
 import com.ebaza.tech.domain.ApprovedTemplate;
 import com.ebaza.tech.domain.Bidding;
+import com.ebaza.tech.domain.BrokenCarPart;
 import com.ebaza.tech.domain.Carsparepart;
 import com.ebaza.tech.domain.CompletedCar;
 import com.ebaza.tech.domain.ExpectiseGarage;
@@ -42,7 +44,9 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -103,10 +107,42 @@ public class InsuranceController implements DbConstant, Serializable {
     private String apiKey = "6cee4a31d2456e8a28d3018acdf71ca36ca8b229448cb308ce31cd0a688063dc";
     private List<PoliceReport> policeReportElement = new ArrayList();
     private List<Carsparepart> allParentCarsparepart = new ArrayList<>();
-    private List<Carsparepart> allChildCarsparepart = new ArrayList<>();
+    private List<Carsparepart> listOfChoosenCarPart = new ArrayList<>();
+    private List<Carsparepart> listOfChoosenCarPart2 = new ArrayList<>();
+    private List<BrokenCarPart> listOfBrokenPart = new ArrayList<>();
+    private Carsparepart chooseCarspart;
+    private String testText;
+    private Set<Carsparepart> allBrokenPartParent=new HashSet<>();
 
     public int numberOfCount(VehicleDetail vd) {
         return new VehicleDetailDao().getCount(vd);
+    }
+
+    public void addToList() throws Exception {
+        for (String x : this.engineList) {
+            Carsparepart c = new CarsparepartImpl().getModelWithMyHQL(new String[]{"id"}, new Object[]{x}, "from Carsparepart");
+            if (!checkIfExistIn(c)) {
+                this.listOfChoosenCarPart2.add(c);
+            }
+        }
+        this.listOfChoosenCarPart = new ArrayList<>();
+    }
+
+    private boolean checkIfExistIn(Carsparepart object) {
+
+        for (Carsparepart x : this.listOfChoosenCarPart2) {
+            if (x.getId().equalsIgnoreCase(object.getId())) {
+                System.out.println("here we go bos wwwwwwwwwwwwwwwwww");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void initi(Carsparepart cars) throws Exception {
+        this.chooseCarspart = cars;
+        this.listOfChoosenCarPart = new CarsparepartImpl().getGenericListWithHQLParameter(new String[]{"parent"}, new Object[]{cars.getId()}, "Carsparepart");
+
     }
 
     public void changeInsuranceStatus(User user) {
@@ -182,30 +218,9 @@ public class InsuranceController implements DbConstant, Serializable {
         }
     }
 
-    public void removeFromList(String value, String type) {
-        if (type.equals("addforeng")) {
-            this.engineList.remove(value);
-        } else if (type.equals("addforbody")) {
-            this.bodyList.remove(value);
-        } else if (type.equals("addforfuel")) {
-            this.fuelList.remove(value);
-        } else if (type.equals("addforgear")) {
-            this.gearboxList.remove(value);
-        } else if (type.equals("addforsteer")) {
-            this.steeringList.remove(value);
-        } else if (type.equals("addforbreak")) {
-            this.breakingList.remove(value);
-        } else if (type.equals("addforwheel")) {
-            this.wheelsList.remove(value);
-        } else if (type.equals("addforcoolant")) {
-            this.coolantList.remove(value);
-        } else if (type.equals("addforcluth")) {
-            this.cluthList.remove(value);
-        } else if (type.equals("addinstrument")) {
-            this.instrumentList.remove(value);
-        } else if (type.equals("addunder")) {
-            this.underFameList.remove(value);
-        }
+    public void removeFromList(Carsparepart x) {
+        this.listOfChoosenCarPart2.remove(x);
+        System.out.println("done hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     }
 
     public InsuranceController() throws Exception {
@@ -213,7 +228,7 @@ public class InsuranceController implements DbConstant, Serializable {
         listOfRepairCar();
         listCompled();
         this.allParentCarsparepart = new CarsparepartImpl().allParentsparepart();
-        this.allChildCarsparepart = new CarsparepartImpl().allChildCarsparepart();
+//        this.allChildCarsparepart = new CarsparepartImpl().allChildCarsparepart();
     }
 
     public List<VehicleImage> getImages(VehicleDetail vd) {
@@ -294,20 +309,24 @@ public class InsuranceController implements DbConstant, Serializable {
     }
 
     public String approveCar() throws ParseException {
+
         try {
-            if (this.bodyList.isEmpty() && this.fuelList.isEmpty() && this.cluthList.isEmpty()
-                    && this.coolantList.isEmpty() && this.engineList.isEmpty() && this.electricalList.isEmpty()
-                    && this.gearboxList.isEmpty() && this.bodyList.isEmpty() && this.breakingList.isEmpty()
-                    && this.steeringList.isEmpty() && this.underFameList.isEmpty() && this.wheelsList.isEmpty()) {
+            if (this.engineList.isEmpty()) {
                 FacesContext.getCurrentInstance().
                         addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "your must atleast choose which problem car have and then continue"
-                                + " if you continue to get this error, call you System Administrator", null));
+                                + " ", null));
                 return null;
             } else {
                 this.vehicleDetail.setStatus("pending");
                 this.vehicleDetail.setReadOrUnread("unread");
-                this.vehicleDetail.setStatementOfVehicle(this.convertIntoJson());
                 new VehicleDetailsImpl().updateInfo(vehicleDetail);
+
+                for (Carsparepart x : this.listOfChoosenCarPart2) {
+                    BrokenCarPart obj = new BrokenCarPart();
+                    obj.setVehicleDetails(vehicleDetail);
+                    obj.setCarsparepart(x);
+                    new BrokenCarPartImpl().create(obj);
+                }
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "have been successsfull approved", null));
             }
 
@@ -412,6 +431,10 @@ public class InsuranceController implements DbConstant, Serializable {
             v.setReadOrUnread("read");
             this.vehicleDetail = v;
             this.accidentVehicleImage = new VehicleImageImpl().getAllChoosenImg(v.getUuid());
+            listOfBrokenPart = new BrokenCarPartImpl().getBrokenCarPart(v.getUuid());
+            for(BrokenCarPart x:listOfBrokenPart){
+                this.allBrokenPartParent.add(x.getCarsparepart().getCarsparepart());
+            }
             new VehicleDetailsImpl().updateInfo(vehicleDetail);
             this.policeReportElement = new PoliceReportDao().getPoliceReport(this.vehicleDetail.getVehicle().getVehicleId());
             return "BrokenInsuranceInfo.xhtml?faces-redirect=true";
@@ -932,12 +955,68 @@ public class InsuranceController implements DbConstant, Serializable {
         this.allParentCarsparepart = allParentCarsparepart;
     }
 
-    public List<Carsparepart> getAllChildCarsparepart() {
-        return allChildCarsparepart;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAllChildCarsparepart(List<Carsparepart> allChildCarsparepart) {
-        this.allChildCarsparepart = allChildCarsparepart;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public List<Carsparepart> getListOfChoosenCarPart() {
+        return listOfChoosenCarPart;
+    }
+
+    public void setListOfChoosenCarPart(List<Carsparepart> listOfChoosenCarPart) {
+        this.listOfChoosenCarPart = listOfChoosenCarPart;
+    }
+
+    public Carsparepart getChooseCarspart() {
+        return chooseCarspart;
+    }
+
+    public void setChooseCarspart(Carsparepart chooseCarspart) {
+        this.chooseCarspart = chooseCarspart;
+    }
+
+    public String getTestText() {
+        return testText;
+    }
+
+    public void setTestText(String testText) {
+        this.testText = testText;
+    }
+
+    public List<Carsparepart> getListOfChoosenCarPart2() {
+        return listOfChoosenCarPart2;
+    }
+
+    public void setListOfChoosenCarPart2(List<Carsparepart> listOfChoosenCarPart2) {
+        this.listOfChoosenCarPart2 = listOfChoosenCarPart2;
+    }
+
+    public List<BrokenCarPart> getListOfBrokenPart() {
+        return listOfBrokenPart;
+    }
+
+    public void setListOfBrokenPart(List<BrokenCarPart> listOfBrokenPart) {
+        this.listOfBrokenPart = listOfBrokenPart;
+    }
+
+    public Set<Carsparepart> getAllBrokenPartParent() {
+        return allBrokenPartParent;
+    }
+
+    public void setAllBrokenPartParent(Set<Carsparepart> allBrokenPartParent) {
+        this.allBrokenPartParent = allBrokenPartParent;
+    }
+    
 }

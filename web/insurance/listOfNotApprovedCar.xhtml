@@ -74,7 +74,6 @@
                                     <th>Location</th>
                                     <th>Publication Date</th>
                                     <th>Description</th>
-                                    <th>Times/year</th>
                                     <th>Read More</th>
                                 </thead>
                                 <tbody>
@@ -94,11 +93,6 @@
                                             </td>
                                             <td>
                                                 <h:outputFormat  escape="false" value="#{(i.whatHappen.length()>38)?  i.whatHappen.substring(0,38): i.whatHappen}"/>
-                                            </td>
-                                            <td>
-                                                <span class="label #{insuranceController.numberOfCount(i)>=3? 'label-danger':'label-info'}">
-                                                    #{insuranceController.numberOfCount(i)}
-                                                </span>
                                             </td>
                                             <td>
                                                 <h:form>
