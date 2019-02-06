@@ -19,6 +19,7 @@ and open the template in the editor.
     width: 110px;
     height: 110px;
 }
+
 .title{
     border-bottom: 1px solid #ddd;
     padding: 10px;
@@ -58,7 +59,7 @@ select.form-control {
     background: transparent !important;
 }
 body{
-    background: white;
+    background: #f9f9ff !important;
 }
 .navs{
     background: #41a1ff;
@@ -389,7 +390,7 @@ body{
 }
 .loginForms{
     width: 400px;
-    margin: 8% auto auto;
+    margin: 12% auto auto;
     padding: 10px 25px;
     background: white;
     margin-bottom: 20px;
@@ -527,7 +528,6 @@ placeholder{
 .video{
     width: 450px;
     height: 300px;
-    margin-left: 45px;
 }
 .myOwnerText{
     padding-top: 8%;
@@ -546,6 +546,9 @@ placeholder{
     .myContainer2{
         margin-top: 30%;
         margin-bottom: 10px;
+    }
+    .ourcontainer{
+        margin-top: 180px;
     }
     /*    .myOwner-6{
             padding:0px !important;
@@ -614,7 +617,7 @@ placeholder{
     }
 
     .btnhirePhone{
-        position: absolute;
+        /*position: absolute;*/
         margin-top: 6px; 
     }
     .backHome{
@@ -662,6 +665,9 @@ placeholder{
         }*/
     .cont{
 
+    }
+    .ourcontainer{
+        margin-top: 180px;
     }
     .forComputer{
         display: none !important;
@@ -724,7 +730,7 @@ placeholder{
     }
 
     .btnhirePhone{
-        position: absolute;
+        /*position: absolute;*/
         margin-top: 6px; 
     }
     .backHome{
@@ -766,6 +772,9 @@ placeholder{
 @media screen and (max-width: 992px){
     .myOwner-6{
         padding:0px !important;
+    }
+    .ourcontainer{
+        margin-top: 180px;
     }
     .cont{
         margin-top: 10%;
@@ -835,9 +844,9 @@ placeholder{
         margin-top: 6px; 
     }
     .backHome{
-        width: 180px;
+        width: 45%;
         text-align: center;
-        margin-top: 8px;
+        margin: 5px;
     }
     .bzoom_small_thumbs{
         display: none;
@@ -967,7 +976,7 @@ box h4{
 .changeLanguage{
     width: 100%;
     height: 25px;
-    background: #fefefe;
+    background: #f9f9ff;
     color: black;
     padding-top: 2px;
     padding-left: 30px;

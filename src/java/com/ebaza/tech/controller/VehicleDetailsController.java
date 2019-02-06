@@ -6,11 +6,14 @@
 package com.ebaza.tech.controller;
 
 import com.ebaza.tech.dao.impl.BiddingImpl;
+import com.ebaza.tech.dao.impl.BrokenCarPartImpl;
 import com.ebaza.tech.dao.impl.GarageImpl;
 import com.ebaza.tech.dao.impl.GarageOwnerImpl;
 import com.ebaza.tech.dao.impl.QuotationImpl;
 import com.ebaza.tech.dao.impl.VehicleImageImpl;
 import com.ebaza.tech.domain.Bidding;
+import com.ebaza.tech.domain.BrokenCarPart;
+import com.ebaza.tech.domain.Carsparepart;
 import com.ebaza.tech.domain.Garage;
 import com.ebaza.tech.domain.GarageOwner;
 import com.ebaza.tech.domain.Quotation;
@@ -20,7 +23,9 @@ import com.ebaza.tech.domain.VehicleImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -49,6 +54,8 @@ public class VehicleDetailsController implements Serializable {
     private Garage garage;
     private List<VehicleImage> listOfVehicleImage = new ArrayList<>();
     private Date estimatedDate;
+    private List<BrokenCarPart> listOfBrokenCarPart = new ArrayList<>();
+    private Set<Carsparepart> listOfBrokenCarParent = new HashSet<>();
 
     @PostConstruct
     public void init() {
@@ -181,6 +188,10 @@ public class VehicleDetailsController implements Serializable {
     public String initCar(VehicleDetail vehicleDetail) {
         this.choosenVehicle = vehicleDetail;
         this.listOfVehicleImage = new VehicleImageImpl().getAllChoosenImg(choosenVehicle.getUuid());
+        listOfBrokenCarPart = new BrokenCarPartImpl().getBrokenCarPart(vehicleDetail.getUuid());
+        for (BrokenCarPart x : listOfBrokenCarPart) {
+            this.listOfBrokenCarParent.add(x.getCarsparepart().getCarsparepart());
+        }
         return "carDetails.xhtml?faces-redirect=true";
     }
 
@@ -280,4 +291,19 @@ public class VehicleDetailsController implements Serializable {
         this.estimatedDate = estimatedDate;
     }
 
+    public List<BrokenCarPart> getListOfBrokenCarPart() {
+        return listOfBrokenCarPart;
+    }
+
+    public void setListOfBrokenCarPart(List<BrokenCarPart> listOfBrokenCarPart) {
+        this.listOfBrokenCarPart = listOfBrokenCarPart;
+    }
+
+    public Set<Carsparepart> getListOfBrokenCarParent() {
+        return listOfBrokenCarParent;
+    }
+
+    public void setListOfBrokenCarParent(Set<Carsparepart> listOfBrokenCarParent) {
+        this.listOfBrokenCarParent = listOfBrokenCarParent;
+    }
 }

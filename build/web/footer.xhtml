@@ -8,80 +8,60 @@
           user-scalable=no"/>
     <h:head>
         <title></title>
-        <link rel="stylesheet" href="layout/css/bootstrap.css"/>
         <link rel="stylesheet" href="layout/css/mystyle.css"/>
-        <link rel="stylesheet" type="text/css" href="layout/css/font-awesome.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
     </h:head>
+    
     <h:body>
-        <div class="parterns">
+        <footer class="footer-area section-gap">
             <div class="container">
-
-                <div class="rows">
-                    <h3 style="margin-left: 30px;font-weight: bold;"><h:outputText value="#{msg['partner']}"/></h3>
-                    <div class="col-lg-2">
-                        <img src="layout/image/britam2.png"/>
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>About Us</h4>
+                            <p>
+                                Electronic Claims Management System(ECMS) is software system which developed by E-baza technology which aims to help garage
+                                and assurance to recover loss which maid in car maintenance of car and also help client to submit their work whithout any issue.
+                            </p>
+                            <p class="footer-text">
+                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved  Designed By E-baza Technology ltd.
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-lg-2">
-                        <img src="layout/image/bk.png"/>
-
+                    <div class="col-lg-5 col-md-6 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Newsletter</h4>
+                            <p>Stay updated with our latest trends</p>
+                            <div class="" id="mc_embed_signup">
+                                <form target="_blank"  method="get">
+                                    <div class="input-group">
+                                        <input class="form-control" name="EMAIL" placeholder="Enter Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email Address '" required="" type="email"/>
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="submit">
+                                                <span class="lnr lnr-arrow-right"></span>
+                                            </button>    
+                                        </div>
+                                        <div class="info"></div>  
+                                    </div>
+                                </form> 
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-1">
-                        <img src="layout/image/uap.png"/>
-
-                    </div>
-                    <div class="col-lg-2">
-                        <img src="layout/image/rssb.png"/>
-                    </div>
-                    <div class="col-lg-1">
-                        <img src="layout/image/radiant.png"/>
-
-                    </div>
-                    <div class="col-lg-2">
-                        <img src="layout/image/phoenix1.png"/>
-                    </div>
-                    <div class="col-lg-2">
-                        <img src="layout/image/saham.png"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer">
-            <div class="container ">
-                <div class="rows">
-                    <div class="col-lg-4">
-                        <h5><h:outputText value="#{msg['menu']}"/></h5>
-                        <ul class="footerMenu">
-                            <li><a href="index.xhtml"><i class="fas fa-home"></i>&nbsp; <h:outputText value="#{msg['home']}"/></a></li>
-                            <li><a href="GarageRegistration.xhtml"><i class="fas fa-wrench"></i>&nbsp; <h:outputText value="#{msg['garageRegistration']}"/></a></li>
-                            <li><a href="broken.xhtml"><i class="far fa-user"></i> &nbsp;<h:outputText value="#{msg['clientRegistration']}"/></a></li>
-                            <li><a href="index.xhtml"><i class="fas fa-info-circle"></i> &nbsp;<h:outputText value="#{msg['aboutUs']}"/></a></li>
-                            <li><a href="index.xhtml"><i class="fas fa-mobile-alt"></i>&nbsp; <h:outputText value="#{msg['contactUs']}"/></a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4">
-
-                        <span>
-                            <h5><h:outputText value="#{msg['howitworks']}"/></h5>
-                            <ul class="footerMenu">
-                                <li> <a href="#">Register Garage</a></li>
-                                <li><a href="#">Submit broken Car</a></li>
-                                <li><a href="#">Insurance Registration</a></li>
-                                <li><a href="#">Broken car approval</a></li>
-                                <li><a href="#">Police Report</a></li>
-                            </ul>
-                        </span>
-                    </div>
-                    <div class="col-lg-4">
-                        <h5><h:outputText value="#{msg['contactUs']}"/></h5>
-                        <span>
-                            <b><i class="fas fa-map-marker-alt"></i>&nbsp;<h:outputText value="#{msg['address']}"/></b>Kigali,Nyarugenge,Muhima Kn3<br/>
-                            <b><i class="fas fa-mobile-alt"></i> &nbsp;<h:outputText value="#{msg['phoneNumber']}"/></b>0788301999<br/>
-                            <b><i class="fas fa-envelope"></i> &nbsp;<h:outputText value="#{msg['email']}"/></b>ebaza@kgltechsolution.com<br/>
-                        </span>
+                    <div class="col-lg-2 col-md-6 col-sm-6 social-widget">
+                        <div class="single-footer-widget">
+                            <h4>Follow Us</h4>
+                            <p>Let us be social</p>
+                            <div class="footer-social d-flex align-items-center">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-dribbble"></i></a>
+                                <a href="#"><i class="fa fa-behance"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </footer>
     </h:body>
 </html>
 

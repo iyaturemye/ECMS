@@ -112,7 +112,7 @@ public class InsuranceController implements DbConstant, Serializable {
     private List<BrokenCarPart> listOfBrokenPart = new ArrayList<>();
     private Carsparepart chooseCarspart;
     private String testText;
-    private Set<Carsparepart> allBrokenPartParent=new HashSet<>();
+    private Set<Carsparepart> allBrokenPartParent = new HashSet<>();
 
     public int numberOfCount(VehicleDetail vd) {
         return new VehicleDetailDao().getCount(vd);
@@ -352,8 +352,8 @@ public class InsuranceController implements DbConstant, Serializable {
             sendSmsForNewCar();
             return "listOfNotApprovedCar.xhtml?faces-redirect=true";
         } catch (Exception e) {
-            new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
             e.printStackTrace();
+            new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
             return null;
         }
 
@@ -432,7 +432,7 @@ public class InsuranceController implements DbConstant, Serializable {
             this.vehicleDetail = v;
             this.accidentVehicleImage = new VehicleImageImpl().getAllChoosenImg(v.getUuid());
             listOfBrokenPart = new BrokenCarPartImpl().getBrokenCarPart(v.getUuid());
-            for(BrokenCarPart x:listOfBrokenPart){
+            for (BrokenCarPart x : listOfBrokenPart) {
                 this.allBrokenPartParent.add(x.getCarsparepart().getCarsparepart());
             }
             new VehicleDetailsImpl().updateInfo(vehicleDetail);
@@ -1018,5 +1018,5 @@ public class InsuranceController implements DbConstant, Serializable {
     public void setAllBrokenPartParent(Set<Carsparepart> allBrokenPartParent) {
         this.allBrokenPartParent = allBrokenPartParent;
     }
-    
+
 }

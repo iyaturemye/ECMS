@@ -298,7 +298,7 @@ public class GarageController implements DbConstant, Serializable {
             }
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\images");
             path = path.substring(0, path.indexOf("\\build"));
-            path = path + "\\web\\layout\\image\\logo3.png";
+            path = path + "\\web\\layout\\image\\ecmsLogo.jpg";
             Image image = Image.getInstance(path);
             image.scaleAbsolute(70, 50);
             image.setAlignment(Element.ALIGN_LEFT);

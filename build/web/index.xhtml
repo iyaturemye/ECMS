@@ -10,8 +10,8 @@
           maximum-scale=1.0, 
           user-scalable=no"/>
     <h:head>
-        <title>Garage Ltd</title>
-        <link rel="stylesheet" href="layout/css/bootstrap.css"/>
+        <title>ECMS(Electronics Claims Management System)</title>
+        <link rel="stylesheet" href="layout/css/bootstrap1.css"/>
         <link rel="stylesheet" href="layout/css/mystyle.css"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Charmonman|Quicksand" rel="stylesheet"/> 
@@ -22,143 +22,244 @@
             <ui:include src="header.xhtml">
             </ui:include>
         </ui:insert>
-        <div class="contain">
-            <div class="cont">
-                <div class="container">
-                    <div class="rows">
-                        <div class="col-lg-6 col-xs-12 col-sm-12 col-md-6 myOwner-6">
+        <section class="banner-area contain">
+            <div class="container">
+                <div class="row fullscreen align-items-center justify-content-between">
+                    <div class="col-lg-6 col-md-6 banner-left">
+                        <h1 style="color:white;">E.C.M.S</h1>
+                        <p style="color:white;">
+                            ECSMS(Electronic Claims Management System)
+                            #{msg['introductionMessage']}                            
+                        </p>
+                        <a href="CarRegistration.xhtml" class="primary-btn text-uppercase">
+                            #{msg['carCheckup']}
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 banner-right">
+                        <iframe class="video"  src="https://www.youtube.com/embed/zy0muJcrtwk" frameborder="0" allow="autoplay;encrypted-media" >
+                        </iframe>
+                    </div>
+                </div>
+            </div>					
+        </section>
+        <!-- End banner Area -->
+        <!-- Start services Area -->
+        <section class="services-area section-gap">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="menu-content  col-lg-7">
+                        <div class="title text-center">
+                            <h1 class="mb-10">Our Services</h1>
+                            <p>At about this time of year, some months after New Year’s resolutions have been made and kept, or made and neglected.</p>
+                        </div>
+                    </div>
+                </div>						
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-services">
+                            <span class="lnr lnr-pie-chart"></span>
+                            <a href="#"><h4>Web Design</h4></a>
+                            <p>
+                                “It is not because things are difficult that we do not dare; it is because we do not dare that they are difficult.”
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-services">
+                            <span class="lnr lnr-laptop-phone"></span>
+                            <a href="#"><h4>Expertise</h4></a>
+                            <p>
+                                If you are an entrepreneur, you know that your success cannot depend on the opinions of others. Like the wind, opinions.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-services">
+                            <span class="lnr lnr-camera"></span>
+                            <a href="#"><h4>Photography</h4></a>
+                            <p>
+                                Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills.
+                            </p>
+                        </div>	
+                    </div>														
+                </div>
+            </div>	
+        </section>
+        <!-- End services Area -->	
 
-                            <iframe class="video"  src="https://www.youtube.com/embed/zy0muJcrtwk" frameborder="0" allow="autoplay;encrypted-media" >
-                            </iframe>
-                        </div>
-                        <div class="col-lg-6 col-xs-12 col-sm-12 myOwnerText col-md-6 myOwner-6">
-                            <h2><h:outputText value="#{msg['companyName']}"/></h2>
-                            <h4><h:outputText value="#{msg['introductionMessage']}"/></h4>
-                            <div style="margin-top: 30px;">
-                                <div class="forComputer">
-                                    <a href="CarRegistration.xhtml" class="btns btnhire">#{msg['carCheckup']}</a><a href="GarageRegistration.xhtml" class="btns btnwork">#{msg['garageRegistration']}</a>
-                                </div>
-                                <div class="forPhone">
-                                    <a href="CarRegistration.xhtml" class="btns btnhire">#{msg['carCheckup']} </a><a href="GarageRegistration.xhtml" class="btns btnwork">#{msg['garageRegistration']}</a>
-                                </div>
-                            </div>                   
-                        </div>
+        <!-- Start fact Area -->
+        <section class="facts-area section-gap" id="facts-area">
+            <div class="container">				
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 single-fact">
+                        <i class="fa fa-car carIcon" style="color: white;"  aria-hidden="true"></i> 
+                        <h1 class="counter">2536</h1>
+                        <p><h:outputText value="#{msg['CarRepaid']}"/></p>
                     </div>
+                    <div class="col-lg-3 col-md-6 single-fact">
+                        <i class="fa fa-user carIcon" style="color: white;"  aria-hidden="true"></i>
+                        <h1 class="counter">6784</h1>
+                        <p><h:outputText value="#{msg['CustomerSatsf']}"/></p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 single-fact">
+                        <i class="fa fa-wrench  carIcon"  style="color: white;" aria-hidden="true"></i> 
+                        <h1 class="counter">2239</h1>
+                        <p><h:outputText value="#{msg['garage']}"/></p>
+                    </div>	
+                    <div class="col-lg-3 col-md-6 single-fact">
+                        <i class="fa fa-car carIcon" style="color: white;"  aria-hidden="true"></i>
+                        <h1 class="counter">435</h1>
+                        <p>INSURANCE</p>
+                    </div>												
                 </div>
-            </div>
-        </div>
-        <div class="container myContainer">
-            <div class="rows">
-                <div class="col-lg-12 col-xs-12 col-sm-12">
-                    <div class="allCar">
-                        <div class="pull-right">
-                            <a href="allBrokenCar.xhtml" ><h:outputText  value="#{msg['viewAll']}"/></a> 
-                        </div>
-                        <h3><b><h:outputText  value="#{msg['CarNeedRepair']}"/></b></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container ">
-            <div class="rows">
-                <c:forEach items="#{vehicleController.brokenCar}" var="items">
-                    <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3">
-                        <div class="imgAndInform" style="box-shadow: 1.5px 1.5px 4px 1px #ddd;">
-                        <div class="imgs">
-                            <c:forEach items="#{vehicleController.images}" var="i">
-                                <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
-                                    <h:form>
-                                        <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                            <img class="image image2 img-responsive" src="layout/image/blockenCar/#{i.image}"/>
-                                        </h:commandLink>
-                                    </h:form>
-                                </c:if>
-                            </c:forEach>
-                        </div>
-                        <div class="inform">
-                            <h6 style="color:red;">
-                                <b>
-                                    <h:form>
-                                        <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                            #{items.vehicle.name},<span>#{items.vehicle.plateNum}</span>
-                                        </h:commandLink>
-                                        
-                                    </h:form>
-                                </b>
-                            </h6>
-                            <span class="word">
-                                <span class="text small">
-                                    <h:outputText value="#{items.createdAt}">
-                                        <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
-                                    </h:outputText>
-                                </span>
-                                <br/>
-                            </span>
-                        </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-        <div class="contain2">
-            <div class="container" style="text-align: center;color:white">
-                <div class="rows">
-                    <div class="forComputer">
-                        <div class="col-lg-4 col-xs-4 col-sm-4 col-md-4 ">
-                            <div class="mycolg4">
-                                <i class="fa fa-car carIcon"  aria-hidden="true"></i> 
-                                <h2>2000 </h2>
-                                <b><h:outputText  value="#{msg['CarRepaid']}"/></b>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-xs-4 col-sm-4 col-md-4">
-                            <div class="mycolg4">
-                                <i class="fa fa-user carIcon"  aria-hidden="true"></i> 
-                                <h2>2000 </h2>
-                                <b><h:outputText value="#{msg['CustomerSatsf']}"/></b>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-xs-4 col-sm-4 col-md-4">
-                            <div class="mycolg4">
-                                <i class="fa fa-wrench  carIcon"  aria-hidden="true"></i> 
-                                <h2>2000</h2>
-                                <b><h:outputText value="#{msg['garage']}"/></b>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="forPhone">
-                        <div class="col-lg-12">
-                            <table border="0" class="tableClass">
-                                <tr>
-                                    <td>
-                                        <i class="fa fa-car carIcon"  aria-hidden="true"></i>
-                                        <h2>2000</h2>
-                                        <b><h:outputText value="#{msg['customer']}"/> <br/> <h:outputText value="#{msg['cs']}"/></b>
-                                    </td>
-                                    <td>
-                                        <i class="fa fa-car carIcon"  aria-hidden="true"></i> 
-                                        <h2>2000 </h2>
-                                        <b><h:outputText  value="#{msg['CarRepaid']}"/></b>
-                                    </td>
-                                    <td>
-                                        <i class="fa fa-wrench  carIcon"  aria-hidden="true"></i> 
-                                        <h2>2000</h2>
-                                        <b><h:outputText value="#{msg['garage']}"/></b>
-                                    </td>
-                                </tr>
-                            </table>
+            </div>	
+        </section>
+        <!-- end fact Area -->	
 
+        <!-- Start portfolio-area Area -->
+        <section class="portfolio-area section-gap" id="portfolio">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="menu-content pb-70 col-lg-8">
+                        <div class="title text-center">
+                            <h1 class="mb-10">New Broken Car</h1>
+                            <p>This is the car which are waiting for Car Maintenance Click here <a href="allBrokenCar.xhtml"> #{msg['viewAll']}</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="filters-content">
+                    <div class="row grid">
+                        <c:forEach items="#{vehicleController.brokenCar}" var="items">
+                        <c:forEach items="#{vehicleController.images}" var="i">
+                            <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
+                                <div class="single-portfolio col-sm-3 all vector">
+                                    <div class="relative">
+
+                                        <div class="thumb">
+                                            <h:form>
+                                                <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
+                                                    <img class="image img-fluid" src="layout/image/blockenCar/#{i.image}" alt=""/>
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="p-inner">
+                                        <h:form>
+                                            <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
+                                                <h4>#{items.vehicle.name},<span>#{items.vehicle.plateNum}</span></h4>
+                                            </h:commandLink>
+                                        </h:form>
+                                        <div class="cat">
+                                            <h:outputText value="#{items.createdAt}">
+                                                <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
+                                            </h:outputText>
+                                        </div>
+                                    </div>					                               
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                        </c:forEach>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- End portfolio-area Area -->	
+
+        <!-- Start testimonial Area -->
+        <section class="testimonial-area section-gap">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="menu-content pb-70 col-lg-8">
+                        <div class="title text-center">
+                            <h1 class="mb-10">Our Client feed back</h1>
+                            <p>It is very easy to start smoking but it is an uphill task to quit it. Ask any chain smoker or even a person.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="active-testimonial">
+                        <div class="single-testimonial item d-flex flex-row">
+                            <div class="thumb">
+                                <img class="img-fluid" src="img/elements/user1.png" alt=""/>
+                            </div>
+                            <div class="desc">
+                                <p>
+                                    Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills, the bigger the payoff you.		     
+                                </p>
+                                <h4>Harriet Maxwell</h4>
+                                <p>CEO at Google</p>
+                            </div>
+                        </div>
+                        <div class="single-testimonial item d-flex flex-row">
+                            <div class="thumb">
+                                <img class="img-fluid" src="img/elements/user2.png" alt=""/>
+                            </div>
+                            <div class="desc">
+                                <p>
+                                    A purpose is the eternal condition for success. Every former smoker can tell you just how hard it is to stop smoking cigarettes. However.
+                                </p>
+                                <h4>Carolyn Craig</h4>
+                                <p>CEO at Facebook</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+        <!-- End testimonial Area -->
+        <!-- Start brands Area -->
+        <section class="brands-area" style="background: white;">
+            <div class="container">
+                <div class="brand-wrap">
+                    <div class="row align-items-center active-brand-carusel justify-content-start no-gutters">
+                        <div class="col single-brand">
+                            <a href="#"><img class="mx-auto" src="layout/image/phoenix.png" alt=""/></a>
+                        </div>
+                        <div class="col single-brand">
+                            <a href="#"><img class="mx-auto" src="layout/image/bk.png" alt=""/></a>
+                        </div>
+                        <div class="col single-brand">
+                            <a href="#"><img class="mx-auto" src="layout/image/britam2.png" alt=""/></a>
+                        </div>
+                        <div class="col single-brand">
+                            <a href="#"><img class="mx-auto" src="layout/image/radiant.png" alt=""/></a>
+                        </div>
+                        <div class="col single-brand">
+                            <a href="#"><img class="mx-auto" src="layout/image/rssb.png" alt=""/></a>
+                        </div>
+                        <div class="col single-brand">
+                            <a href="#"><img class="mx-auto" src="layout/image/saham.png" alt=""/></a>
+                        </div>
+                        <div class="col single-brand">
+                            <a href="#"><img class="mx-auto" src="layout/image/uap.png" alt=""/></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End brands Area -->
         <ui:insert>
             <ui:include src="footer.xhtml">
             </ui:include>
         </ui:insert>
         <script src="layout/js/jquery.js"></script>
-        <script src="layout/js/bootstrap.js"></script>
+        <!--<script src="layout/js/popper.min.js"></script>-->
+        <script src="layout/js/bootstrap.min.js"></script>			
+        <script src="layout/js/easing.min.js"></script>			
+        <script src="layout/js/hoverIntent.js"></script>
+        <script src="layout/js/superfish.min.js"></script>	
+        <!--<script src="layout/js/jquery.ajaxchimp.min.js"></script>-->
+        <script src="layout/js/jquery.magnific-popup.min.js"></script>	
+        <!--<script src="layout/js/jquery.tabs.min.js"></script>-->						
+        <script src="layout/js/jquery.nice-select.min.js"></script>	
+        <script src="layout/js/isotope.pkgd.min.js"></script>			
+        <script src="layout/js/waypoints.min.js"></script>
+        <script src="layout/js/jquery.counterup.min.js"></script>
+        <script src="layout/js/simple-skillbar.js"></script>							
+        <script src="layout/js/owl.carousel.min.js"></script>							
+        <script src="layout/js/mail-script.js"></script>	
+        <script src="layout/js/main.js"></script>	
     </h:body>
 </html>
 

@@ -5,10 +5,32 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Garage </title>
-        <link rel="stylesheet" href="layout/css/bootstrap.css"/>
+        <title>ECMS(Electronic Claims Management System) </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <!-- Favicon-->
+        <link rel="shortcut icon" href="img/fav.png"/>
+        <!-- Author Meta -->
+        <meta name="author" content="ECMS"/>
+        <!-- Meta Description -->
+        <meta name="description" content=""/>
+        <!-- Meta Keyword -->
+        <meta name="keywords" content=""/>
+        <!-- meta character set -->
+        <meta charset="UTF-8"/>
+        <!-- Site Title -->
+        <title>ECMS(Electronic Claims Management System)</title>
+        <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"/>
         <link rel="stylesheet" href="layout/css/mystyle.css"/>
-
+        <link rel="stylesheet" href="css/linearicons.css"/>
+        <link rel="stylesheet" href="css/bootstrap.css"/>
+        <link rel="stylesheet" href="css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="css/bootstrap.css"/>
+        <link rel="stylesheet" href="css/magnific-popup.css"/>
+        <!--<link rel="stylesheet" href="css/jquery-ui.css"/>-->				
+        <link rel="stylesheet" href="css/nice-select.css"/>							
+        <link rel="stylesheet" href="css/animate.min.css"/>
+        <link rel="stylesheet" href="css/owl.carousel.css"/>				
+        <link rel="stylesheet" href="css/main.css"/>
         <style>
             .myhumbe{
                 border: 1px solid white !important;
@@ -21,9 +43,10 @@
     </h:head>
     <h:body>
         #{changeLanguage.changeLanguage()}
-        <nav class="navbar navs navbar-fixed-top mynavbarstyle" role="navigation">
-            <div class="changeLanguage">
+        <!--<nav class="navbar navs navbar-fixed-top mynavbarstyle" role="navigation">-->
 
+        <header id="header">
+            <div class="changeLanguage">
                 <div class="col-lg-12">
                     <h:outputFormat class="topWelcome" value="#{msg['topWelcomeMsg']}"/>
                     <div class="pull-right">
@@ -37,59 +60,77 @@
                         </h:form>
                     </div>
                 </div>
-
-
             </div>
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle myhumbe" data-toggle="collapse"   data-target="#example-navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="index.xhtml" class="navbar-brand">
-                    <img src="/layout/image/logo.png" class="img-responsive logoImage"/>
-                </a>
-            </div>
-            <div>
+            <div class="main-menu" style="padding-right: 20px;padding-left: 20px;">
+                <div class="row align-items-center justify-content-between d-flex">
+                    <div id="logo">
+                        <a href="index.html">
+                            <img src="layout/image/ecmsLogo.jpg" style="width:50px;" alt="" title="" />
+                        </a>
+                    </div>
+                    <nav id="nav-menu-container">
+                        <ul class="nav-menu">
+                            <!--                            <li><a href="index.html">Home</a></li>
+                                                        <li><a href="about.html">Garage registration</a></li>
+                                                        <li><a href="services.html">Client Registration</a></li>
+                                                        <li><a href="portfolio.html">Insurance Registration</a></li>
+                                                        <li><a href="price.html">Police Report</a></li>
+                                                        <li class="menu-has-children"><a href="">About us</a>
+                                                            <ul>
+                                                                <li><a href="blog-home.html">Blog Home</a></li>
+                                                                <li><a href="blog-single.html">Blog Single</a></li>
+                                                            </ul>
+                                                        </li>	
+                                                        <li class="menu-has-children"><a href="">Contact us</a>
+                                                            <ul>
+                                                                <li><a href="elements.html">Elements</a></li>
+                                                                <li class="menu-has-children"><a href="">Level 2 </a>
+                                                                    <ul>
+                                                                        <li><a href="#">Item One</a></li>
+                                                                        <li><a href="#">Item Two</a></li>
+                                                                    </ul>
+                                                                </li>					                		
+                                                            </ul>
+                                                        </li>					          					          		          
+                                                        <li><a href="contact.html">Login</a></li>-->
 
-            </div>
-            <div class="collapse navbar-collapse" id="example-navbar-collapse">
-                <ul class="nav navbar-nav navbar-right  myNavStyle">
-                    <li><a href="index.xhtml"><i class="fas fa-home"></i> #{msg['home']}</a></li>
-                    <li><a href="GarageRegistration.xhtml"><i class="fas fa-wrench"></i> #{msg['garageRegistration']}</a></li>
-                    <li><a href="broken.xhtml"><i class="far fa-user"></i> #{msg['clientRegistration']}</a></li>
-                    <li><a href="insuranceRegistration.xhtml"><i class="fas fa-user-shield"></i> #{msg['insuranceReg']}</a></li>
-                    <li><a href="policeReport.xhtml"><i class="fas fa-traffic-light"></i> #{msg['policeReport']}</a></li>
-                    <li><a href="aboutUs.xhtml"><i class="fas fa-info-circle"></i> #{msg['aboutUs']}</a></li>
-                    <li><a href="index.xhtml"><i class="fas fa-mobile-alt"></i> #{msg['contactUs']}</a></li>
-                    <c:if test="#{loginController.loggedInUser==null}">
-                        <li><a href="login.xhtml"><i class="fas fa-sign-in-alt"></i> #{msg['login']}</a></li>
-                    </c:if>
-                    <c:if test="#{loginController.loggedInUser!=null}">
-                        <li class="forComputer" ><a href="#">#{msg['myAccount']}</a>
-                            <ul class="anotherUl">
-                                <li>
-                                    <a href="#{(loginController.loggedInUser.userType.equalsIgnoreCase('admin')?'members':loginController.loggedInUser.userType)}/dashboard.xhtml"><i class="fa fa-tachometer-alt"  aria-hidden="true"></i>Dashboard</a>
+                            <li><a href="index.xhtml"><i class="fas fa-home"></i> #{msg['home']}</a></li>
+                            <li><a href="GarageRegistration.xhtml"><i class="fas fa-wrench"></i> #{msg['garageRegistration']}</a></li>
+                            <li><a href="broken.xhtml"><i class="far fa-user"></i> #{msg['clientRegistration']}</a></li>
+                            <li><a href="insuranceRegistration.xhtml"><i class="fas fa-user-shield"></i> #{msg['insuranceReg']}</a></li>
+                            <li><a href="policeReport.xhtml"><i class="fas fa-traffic-light"></i> #{msg['policeReport']}</a></li>
+                            <li><a href="aboutUs.xhtml"><i class="fas fa-info-circle"></i> #{msg['aboutUs']}</a></li>
+                            <li><a href="contact.xhtml"><i class="fas fa-mobile-alt"></i> #{msg['contactUs']}</a></li>
+                            <c:if test="#{loginController.loggedInUser==null}">
+                                <li><a href="login.xhtml"><i class="fas fa-sign-in-alt"></i> #{msg['login']}</a></li>
+                            </c:if>
+                            <c:if test="#{loginController.loggedInUser!=null}">
+                                <li class="menu-has-children" ><a href="#">#{msg['myAccount']}</a>
+                                    <ul>
+                                        <li>
+                                            <a href="#{(loginController.loggedInUser.userType.equalsIgnoreCase('admin')?'members':loginController.loggedInUser.userType)}/dashboard.xhtml"><i class="fa fa-tachometer-alt"  aria-hidden="true"></i>Dashboard</a>
+                                        </li>
+                                        <li>
+                                            <a href="#{(loginController.loggedInUser.userType.equalsIgnoreCase('admin')?'members':loginController.loggedInUser.userType)}/dashboard.xhtml"><i class="fa fa-settings"  aria-hidden="true"></i>Setting</a>
+                                        </li>
+                                        <li>
+                                            <h:form>
+                                                <h:commandLink action="#{loginController.logout()}">
+                                                    <i class="fa fa-power-off " aria-hidden="true"></i> #{msg['logout']}
+                                                </h:commandLink>
+                                            </h:form>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <a href="#{(loginController.loggedInUser.userType.equalsIgnoreCase('admin')?'members':loginController.loggedInUser.userType)}/dashboard.xhtml"><i class="fa fa-settings"  aria-hidden="true"></i>Setting</a>
-                                </li>
-                                <li>
-                                    <h:form>
-                                        <h:commandLink action="#{loginController.logout()}">
-                                            <i class="fa fa-power-off " aria-hidden="true"></i> #{msg['logout']}
-                                        </h:commandLink>
-                                    </h:form>
-                                </li>
+                            </c:if>
 
-                            </ul>
-                        </li>
-                    </c:if>
-                </ul>
-              
+
+                        </ul>
+                    </nav><!-- #nav-menu-container -->		    		
+                </div>
             </div>
-        </nav>
+        </header><!-- #header -->
+        <!--</nav>-->
     </h:body>
 </html>
 

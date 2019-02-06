@@ -11,7 +11,7 @@
           user-scalable=no"/>
     <h:head>
         <title>Garage Ltd</title>
-        <link rel="stylesheet" href="layout/css/bootstrap.css"/>
+        <link rel="stylesheet" href="layout/css/bootstrap1.css"/>
         <link rel="stylesheet" href="layout/css/mystyle.css"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <!--layout/font-awesome-4.7.0/css/bgpanel.png-->
@@ -21,44 +21,36 @@
             <ui:include src="header.xhtml">
             </ui:include>
         </ui:insert>    
-        <div class="container " style="margin-top: 100px;background: white;padding: 10px; border: 1px solid #ddd;">
-            <div class="rows">
-                <c:forEach items="#{vehicleController.allBrokenCar}" var="items">
-                    <div class="col-lg-3 col-xs-12 col-sm-3 col-md-3">
-                        <div class="imgAndInform" style="box-shadow: 1.5px 1.5px 4px 1px #ddd;">
-                            <div class="imgs">
-                                <c:forEach items="#{vehicleController.images}" var="i">
-                                    <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
+        <div class="container " style="margin-top: 100px;background: white;padding: 10px; border: 1px solid #ddd;margin-top: 10%;">
+            <div class="row">
+                <c:forEach items="#{vehicleController.brokenCar}" var="items">
+                    <c:forEach items="#{vehicleController.images}" var="i">
+                        <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
+                            <div class="single-portfolio col-sm-3 all vector">
+                                <div class="relative">
+                                    <div class="thumb">
                                         <h:form>
                                             <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                                <img class="image image2 img-responsive" src="layout/image/blockenCar/#{i.image}"/>
+                                                <img class="image img-fluid" src="layout/image/blockenCar/#{i.image}" alt=""/>
                                             </h:commandLink>
                                         </h:form>
-                                    </c:if>
-                                </c:forEach>
-                            </div>
-                            <div class="inform">
-                                <h6 style="color:red;">
-                                    <b>
-                                        <h:form>
-                                            <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                                #{items.vehicle.name},<span>#{items.vehicle.plateNum}</span>
-                                            </h:commandLink>
-
-                                        </h:form>
-                                    </b>
-                                </h6>
-                                <span class="word">
-                                    <span class="text small">
+                                    </div>
+                                </div>
+                                <div class="p-inner">
+                                    <h:form>
+                                        <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
+                                            <h4>#{items.vehicle.name},<span>#{items.vehicle.plateNum}</span></h4>
+                                        </h:commandLink>
+                                    </h:form>
+                                    <div class="cat">
                                         <h:outputText value="#{items.createdAt}">
                                             <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
                                         </h:outputText>
-                                    </span>
-                                    <br/>
-                                </span>
+                                    </div>
+                                </div>					                               
                             </div>
-                        </div>
-                    </div>
+                        </c:if>
+                    </c:forEach>
                 </c:forEach>
             </div>
         </div>
@@ -77,6 +69,25 @@
                 </div>
             </div>
         </div>
+
+        <script src="layout/js/jquery.js"></script>
+        <!--<script src="layout/js/popper.min.js"></script>-->
+        <script src="layout/js/bootstrap.min.js"></script>			
+        <script src="layout/js/easing.min.js"></script>			
+        <script src="layout/js/hoverIntent.js"></script>
+        <script src="layout/js/superfish.min.js"></script>	
+        <!--<script src="layout/js/jquery.ajaxchimp.min.js"></script>-->
+        <script src="layout/js/jquery.magnific-popup.min.js"></script>	
+        <!--<script src="layout/js/jquery.tabs.min.js"></script>-->						
+        <script src="layout/js/jquery.nice-select.min.js"></script>	
+        <script src="layout/js/isotope.pkgd.min.js"></script>			
+        <script src="layout/js/waypoints.min.js"></script>
+        <script src="layout/js/jquery.counterup.min.js"></script>
+        <script src="layout/js/simple-skillbar.js"></script>							
+        <script src="layout/js/owl.carousel.min.js"></script>							
+        <script src="layout/js/mail-script.js"></script>	
+        <script src="layout/js/main.js"></script>
+
     </h:body>
 </html>
 

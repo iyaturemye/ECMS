@@ -28,6 +28,8 @@ public class BrokenCarPart implements Serializable {
     private VehicleDetail vehicleDetails;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt=new Date();
+    private int quantity;
+    private String partNumber;
 
     public String getId() {
         return id;
@@ -60,6 +62,21 @@ public class BrokenCarPart implements Serializable {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-    
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getPartNumber() {
+        return partNumber;
+    }
+
+    public void setPartNumber(String partNumber) {
+        this.partNumber = partNumber;
+    } 
 
 }

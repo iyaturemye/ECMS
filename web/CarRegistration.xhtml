@@ -2,17 +2,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <meta name="viewport" content="width=device-width, 
           initial-scale=1.0, 
           maximum-scale=1.0, 
           user-scalable=no"/>
     <h:head>
         <title>Garage LTD</title>
+
     </h:head>
     <h:body>
         <ui:insert>
@@ -20,7 +21,7 @@
         </ui:insert>
         <div class="container ourcontainer">
             <h:form class="form-horizontal" id="form" >
-                <div class="rows">
+                <div class="row">
                     <div class="col-lg-6" style="border-right: 1px solid #ddd;">
                         <div class="title">
                             <span class="titletext">Car Registration A</span> <span class="small">iyi form niyi modoka yawe,apana iyo mwagonganye</span>
@@ -73,12 +74,14 @@
                                     <label class="col-lg-3">Your insurance Date</label>
                                     <div class="col-lg-4">
                                         <label>From </label><br/>
-                                        <h:inputText id="carafrom" value="#{vehicleController.vehicleDetails.vehicleaEnsuranceStartDate}" required="true" requiredMessage="From is required" class="form-control datepicker"/>
+                                        <p:calendar pattern="dd/MM/yyyy" id="carafrom" value="#{vehicleController.vehicleDetails.vehicleaEnsuranceStartDate}" required="true" requiredMessage="From is required">
+                                        </p:calendar>
                                         <h:message for="carafrom" class="text text-danger"/>
                                     </div>
                                     <div class="col-lg-4">
                                         <label>End At </label><br/>
-                                        <h:inputText required="true" id="caraendat" value="#{vehicleController.vehicleDetails.vehicleaEnsuranceStartDate}" requiredMessage="End At is mandatory" class="form-control datepicker"/>
+                                        <p:calendar pattern="dd/MM/yyyy"  required="true" id="caraendat" value="#{vehicleController.vehicleDetails.vehicleaEnsuranceStartDate}" requiredMessage="End At is mandatory">
+                                        </p:calendar>
                                         <h:message for="caraendat" class="text text-danger"/>
                                     </div>
                                 </div>
@@ -123,10 +126,8 @@
                                         </div>
                                     </div>
                                 </h:panelGroup>
-
                             </div>
                         </div>
-
                     </div>
                     <div class="col-lg-6">
                         <div class="title">
@@ -138,7 +139,7 @@
                                 <div class="form-group">
                                     <label class="col-lg-3">Plate Number</label>
                                     <div class="col-lg-8">
-                                        <h:inputText value="#{vehicleController.vehicleb.plateNum}" pt:placeholder="RAD320R"  class="form-control pnum" required="true" requiredMessage="Plate Number  is required" id="pnumb">
+                                        <h:inputText value="#{vehicleController.vehicleb.plateNum}" pt:placeholder="RAD320R"  class="form-control pnum"  requiredMessage="Plate Number  is required" id="pnumb">
                                             <f:ajax listener="#{vehicleController.searchForCar('vehicleb')}" execute="@this" render="info2" event="blur"/>
                                         </h:inputText>
                                         <h:message class="text text-danger" for="pnumb"/>
@@ -148,7 +149,7 @@
                                     <div class="form-group">
                                         <label class="col-lg-3">Policy Number</label>
                                         <div class="col-lg-8">
-                                            <h:inputText value="#{vehicleController.vehicleb.policyNumber}"  pt:placeholder="Policy Number"  class="form-control policyNumber" required="true" requiredMessage="Policy Number  is required" id="policyNumberb">
+                                            <h:inputText value="#{vehicleController.vehicleb.policyNumber}"  pt:placeholder="Policy Number"  class="form-control policyNumber"  requiredMessage="Policy Number  is required" id="policyNumberb">
                                             </h:inputText>
                                             <h:message class="text text-danger" for="policyNumberb"/>
                                         </div>
@@ -156,7 +157,7 @@
                                     <div class="form-group">
                                         <label class="col-lg-3">Name</label>
                                         <div class="col-lg-8">
-                                            <h:inputText value="#{vehicleController.vehicleb.name}"  pt:placeholder="eg:Benz,Toyota"  class="form-control" required="true" requiredMessage="Name  is required" id="nameb">
+                                            <h:inputText value="#{vehicleController.vehicleb.name}"  pt:placeholder="eg:Benz,Toyota"  class="form-control"  requiredMessage="Name  is required" id="nameb">
                                             </h:inputText>
                                             <h:message class="text text-danger" for="nameb"/>
                                         </div>
@@ -164,7 +165,7 @@
                                     <div class="form-group">
                                         <label class="col-lg-3">Chasis Number:</label>
                                         <div class="col-lg-8">
-                                            <p:inputMask mask="aaaaaaaaaaaaaaaaa" value="#{vehicleController.vehicleb.chasisNum}"  pt:placeholder="9 AAB HADER MNX 198726" class="form-control" required="true" requiredMessage="Chasis Number  is required" id="chasisnumb"/>
+                                            <p:inputMask mask="aaaaaaaaaaaaaaaaa" value="#{vehicleController.vehicleb.chasisNum}"  pt:placeholder="9 AAB HADER MNX 198726" class="form-control"  requiredMessage="Chasis Number  is required" id="chasisnumb"/>
                                             <h:message class="text text-danger" for="chasisnumb"/>
                                         </div>
                                     </div>
@@ -183,16 +184,19 @@
                                     <label class="col-lg-3">Your insurance Date</label>
                                     <div class="col-lg-4">
                                         <label>From </label><br/>
-                                        <h:inputText id="carbfrom" value="#{vehicleController.vehicleDetails.vehiclebEnsuranceStartDate}" required="true" requiredMessage="From is required" class="form-control datepicker"/>
+                                        <p:calendar pattern="dd/MM/yyyy"  id="carbfrom" value="#{vehicleController.vehicleDetails.vehiclebEnsuranceStartDate}"  requiredMessage="From is required">
+                                        </p:calendar>
+
                                         <h:message for="carbfrom" class="text text-danger"/>
                                     </div>
                                     <div class="col-lg-4">
                                         <label>End At </label><br/>
-                                        <h:inputText required="true" id="carbendat" value="#{vehicleController.vehicleDetails.vehiclebEnsuranceEndingDate}" requiredMessage="End At is mandatory" class="form-control datepicker"/>
+                                        <p:calendar pattern="dd/MM/yyyy" id="carbendat" value="#{vehicleController.vehicleDetails.vehiclebEnsuranceEndingDate}" requiredMessage="End At is mandatory">
+                                        </p:calendar>
+
                                         <h:message for="carbendat" class="text text-danger"/>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
@@ -209,8 +213,7 @@
 
                             </span>
                         </div>
-                        <div id="demo" class="collapse out" style="margin-top: 20px;">
-
+                        <div id="demo" class="collapse in" style="margin-top: 20px;">
                             <div class="col-lg-6">
                                 <h4>Driver Information</h4>
                                 <div class="form-group">
@@ -292,11 +295,8 @@
                 </div>
             </h:form>
         </div>
-
-
-        <script type="text/javascript" src="layout/js/bootstrap.js"></script>
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <!--        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
         <script>
             var loadPage = function loadIt(data) {
                 if (data.status === 'success') {
@@ -315,12 +315,31 @@
                     $(".loadingImg").hide();
                 }
             };
-        </script>
-        <script>
             $(function () {
-                $(".datepicker").datepicker();
             });
         </script>
+        <script>
+
+        </script>
+
+        <!--<script src="layout/js/jquery.js"></script>-->
+        <script src="layout/js/popper.min.js"></script>
+        <script src="layout/js/bootstrap.min.js"></script>			
+        <script src="layout/js/easing.min.js"></script>			
+        <script src="layout/js/hoverIntent.js"></script>
+        <script src="layout/js/superfish.min.js"></script>	
+        <script src="layout/js/jquery.ajaxchimp.min.js"></script>
+        <script src="layout/js/jquery.magnific-popup.min.js"></script>	
+        <!--<script src="layout/js/jquery.tabs.min.js"></script>-->						
+        <script src="layout/js/jquery.nice-select.min.js"></script>	
+        <script src="layout/js/isotope.pkgd.min.js"></script>			
+        <script src="layout/js/waypoints.min.js"></script>
+        <script src="layout/js/jquery.counterup.min.js"></script>
+        <script src="layout/js/simple-skillbar.js"></script>							
+        <script src="layout/js/owl.carousel.min.js"></script>							
+        <script src="layout/js/mail-script.js"></script>	
+        <script src="layout/js/main.js"></script>
+
     </h:body>
 </html>
 

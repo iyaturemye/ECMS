@@ -12,7 +12,7 @@
           user-scalable=no"/>
     <h:head>
         <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
-        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <link rel="styleSheet" href="../layout/css/bootstrap1.css"></link>
         <script src="../layout/js/jquery.js"/>
         <script src="../layout/js/bootstrap.js"></script>
         <link rel="styleSheet" href="css/mystyle.css"></link>
@@ -57,6 +57,12 @@
             pre{
                 min-height: 150px !important;
             }
+            .brokenCarPart{
+                max-height: 300px;
+                overflow-x: visible;
+                background: white !important;
+            }
+
         </style>
     </h:head>
     <h:body>
@@ -65,8 +71,8 @@
         </ui:insert>
         <h:form>
             <div class="container" style="background: white;border:1px solid #ddd;padding: 5px;">
-                <div class="rows">
-                    <div class="col-lg-4" style="border-right: 1px solid #ddd;">
+                <div class="row">
+                    <div class="col-lg-4">
                         <h3>Owner Information</h3>
                         <table class="table">
                             <tr>
@@ -107,7 +113,7 @@
                         <h:outputFormat value="#{insuranceController.vehicleDetail.whatHappen}" escape="false"/>
                         </pre>
                     </div>
-                    <div class="col-lg-4" style="border-right: 1px solid #ddd;" >
+                    <div class="col-lg-4" style="border-right: 1px solid #ddd;border-left: 1px solid #ddd;" >
                         <h3>Broken Car A</h3>
                         <table class="table">
                             <tr>
@@ -153,11 +159,37 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="col-lg-8" style="border-left: 1px solid #ddd;">
+                        <div class="line" style="border-bottom:1px solid #ddd;"></div>
 
+                        <h3>Broken Car Image</h3>
+                        <img style="width: 200px;" src="../layout/image/blockenCar/25db19a3-92f2-4475-baae-e9dcf90d5b30.jpg" class="img-thumbnail"/>
+                        <img style="width: 200px;" src="../layout/image/blockenCar/25db19a3-92f2-4475-baae-e9dcf90d5b30.jpg" class="img-thumbnail"/>
+                        <img style="width: 200px;" src="../layout/image/blockenCar/25db19a3-92f2-4475-baae-e9dcf90d5b30.jpg" class="img-thumbnail"/>
+
+                    </div>
+                    <div class="col-lg-8" style="border-left: 1px solid #ddd;">
+                        <div class="line" style="border-bottom:1px solid #ddd;margin:10px;"></div>
+                        <h3>Broken Car Part</h3>
+                        <div class="brokenCarPart">
+                            <table class="table table-responsive table-condensed">
+                                <c:forEach items="#{insuranceController.allBrokenPartParent}" var="ele">
+                                    <tr>
+                                        <td><b>#{ele.name}</b></td>
+                                        <td>
+                                            <c:forEach items="#{insuranceController.listOfBrokenPart}" var="item">
+                                                <c:if test="#{item.carsparepart.carsparepart.id.equalsIgnoreCase(ele.id)}">
+                                                    #{item.carsparepart.name}<br/>
+                                                </c:if>
+                                            </c:forEach>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-
             <div class="container" style="background:white;padding: 15px;border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
                 <div class="rows">
                     <div class="col-lg-12">

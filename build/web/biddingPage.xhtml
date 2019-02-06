@@ -17,6 +17,8 @@
         <!--<script src="layout/js/jquery.js"/>-->
         <script src="layout/js/bootstrap.js" type="text/javascript"/>
         <link rel="stylesheet" type="text/css" href="layout/css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="layout/css/bootstrap.min.css"/>
+
         <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
 
         <style>
@@ -64,16 +66,19 @@
             .mysecondTable td{
                 border:none !important;
             }
+            b, sup, sub, u, del{
+                color:#636363 !important;
+            }
         </style>
     </h:head>
     <h:body>
-        <ui:insert>
+<!--        <ui:insert>
             <ui:include src="header.xhtml"/>
-        </ui:insert>
+        </ui:insert>-->
         <h:form>
         <c:if test="#{!vehicleDetailsController.checkIfAlreadyDone()}">
             <div class="container container2" style="margin-bottom: 16.6%;">
-                <div class="rows">
+                <div class="row">
                     <div class="col-lg-12">
                         <div class="alert alert-warning">
                             <p:messages globalOnly="true"/>
@@ -85,8 +90,8 @@
         </c:if>
 
         <c:if test="#{vehicleDetailsController.checkIfAlreadyDone()}">
-            <div class="container container2" style="background:none;border:none;margin-top: 6%;">
-                <div class="rows">
+            <div class="container container2" style="background:none;border:none;margin-top: 10%;">
+                <div class="row">
                     <div class="col-lg-7 col-lg-offset-2">
                         <p:messages/>
                         
@@ -104,7 +109,7 @@
 
             <h:panelGroup id="lists">
                 <div class="container container2" style="margin-top: 0% !important;background:none;border:none;">
-                    <div class="rows">
+                    <div class="row">
                         <!--here we go boss-->
                         <div class="col-lg-7 col-lg-offset-2" style="background:white;border:1px solid #ddd;">
                             <div class="companiesInfo">
@@ -124,18 +129,18 @@
                                 </div>
                             </div>
                             <div class="companiesInfo2">
-                                <div class="rows">
+                                <div class="row">
                                     <div  class="col-lg-4" style="padding: 0px !important;">
-                                        <h3 class="leftOne"><b>Insurance</b></h3>
+                                        <h3 class="leftOne"><b style="color:white !important;">Insurance</b></h3>
                                         <div class="garageInfo">
-                                            <h3>#{vehicleDetailsController.choosenVehicle.insurance.name}</h3>
+                                            <h3 style="color:#636363;">#{vehicleDetailsController.choosenVehicle.insurance.name}</h3>
                                             <h5><b>Phone Number:</b>#{vehicleDetailsController.choosenVehicle.insurance.phoneNumber}</h5>
                                         </div>
                                     </div>
-                                    <div  class="col-lg-4 col-lg-offset-4" style="padding: 0px !important;">
-                                        <h3 class="leftOne"><b>Car Info</b></h3>
+                                    <div  class="col-lg-4 col-lg-offset-4 col-xs-offset-4 col-sm-offset-4" style="padding: 0px !important;">
+                                        <h3 class="leftOne"><b style="color:white !important;">Car Info</b></h3>
                                         <div class="garageInfo">
-                                            <h3>#{vehicleDetailsController.choosenVehicle.vehicle.name}</h3>
+                                            <h3 style="color:#636363;">#{vehicleDetailsController.choosenVehicle.vehicle.name}</h3>
                                             <h5><b>Chassis Num:</b>#{vehicleDetailsController.choosenVehicle.vehicle.chasisNum}</h5>
                                             <h5><b>Plate Number:</b>#{vehicleDetailsController.choosenVehicle.vehicle.plateNum}</h5>
                                             <h5><b>Policy Number:</b>#{vehicleDetailsController.choosenVehicle.vehicle.policyNumber}</h5>
@@ -178,13 +183,13 @@
                                 </table>
                             </div>
                             <div class="totalDiv">
-                                <div class="rows" >
+                                <div class="row" >
                                     <div class="col-lg-4">
                                             <b>Click here to estimate Date and time:</b>
                                             <p:calendar value="#{vehicleDetailsController.estimatedDate}" pattern="dd-MM-yyyy hh:mm:ss" placeholder="19/09/1990 00:00:01"/>
                                        
                                     </div>
-                                    <div class="col-lg-3 pull-right" style="padding: 0px;text-align: right;">
+                                    <div class="col-lg-3 col-lg-offset-5" style="padding: 0px;text-align: right;">
                                         <table class="table mysecondTable">
                                             <tr>
                                                 <td><b>SUBTOTAL</b></td>
@@ -290,6 +295,25 @@
                 autoplay: true
             });
         </script>
+         <script src="layout/js/jquery.js"></script>
+        <!--<script src="layout/js/popper.min.js"></script>-->
+        <script src="layout/js/bootstrap.js"></script>			
+        <script src="layout/js/easing.min.js"></script>			
+        <script src="layout/js/hoverIntent.js"></script>
+        <script src="layout/js/superfish.min.js"></script>	
+        <!--<script src="layout/js/jquery.ajaxchimp.min.js"></script>-->
+        <script src="layout/js/jquery.magnific-popup.min.js"></script>	
+        <!--<script src="layout/js/jquery.tabs.min.js"></script>-->						
+        <script src="layout/js/jquery.nice-select.min.js"></script>	
+        <script src="layout/js/isotope.pkgd.min.js"></script>			
+        <script src="layout/js/waypoints.min.js"></script>
+        <script src="layout/js/jquery.counterup.min.js"></script>
+        <script src="layout/js/simple-skillbar.js"></script>							
+        <script src="layout/js/owl.carousel.min.js"></script>							
+        <script src="layout/js/mail-script.js"></script>	
+        <script src="layout/js/main.js"></script>
+        
+        
     </h:body>
 </html>
 
