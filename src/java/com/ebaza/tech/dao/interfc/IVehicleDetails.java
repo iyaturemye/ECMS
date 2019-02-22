@@ -13,9 +13,10 @@ import java.util.List;
  * @author Godwin
  */
 public interface IVehicleDetails extends Allrelated<VehicleDetail> {
-    public List<VehicleDetail> getBrokenCar(int number);
-    public List<VehicleDetail> getAllBrokenCar();
-    public List<VehicleDetail> getListOfVehicleDetails(String InsuranceId);
-    public List<VehicleDetail> getNewAccident(String InsuranceId,String condition);
-    public List<VehicleDetail> expertiseGarage(String garageId,String condition);
+    List<VehicleDetail> getBrokenCar(int number);
+    List<VehicleDetail> getAllBrokenCar();
+    List<VehicleDetail> getListOfVehicleDetails(String InsuranceId);
+    List<VehicleDetail> getNewAccident(String InsuranceId,String condition);
+    List<VehicleDetail> expertiseGarage(String garageId,String condition);
+    List<VehicleDetail> clientFinishedCar(String userId);
 }

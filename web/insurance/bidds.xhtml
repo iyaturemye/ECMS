@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       >
-     <meta name="viewport" content="width=device-width, 
+    <meta name="viewport" content="width=device-width, 
           initial-scale=1.0, 
           maximum-scale=1.0, 
           user-scalable=no"/>
@@ -59,6 +59,7 @@
                                     <label class="col-lg-1 col-lg-offset-3" style="margin-top: 10px;">
                                         Filter by: 
                                     </label>
+
                                     <h:form>
                                         <div class="col-lg-2">
                                             <h:selectOneMenu class="mylist form-control" value="#{insuranceController.filterByInfo}">
@@ -69,20 +70,15 @@
                                         <div class="col-lg-2">
                                             <h:selectOneMenu id="plateNumber" class="mylist form-control" required="true" requiredMessage="Plate number is required" value="#{insuranceController.plateNumber}">
                                                 <f:selectItem itemLabel="Plate Number" itemValue=""/>
-                                                <f:selectItems value="#{insuranceController.list}" var="item" itemValue="#{item.plateNumber}" itemLabel="#{item.plateNumber}"/>
+                                                <f:selectItems value="#{insuranceController.listCombo}" var="item" itemValue="#{item.plateNumber}" itemLabel="#{item.plateNumber}"/>
                                             </h:selectOneMenu>
                                             <h:message for="plateNumber"/>
                                         </div>
                                         <div class="col-lg-1 pull-right">
                                             <h:commandButton value="submit" class="btn btn-primary submit" action="#{insuranceController.filterBy()}">
                                             </h:commandButton>
-                                            <!--<h:inputText class="datepicker-12 form-control"/>-->
                                         </div>
                                     </h:form>
-
-                                    <!--                                    <div class="col-lg-1">
-                                                                            <h:inputText class="datepicker-12 form-control"/>
-                                                                        </div>-->
                                 </div>
                             </div> 
                         </div>
@@ -95,6 +91,7 @@
                                     <th>Phone Number</th>
                                     <th>Amount</th>
                                     <th>Car Name</th>
+                                    <th>Plate Number</th>
                                     <th>Read More</th>
                                 </thead>
                                 <tbody>
@@ -104,11 +101,13 @@
                                             <td>#{i.garageName}</td>
                                             <td>#{i.phoneNumber}</td>
                                             <td>
-                                                <h:outputFormat value="#{i.totalAmount}">
+                                                <h:outputFormat value="#{i.totalAmount + insuranceController.calculatePercent(i.totalAmount)}">
                                                     <f:convertNumber pattern="###,###,###"/>
                                                 </h:outputFormat> FRW
                                             </td>
                                             <td>#{i.carName}</td>
+                                            <td>#{i.plateNumber}</td>
+
                                             <td>
                                                 <h:form>
                                                     <h:commandLink value="Read more" class="btn btn-primary readmore">
@@ -189,6 +188,7 @@
                                             <th>ITEM</th>
                                             <th>DESCRIPTION</th>
                                             <th>QTY</th>
+                                            <th>PART NUMBER</th>
                                             <th>UNIT PRICE</th>
                                             <th>TOTAL PRICE</th>
                                         </thead>
@@ -196,15 +196,17 @@
                                             <c:forEach items="#{insuranceController.quotation}" var="i" varStatus="status">
                                                 <tr>
                                                     <td>${status.index + 1}</td>
-                                                    <td>#{i.jobDescription}</td>
-                                                    <td>#{i.quantity}</td>
+                                                    <td>#{i.brokenCarPart.carsparepart.name}</td>
+                                                    <td>#{i.brokenCarPart.quantity}</td>
+                                                    <td>#{i.brokenCarPart.partNumber}</td>
+
                                                     <td>
                                                         <h:outputFormat value="#{i.price}">
                                                             <f:convertNumber pattern="###,###,###"/>
                                                         </h:outputFormat>FRW
                                                     </td>
                                                     <td>
-                                                        <h:outputFormat value="#{i.price*i.quantity}">
+                                                        <h:outputFormat value="#{i.price*i.brokenCarPart.quantity}">
                                                             <f:convertNumber pattern="###,###,###"/>
                                                         </h:outputFormat>
                                                         FRW

@@ -40,7 +40,8 @@ public class QuotationDao {
 
     public List<Quotation> listOfApprovedBid(String garageId) {
         Session s = SessionManager.getSession();
-        Query qry = s.createQuery("select a,SUM(a.price * a.quantity)AS price  from Quotation a where a.bidding.garage.garageId=? and a.bidding.status='clientSide'  group by a.bidding");
+        
+        Query qry = s.createQuery("select a,SUM(a.price * a.brokenCarPart.quantity)AS price  from Quotation a where a.bidding.garage.garageId=? and a.bidding.status='clientSide'  group by a.bidding");
         qry.setString(0, garageId);
         List<Quotation> list = qry.list();
         s.close();
@@ -50,14 +51,15 @@ public class QuotationDao {
     public List<Quotation> getGarageBid(String garageId) {
         try {
             List<Quotation> list = new ArrayList<>();
-            String query = "select v.name as vname,v.chasisNum,v.plateNum,ins.name,SUM(q.price * q.quantity) as"
+            String query = "select v.name as vname,v.chasisNum,v.plateNum,ins.name,SUM(q.price * BrokenCarPart.quantity) as"
                     + " totalPrice,bid.status bidStatus,bid.bidId,"
-                    + "vd.status,bid.createAt from VehicleDetail vd,InsuranceCompany ins,Vehicle v,Quotation q,"
+                    + "vd.status,bid.createAt from VehicleDetail vd,InsuranceCompany ins,Vehicle v,Quotation q,BrokenCarPart,"
                     + "Bidding bid where "
                     + "ins.uuid=vd.insuranceId "
                     + "and bid.vehicleDetailsId=vd.uuid "
                     + "AND vd.vehicleId=v.vehicleId "
                     + "and bid.garageId='" + garageId + "' "
+                    +" AND BrokenCarPart.id=q.brokenCarPart "
                     + "AND bid.bidId=q.biddingId "
                     + "ORDER BY bid.createAt DESC";
 
@@ -95,7 +97,7 @@ public class QuotationDao {
                 System.out.println(bid.getCreateAt());
                 bid.setBidId(row.get("bidId").toString());
                 bid.setStatus(row.get("bidStatus").toString());
-                v.setChasisNum(row.get("chasisNum").toString());
+                v.setChasisNum((row.get("chasisNum")!=null )? row.get("chasisNum").toString():"");
                 v.setPlateNum(row.get("plateNum").toString());
                 v.setName(row.get("vname").toString());
                 q.setInsuranceName(row.get("name").toString());

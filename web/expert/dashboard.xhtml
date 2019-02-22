@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Expert Dashboard</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap1.css"></link>
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 boxz">
+                    <span class="spanTitle">
+                        Total Car Repair
+                    </span>
+                    <i class="fa fa-car bigIconStyle pull-right" style="background:#dffaff !important;color: #25d5f2 !important"></i>
+                    <h3>30</h3>
+                </div>
+                <div class="col-lg-3  boxz">
+                    <span class="spanTitle">
+                        New Expectise 
+                    </span>
+                    <i class="fas fa-car-crash bigIconStyle pull-right" style="background:#fff2d5 !important;color: #ffc750 !important"></i>
+                    <h3>#{garageController.listNewVehicleDetails.size()}</h3>
+                </div>
+                <div class="col-lg-4 col-lg-offset-1  boxz">
+                    <span class="spanTitle">
+                        Working with Insurance
+                    </span>
+                    <i class="fa fa-money-bill-alt bigIconStyle pull-right" style="background:#ffdbe6 !important;color: #ff407b !important"></i>
+                    <h3>20 </h3>
+                </div>
+            </div>
+        </div>
+        <div class="container dashboardContainer">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <c:if test="#{garageController.listNewVehicleDetails.size()>0}">
+                        <div class="title">
+                            <div class="container" style="margin-bottom: 10px;">
+                                <div class="col-lg-6">
+                                    <h3>List Of New Broken Car</h3>
+                                </div>
+                            </div> 
+                        </div>
+                        <h:messages class="alert alert-info" globalOnly="true"/>
+                        <h:panelGroup id="tables">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Client </th>
+                                        <th>Phone Number</th>
+                                        <th>Plate Number</th>
+                                        <th>Name</th>
+                                        <th>Policy Number</th>
+                                        <th>Location</th>
+                                        <th>Publication Date</th>
+                                        <th>Description</th>
+                                        <th>Read More</th>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="i"  items="#{garageController.listNewVehicleDetails}" varStatus="status">
+                                            <tr>
+                                                <td>${status.index + 1}</td>
+                                                <td>#{i.client.fname}&nbsp; #{i.client.lname}</td>
+                                                <td>#{i.client.phoneNumber}</td>
+                                                <td>#{i.vehicle.plateNum}</td>
+                                                <td>#{i.vehicle.name}</td>
+                                                <td>#{i.vehicle.policyNumber}</td>
+                                                <td>#{i.location}</td>
+                                                <td>
+                                                    <h:outputFormat value="#{i.createdAt}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss"/>
+                                                    </h:outputFormat>
+                                                </td>
+                                                <td>
+                                                    <h:outputFormat  escape="false" value="#{(i.whatHappen.length()>38)?  i.whatHappen.substring(0,38): i.whatHappen}"/>
+                                                    <h:outputFormat  escape="false" value="#{(i.whatHappen.length()>38)? '...': ''}"/>
+
+                                                </td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink value="Read more" action="#{insuranceController.readMore(i)}" class="btn btn-primary">
+                                                        </h:commandLink>
+                                                    </h:form> 
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </h:panelGroup>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

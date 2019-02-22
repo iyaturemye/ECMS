@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Admin Page</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <style>
+            .badge{
+                background:#17a0d7;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div>
+            <div class="header">
+                <div class="container cont">
+                    <div class="rows">
+                        <div class="col-lg-6">
+                            <span style="margin-top: 8px;">ECMS(Client panel)</span>
+                        </div>
+                        <div class="col-lg-3 col-lg-offset-1"
+                             style="text-align: right; margin-top: 8px;">
+                            <span>You Signed in as #{loginController.user.userName}</span>
+                        </div>
+                        <div class="col-lg-2">
+                            <ul class="logout">
+                                <li>
+                                    <h:form>
+                                        <h:commandLink action="#{loginController.logout()}">
+                                            <i class="fa fa-power-off " aria-hidden="true"></i>
+                                        </h:commandLink>
+                                    </h:form>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <nav class="navbar navs" role="navigation">
+                    <div>
+                        <ul class="nav navbar-nav  myNavStyle">
+                            <li><a href="dashboard.xhtml"><i class="fa fa-tachometer-alt   carIcon"  aria-hidden="true"></i> Dashboard</a></li>
+                            <li><a href="history.xhtml"><i class="fa fa-history   carIcon"  aria-hidden="true"></i> History</a></li>
+                            <li><a href="dashboard.xhtml"><i class="fas fa-users"></i> Profile</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </h:body>
+</html>

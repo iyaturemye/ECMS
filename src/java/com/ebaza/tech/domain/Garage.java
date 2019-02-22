@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -22,7 +21,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Godwin
  */
 @Entity
-@XmlRootElement
 public class Garage implements Serializable {
 
     @Id
@@ -41,6 +39,7 @@ public class Garage implements Serializable {
     private String location;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "garage")
     private List<ExpectiseGarage> expectiseGarage;
+    private String garageType;
 
     public String getGarageId() {
         return garageId;
@@ -131,5 +130,16 @@ public class Garage implements Serializable {
     public void setExpectiseGarage(List<ExpectiseGarage> expectiseGarage) {
         this.expectiseGarage = expectiseGarage;
     }
+
+    public String getGarageType() {
+        return garageType;
+    }
+
+    public void setGarageType(String garageType) {
+        this.garageType = garageType;
+    }
+    
+    
+    
 
 }

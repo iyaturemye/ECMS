@@ -5,6 +5,7 @@
  */
 package com.ebaza.tech.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,8 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Godwin
  */
 @Entity
-@XmlRootElement
-public class Bidding {
+public class Bidding implements Serializable {
 
     @Id
     private String bidId = UUID.randomUUID().toString();

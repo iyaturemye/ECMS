@@ -42,8 +42,9 @@ public class CompledCarDao {
         try {
             Session s = SessionManager.getSession();
             SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,"
-                    + "sum(Quotation.price*Quotation.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail  "
+                    + "sum(Quotation.price*BrokenCarPart.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
                     + "where "
+                    +"Quotation.brokenCarPart=BrokenCarPart.id AND "
                     + "Bidding.bidid=Quotation.biddingId "
                     + "AND Bidding.status='completed' "
                     + "AND Bidding.garageId='" + garageId + "' "
@@ -71,9 +72,10 @@ public class CompledCarDao {
         try {
             Session s = SessionManager.getSession();
             SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,"
-                    + "sum(Quotation.price*Quotation.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail  "
+                    + "sum(Quotation.price*BrokenCarPart.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
                     + "where "
-                    + "Bidding.bidid=Quotation.biddingId "
+                    +"Quotation.brokenCarPart=BrokenCarPart.id "
+                    + "AND  Bidding.bidid=Quotation.biddingId "
                     + "AND Bidding.status='completed' "
                     + "AND Bidding.garageId='" + garageId + "' "
                     + "AND Bidding.vehicleDetailsId=VehicleDetail.uuid "
@@ -99,11 +101,12 @@ public class CompledCarDao {
         try {
             Session s = SessionManager.getSession();
             SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,"
-                    + "sum(Quotation.price*Quotation.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail  "
+                    + "sum(Quotation.price* BrokenCarPart.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
                     + "where "
                     + "Bidding.bidid=Quotation.biddingId "
                     + "AND Bidding.status='completed' "
                     + "AND Bidding.garageId='" + garageId + "' "
+                    +"AND BrokenCarPart.id=Quotation.brokenCarPart "
                     + "AND Bidding.vehicleDetailsId=VehicleDetail.uuid "
                     + "AND VehicleDetail.vehicleId=Vehicle.vehicleId "
                     + "AND VehicleDetail.insuranceId=InsuranceCompany.uuid "
@@ -128,8 +131,8 @@ public class CompledCarDao {
             Session s = SessionManager.getSession();
             SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,"
                     + "Vehicle.plateNum,Garage.name,CompletedCar.purchaseOrdernum,"
-                    + "sum(Quotation.price*Quotation.quantity) as totalAmount "
-                    + "from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,Garage"
+                    + "sum(Quotation.price*BrokenCarPart.quantity) as totalAmount "
+                    + "from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,Garage,BrokenCarPart "
                     + "  where Bidding.bidid=Quotation.biddingId "
                     +"AND Bidding.garageId=Garage.garageId "
                     + "AND Bidding.status='completed' "
@@ -139,6 +142,7 @@ public class CompledCarDao {
                     + "VehicleDetail.insuranceId=InsuranceCompany.uuid AND "
                     + "CompletedCar.bidding=Bidding.bidid AND "
                     + "CompletedCar.isPaid='0' "
+                    +"AND BrokenCarPart.id=Quotation.brokenCarPart "
                     + "Group by Quotation.biddingId AND InsuranceCompany.uuid");
             List<GaragePayment> list;
             sql.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);

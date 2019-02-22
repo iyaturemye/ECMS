@@ -11,8 +11,17 @@
           user-scalable=no"/>
     <h:head>
         <title>ECMS(Electronics Claims Management System)</title>
-        <link rel="stylesheet" href="layout/css/bootstrap1.css"/>
-        <link rel="stylesheet" href="layout/css/mystyle.css"/>
+        <h:outputStylesheet library = "css" name = "mystyle.css"  />
+        <h:outputStylesheet library = "css" name = "linearicons.css"  /> 
+        <h:outputStylesheet library = "css" name = "bootstrap.css"  /> 
+        <h:outputStylesheet library = "css" name = "font-awesome.min.css"  /> 
+        <h:outputStylesheet library = "css" name = "bootstrap.css"  /> 
+        <h:outputStylesheet library = "css" name = "magnific-popup.css"  /> 
+        <h:outputStylesheet library = "css" name = "jquery-ui.css"  /> 
+        <h:outputStylesheet library = "css" name = "nice-select.css"  /> 
+        <h:outputStylesheet library = "css" name = "animate.min.css"  /> 
+        <h:outputStylesheet library = "css" name = "owl.carousel.css"  /> 
+        <h:outputStylesheet library = "css" name = "main.css"  /> 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Charmonman|Quicksand" rel="stylesheet"/> 
         <!--layout/font-awesome-4.7.0/css/bgpanel.png-->
@@ -130,34 +139,34 @@
                 <div class="filters-content">
                     <div class="row grid">
                         <c:forEach items="#{vehicleController.brokenCar}" var="items">
-                        <c:forEach items="#{vehicleController.images}" var="i">
-                            <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
-                                <div class="single-portfolio col-sm-3 all vector">
-                                    <div class="relative">
+                            <c:forEach items="#{vehicleController.images}" var="i">
+                                <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
+                                    <div class="single-portfolio col-sm-3 all vector">
+                                        <div class="relative">
 
-                                        <div class="thumb">
+                                            <div class="thumb">
+                                                <h:form>
+                                                    <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
+                                                        <img class="image img-fluid" src="layout/image/blockenCar/#{i.image}" alt=""/>
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                        <div class="p-inner">
                                             <h:form>
                                                 <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                                    <img class="image img-fluid" src="layout/image/blockenCar/#{i.image}" alt=""/>
+                                                    <h4>#{items.vehicle.name},<span>#{items.vehicle.plateNum}</span></h4>
                                                 </h:commandLink>
                                             </h:form>
-                                        </div>
+                                            <div class="cat">
+                                                <h:outputText value="#{items.createdAt}">
+                                                    <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
+                                                </h:outputText>
+                                            </div>
+                                        </div>					                               
                                     </div>
-                                    <div class="p-inner">
-                                        <h:form>
-                                            <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                                <h4>#{items.vehicle.name},<span>#{items.vehicle.plateNum}</span></h4>
-                                            </h:commandLink>
-                                        </h:form>
-                                        <div class="cat">
-                                            <h:outputText value="#{items.createdAt}">
-                                                <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
-                                            </h:outputText>
-                                        </div>
-                                    </div>					                               
-                                </div>
-                            </c:if>
-                        </c:forEach>
+                                </c:if>
+                            </c:forEach>
                         </c:forEach>
                     </div>
                 </div>

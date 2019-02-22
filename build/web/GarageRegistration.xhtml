@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <meta name="viewport" content="width=device-width, 
           initial-scale=1.0, 
           maximum-scale=1.0, 
@@ -59,9 +60,19 @@
                 </div>
                 <div class="form-group">
                     <div class="col-lg-12">
+                       
+                        <h:selectOneMenu class="form-control" value="#{garageController.garage.garageType}" required="true" requiredMessage="Garage Job Type" id="jobType">
+                            <f:selectItem itemLabel="Please Select #{msg['garageJobType']}" itemValue="" />
+                            <f:selectItem itemLabel="Expert" itemValue="Expert"/>
+                            <f:selectItem itemLabel="garage" itemValue="garage"/>
+                        </h:selectOneMenu>
+                        <h:message for="jobType" class="text text-danger"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
                         <i class="fa fa-map-marker-alt   inputIcon"></i>
                         <h:inputText id="location" onfocus="geolocate()"  pt:placeholder="#{msg['garageLocation']}" value="#{garageController.garage.location}"  class="loginTxt location" required="true" requiredMessage="Location is required"/>
-
                         <h:message for="location" class="text text-danger"/>
                     </div>
                 </div>
@@ -69,7 +80,6 @@
                     <div class="col-lg-12">
                         <i class="fa fa-money-bill-alt inputIcon"></i>
                         <h:inputText id="creditCardNumber" pt:placeholder="#{msg['tinNumber']}" value="#{garageController.garage.creditCardNumber}"  class="loginTxt" required="true" requiredMessage="Tin Number is required"/>
-                        <!--<input type="password" placeholder="Enter Password" class="loginTxt"/>-->
                         <h:message for="creditCardNumber" class="text text-danger"/>
                     </div>
                 </div>

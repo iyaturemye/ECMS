@@ -22,6 +22,35 @@ import org.hibernate.Session;
  */
 public class VehicleDetailDao {
 
+    public List<VehicleDetail> getClientFinishedCar(String userId) {
+        List<VehicleDetail> list = new ArrayList<>();
+        try {
+            Session s = SessionManager.getSession();
+            Query q = s.createQuery("select a from VehicleDetail a where a.client.user.userId=? AND a.status=? ORDER BY a.createdAt DESC");
+            q.setString(0, userId);
+            q.setString(1, "completed");
+            list = q.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<VehicleDetail> getExpectiseHistory(String garageId) {
+        List<VehicleDetail> list = new ArrayList<>();
+        try {
+            Session s = SessionManager.getSession();
+            Query q = s.createQuery("select a from VehicleDetail a where a.expectiseGarage.uuid=? ORDER BY a.createdAt DESC");
+            q.setString(0, garageId);
+            list = q.list();
+            s.close();
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return list;
+        }
+    }
+
     public List<VehicleDetail> getSome(String garageId, String condition) {
         List<VehicleDetail> list = new ArrayList<>();
         try {

@@ -138,7 +138,6 @@
             <div class="rows">
                 <div class="col-lg-12">
                     <c:if test="#{garageController.listNewVehicleDetails.size()>0}">
-
                         <div class="title">
                             <div class="container" style="margin-bottom: 10px;">
                                 <div class="col-lg-6">
@@ -254,15 +253,15 @@
                                             <c:forEach items="#{insuranceController.quotation}" var="i" varStatus="status">
                                                 <tr>
                                                     <td>${status.index + 1}</td>
-                                                    <td>#{i.jobDescription}</td>
-                                                    <td>#{i.quantity}</td>
+                                                    <td>#{i.brokenCarPart.carsparepart.name}</td>
+                                                    <td>#{i.brokenCarPart.quantity}</td>
                                                     <td>
                                                         <h:outputFormat value="#{i.price}">
                                                             <f:convertNumber pattern="###,###,###"/>
                                                         </h:outputFormat>FRW
                                                     </td>
                                                     <td>
-                                                        <h:outputFormat value="#{i.price*i.quantity}">
+                                                        <h:outputFormat value="#{i.price*i.brokenCarPart.quantity}">
                                                             <f:convertNumber pattern="###,###,###"/>
                                                         </h:outputFormat>
                                                         FRW

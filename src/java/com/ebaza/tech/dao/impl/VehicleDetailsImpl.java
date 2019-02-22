@@ -104,4 +104,9 @@ public class VehicleDetailsImpl extends AbstractDao<Long, VehicleDetail> impleme
         return new VehicleDetailDao().getSome(garageId, condition);
     }
 
+    @Override
+    public List<VehicleDetail> clientFinishedCar(String userId) {
+        return new VehicleDetailDao().getClientFinishedCar(userId);
+    }
+
 }

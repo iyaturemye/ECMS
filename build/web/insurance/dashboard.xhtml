@@ -65,11 +65,9 @@
                     <h3>#{insuranceController.newOne.size()}</h3>
                 </div>
                 <div class="col-lg-2 boxz">
-
                     <span class="spanTitle">
                         Car to be Repaired
                     </span>
-
                     <i class="fa fa-wrench bigIconStyle pull-right" style="background:#dbdeff !important;color: #5969ff !important"></i>
                     <h3>#{insuranceController.listOfVehicleDetails.size()} </h3>
                 </div>
@@ -436,15 +434,15 @@
                                             <c:forEach items="#{insuranceController.quotation}" var="i" varStatus="status">
                                                 <tr>
                                                     <td>${status.index + 1}</td>
-                                                    <td>#{i.jobDescription}</td>
-                                                    <td>#{i.quantity}</td>
+                                                    <td>#{i.brokenCarPart.carsparepart.name}</td>
+                                                    <td>#{i.brokenCarPart.quantity}</td>
                                                     <td>
                                                         <h:outputFormat value="#{i.price}">
                                                             <f:convertNumber pattern="###,###,###"/>
                                                         </h:outputFormat>FRW
                                                     </td>
                                                     <td>
-                                                        <h:outputFormat value="#{i.price*i.quantity}">
+                                                        <h:outputFormat value="#{i.price*i.brokenCarPart.quantity}">
                                                             <f:convertNumber pattern="###,###,###"/>
                                                         </h:outputFormat>
                                                         FRW

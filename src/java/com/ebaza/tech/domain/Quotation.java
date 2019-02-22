@@ -12,26 +12,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Godwin
  */
 @Entity
-@XmlRootElement
 public class Quotation implements Serializable {
 
     @Id
     private String uuid = UUID.randomUUID().toString();
-    private String jobDescription;
-    private int quantity;
     private double price;
     @ManyToOne
     @JoinColumn(name = "biddingId")
     private Bidding bidding;
     @Transient
     private String insuranceName;
+    @ManyToOne
+    @JoinColumn(name = "brokenCarPart")
+    private BrokenCarPart brokenCarPart;
 
     public String getUuid() {
         return uuid;
@@ -39,22 +38,6 @@ public class Quotation implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-    public String getJobDescription() {
-        return jobDescription;
-    }
-
-    public void setJobDescription(String jobDescription) {
-        this.jobDescription = jobDescription;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public double getPrice() {
@@ -79,5 +62,14 @@ public class Quotation implements Serializable {
 
     public void setInsuranceName(String insuranceName) {
         this.insuranceName = insuranceName;
-    }  
+    }
+
+    public BrokenCarPart getBrokenCarPart() {
+        return brokenCarPart;
+    }
+
+    public void setBrokenCarPart(BrokenCarPart brokenCarPart) {
+        this.brokenCarPart = brokenCarPart;
+    }
+    
 }

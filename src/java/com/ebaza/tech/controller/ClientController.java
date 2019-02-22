@@ -7,12 +7,18 @@ package com.ebaza.tech.controller;
 
 import com.ebaza.tech.dao.impl.ClientImpl;
 import com.ebaza.tech.dao.impl.UserImpl;
+import com.ebaza.tech.dao.impl.VehicleDetailsImpl;
 import com.ebaza.tech.domain.Client;
 import com.ebaza.tech.domain.User;
+import com.ebaza.tech.domain.VehicleDetail;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 /**
@@ -20,10 +26,21 @@ import javax.faces.context.FacesContext;
  * @author Godwin
  */
 @ManagedBean
+@SessionScoped
 public class ClientController implements Serializable {
 
     private Client client = new Client();
     private List<Client> list = new ClientImpl().getAll();
+    List<VehicleDetail> clientFinishedMentainance = new ArrayList<>();
+    @ManagedProperty(value = "#{loginController.loggedInUser}")
+    private User user;
+
+    @PostConstruct
+    public void init() {
+        System.out.println("the loggedin User is ----------------"+user.getUserName());
+        clientFinishedMentainance = new VehicleDetailsImpl().clientFinishedCar(user.getUserId());
+        System.out.println("--------------------------"+clientFinishedMentainance.size());
+    }
 
     public void changeStatus(User user) {
         String newStatus = (user.getStatus().equalsIgnoreCase("block") ? "active" : "block");
@@ -51,6 +68,22 @@ public class ClientController implements Serializable {
 
     public void setList(List<Client> list) {
         this.list = list;
+    }
+
+    public List<VehicleDetail> getClientFinishedMentainance() {
+        return clientFinishedMentainance;
+    }
+
+    public void setClientFinishedMentainance(List<VehicleDetail> clientFinishedMentainance) {
+        this.clientFinishedMentainance = clientFinishedMentainance;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

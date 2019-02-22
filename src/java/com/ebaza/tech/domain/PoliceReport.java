@@ -41,7 +41,7 @@ public class PoliceReport implements Serializable {
     private Police police;
     private String additionalDocument;
     private String status="not Approved";
-    //private Stri
+    private String whoisResponsibeForThis;
 
     public String getUuid() {
         return uuid;
@@ -122,8 +122,13 @@ public class PoliceReport implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    
-    
+
+    public String getWhoisResponsibeForThis() {
+        return whoisResponsibeForThis;
+    }
+
+    public void setWhoisResponsibeForThis(String whoisResponsibeForThis) {
+        this.whoisResponsibeForThis = whoisResponsibeForThis;
+    }
     
 }

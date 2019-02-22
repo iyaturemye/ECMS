@@ -62,7 +62,12 @@ public class LoginFilter implements Filter, DbConstant {
         } else if (currentPath.contains("client") && userSession == null) {
             ((HttpServletResponse) response).
                     sendRedirect(contextPath + "/sec/login.xhtml");
+        }else if (currentPath.contains("expert") && userSession == null) {
+            ((HttpServletResponse) response).
+                    sendRedirect(contextPath + "/sec/login.xhtml");
         }
+        
+//        expert
 
         if (userSession == null && currentPath.contains("policeReport")) {
             ((HttpServletRequest) request).getSession().
@@ -90,6 +95,9 @@ public class LoginFilter implements Filter, DbConstant {
             ((HttpServletResponse) response).
                     sendRedirect(contextPath + "/sec/login.xhtml");
         } else if (userSession != null && currentPath.contains("policeReport") && !userType.equalsIgnoreCase("police")) {
+            ((HttpServletResponse) response).
+                    sendRedirect(contextPath + "/sec/login.xhtml");
+        }else if (userSession != null && currentPath.contains("expert") && !userType.equalsIgnoreCase("Expert")) {
             ((HttpServletResponse) response).
                     sendRedirect(contextPath + "/sec/login.xhtml");
         }

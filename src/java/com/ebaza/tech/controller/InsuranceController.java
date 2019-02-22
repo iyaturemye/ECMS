@@ -52,7 +52,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.json.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -81,17 +80,6 @@ public class InsuranceController implements DbConstant, Serializable {
     private List<ApprovedTemplate> allApproved = new ArrayList<>();
     private VehicleDetail vehicleDetail;
     private List<String> engineList = new ArrayList<>();
-    private List<String> bodyList = new ArrayList<>();
-    private List<String> fuelList = new ArrayList<>();
-    private List<String> gearboxList = new ArrayList<>();
-    private List<String> steeringList = new ArrayList<>();
-    private List<String> breakingList = new ArrayList<>();
-    private List<String> cluthList = new ArrayList<>();
-    private List<String> coolantList = new ArrayList<>();
-    private List<String> wheelsList = new ArrayList<>();
-    private List<String> instrumentList = new ArrayList<>();
-    private List<String> electricalList = new ArrayList<>();
-    private List<String> underFameList = new ArrayList<>();
     private List<CompletedCar> completedList = new ArrayList<>();
     private List<ExpectiseGarage> expectiseGarage = new ArrayList<>();
     private String ExpectiseGarageId;
@@ -110,29 +98,53 @@ public class InsuranceController implements DbConstant, Serializable {
     private List<Carsparepart> listOfChoosenCarPart = new ArrayList<>();
     private List<Carsparepart> listOfChoosenCarPart2 = new ArrayList<>();
     private List<BrokenCarPart> listOfBrokenPart = new ArrayList<>();
+    private List<BrokenCarPart> listOfCarPart = new ArrayList<>();
     private Carsparepart chooseCarspart;
     private String testText;
     private Set<Carsparepart> allBrokenPartParent = new HashSet<>();
+    private int quantity;
+    private String partNumber;
+    private Set<BrokenCarPart> addedBrokenCar = new HashSet<>();
+    private BrokenCarPart choosenBrokenPart = new BrokenCarPart();
+    private String choosencareSpare;
 
     public int numberOfCount(VehicleDetail vd) {
         return new VehicleDetailDao().getCount(vd);
     }
 
     public void addToList() throws Exception {
-        for (String x : this.engineList) {
-            Carsparepart c = new CarsparepartImpl().getModelWithMyHQL(new String[]{"id"}, new Object[]{x}, "from Carsparepart");
-            if (!checkIfExistIn(c)) {
-                this.listOfChoosenCarPart2.add(c);
+        for (BrokenCarPart x : listOfBrokenPart) {
+            addedBrokenCar.add(x);
+        }
+        for (BrokenCarPart z : listOfBrokenPart) {
+            System.out.println(z.getCarsparepart().getName());
+        }
+        this.listOfBrokenPart = new ArrayList<>();
+    }
+
+    public void removingBrokenPart() {
+        Carsparepart part = new Carsparepart();
+        part.setId(choosencareSpare);
+        BrokenCarPart z = new BrokenCarPart();
+        for (BrokenCarPart x : listOfBrokenPart) {
+            if (x.getCarsparepart().getId().equalsIgnoreCase(choosencareSpare)) {
+                z = x;
             }
         }
-        this.listOfChoosenCarPart = new ArrayList<>();
+        this.listOfBrokenPart.remove(z);
+    }
+
+    public void additToList() throws Exception {
+        Carsparepart part;
+        part = new CarsparepartImpl().getModelWithMyHQL(new String[]{"id"}, new Object[]{choosencareSpare}, "from Carsparepart");
+        choosenBrokenPart.setCarsparepart(part);
+        this.listOfBrokenPart.add(choosenBrokenPart);
+        this.choosenBrokenPart = new BrokenCarPart();
     }
 
     private boolean checkIfExistIn(Carsparepart object) {
-
         for (Carsparepart x : this.listOfChoosenCarPart2) {
             if (x.getId().equalsIgnoreCase(object.getId())) {
-                System.out.println("here we go bos wwwwwwwwwwwwwwwwww");
                 return true;
             }
         }
@@ -157,70 +169,16 @@ public class InsuranceController implements DbConstant, Serializable {
         }
     }
 
-    public String convertIntoJson() throws ParseException {
-        JSONObject obj = new JSONObject();
-        obj.put("engine", (engineList.isEmpty()) ? null : engineList);
-        obj.put("body", (bodyList.isEmpty()) ? null : bodyList);
-        obj.put("fuel", (fuelList.isEmpty()) ? null : fuelList);
-        obj.put("break", (breakingList.isEmpty()) ? null : breakingList);
-        obj.put("cluth", (cluthList.isEmpty()) ? null : cluthList);
-        obj.put("coolant", (coolantList.isEmpty()) ? null : coolantList);
-        obj.put("wheelsList", (wheelsList.isEmpty()) ? null : wheelsList);
-        obj.put("instrument", (instrumentList.isEmpty()) ? null : instrumentList);
-        obj.put("electrical", (electricalList.isEmpty()) ? null : electricalList);
-        obj.put("underFame", (underFameList.isEmpty()) ? null : underFameList);
-//        obj.put("others", others);
-        return obj.toString();
-    }
+   
 
     public PoliceReport policeReport() {
 
         return null;
     }
 
-    public void addNewToList(String value) {
-        if (value.equals("addforeng")) {
-            this.engineList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addforbody")) {
-            this.bodyList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addforfuel")) {
-            this.fuelList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addforgear")) {
-            this.gearboxList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addforsteer")) {
-            this.steeringList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addforbreak")) {
-            this.breakingList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addforwheel")) {
-            this.wheelsList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addforcoolant")) {
-            this.coolantList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addforcluth")) {
-            this.cluthList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addinstrument")) {
-            this.instrumentList.add(newValue);
-            newValue = null;
-        } else if (value.equals("addelectrical")) {
-            this.electricalList.add(newValue);
-            this.newValue = null;
-        } else if (value.equals("addunder")) {
-            this.underFameList.add(newValue);
-            this.newValue = null;
-        }
-    }
 
-    public void removeFromList(Carsparepart x) {
-        this.listOfChoosenCarPart2.remove(x);
-        System.out.println("done hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    public void removeFromList(BrokenCarPart x) {
+        this.addedBrokenCar.remove(x);
     }
 
     public InsuranceController() throws Exception {
@@ -308,10 +266,10 @@ public class InsuranceController implements DbConstant, Serializable {
         }
     }
 
-    public String approveCar() throws ParseException {
+    public String approveCar(String location) throws ParseException {
 
         try {
-            if (this.engineList.isEmpty()) {
+            if (this.addedBrokenCar.isEmpty()) {
                 FacesContext.getCurrentInstance().
                         addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "your must atleast choose which problem car have and then continue"
                                 + " ", null));
@@ -321,16 +279,15 @@ public class InsuranceController implements DbConstant, Serializable {
                 this.vehicleDetail.setReadOrUnread("unread");
                 new VehicleDetailsImpl().updateInfo(vehicleDetail);
 
-                for (Carsparepart x : this.listOfChoosenCarPart2) {
-                    BrokenCarPart obj = new BrokenCarPart();
-                    obj.setVehicleDetails(vehicleDetail);
-                    obj.setCarsparepart(x);
-                    new BrokenCarPartImpl().create(obj);
+                for (BrokenCarPart x : this.addedBrokenCar) {
+                    x.setVehicleDetails(vehicleDetail);
+                    new BrokenCarPartImpl().create(x);
                 }
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "have been successsfull approved", null));
+                this.addedBrokenCar = new HashSet<>();
             }
 
-            return "dashboard.xhtml?faces-redirect=true";
+            return location;
         } catch (Exception e) {
             new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
             e.printStackTrace();
@@ -487,7 +444,7 @@ public class InsuranceController implements DbConstant, Serializable {
             this.quotation = new QuotationImpl().getOne(billing.getBidId());
             this.subTotal = 0;
             for (Quotation q : quotation) {
-                subTotal += q.getPrice() * q.getQuantity();
+                subTotal += q.getPrice() * q.getBrokenCarPart().getQuantity();
             }
             if (where.equalsIgnoreCase("insurance")) {
                 billing.setStatus("read");
@@ -755,94 +712,6 @@ public class InsuranceController implements DbConstant, Serializable {
         this.engineList = engineList;
     }
 
-    public List<String> getBodyList() {
-        return bodyList;
-    }
-
-    public void setBodyList(List<String> bodyList) {
-        this.bodyList = bodyList;
-    }
-
-    public List<String> getFuelList() {
-        return fuelList;
-    }
-
-    public void setFuelList(List<String> fuelList) {
-        this.fuelList = fuelList;
-    }
-
-    public List<String> getGearboxList() {
-        return gearboxList;
-    }
-
-    public void setGearboxList(List<String> gearboxList) {
-        this.gearboxList = gearboxList;
-    }
-
-    public List<String> getSteeringList() {
-        return steeringList;
-    }
-
-    public void setSteeringList(List<String> steeringList) {
-        this.steeringList = steeringList;
-    }
-
-    public List<String> getBreakingList() {
-        return breakingList;
-    }
-
-    public void setBreakingList(List<String> breakingList) {
-        this.breakingList = breakingList;
-    }
-
-    public List<String> getCluthList() {
-        return cluthList;
-    }
-
-    public void setCluthList(List<String> cluthList) {
-        this.cluthList = cluthList;
-    }
-
-    public List<String> getCoolantList() {
-        return coolantList;
-    }
-
-    public void setCoolantList(List<String> coolantList) {
-        this.coolantList = coolantList;
-    }
-
-    public List<String> getWheelsList() {
-        return wheelsList;
-    }
-
-    public void setWheelsList(List<String> wheelsList) {
-        this.wheelsList = wheelsList;
-    }
-
-    public List<String> getInstrumentList() {
-        return instrumentList;
-    }
-
-    public void setInstrumentList(List<String> instrumentList) {
-        this.instrumentList = instrumentList;
-    }
-
-    public List<String> getElectricalList() {
-        return electricalList;
-    }
-
-    public void setElectricalList(List<String> electricalList) {
-        this.electricalList = electricalList;
-    }
-
-    public List<String> getUnderFameList() {
-        return underFameList;
-    }
-
-    public void setUnderFameList(List<String> underFameList) {
-        this.underFameList = underFameList;
-    }
-
     public List<CompletedCar> getCompletedList() {
         return completedList;
     }
@@ -1017,6 +886,54 @@ public class InsuranceController implements DbConstant, Serializable {
 
     public void setAllBrokenPartParent(Set<Carsparepart> allBrokenPartParent) {
         this.allBrokenPartParent = allBrokenPartParent;
+    }
+
+    public List<BrokenCarPart> getListOfCarPart() {
+        return listOfCarPart;
+    }
+
+    public void setListOfCarPart(List<BrokenCarPart> listOfCarPart) {
+        this.listOfCarPart = listOfCarPart;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getPartNumber() {
+        return partNumber;
+    }
+
+    public void setPartNumber(String partNumber) {
+        this.partNumber = partNumber;
+    }
+
+    public Set<BrokenCarPart> getAddedBrokenCar() {
+        return addedBrokenCar;
+    }
+
+    public void setAddedBrokenCar(Set<BrokenCarPart> addedBrokenCar) {
+        this.addedBrokenCar = addedBrokenCar;
+    }
+
+    public BrokenCarPart getChoosenBrokenPart() {
+        return choosenBrokenPart;
+    }
+
+    public void setChoosenBrokenPart(BrokenCarPart choosenBrokenPart) {
+        this.choosenBrokenPart = choosenBrokenPart;
+    }
+
+    public String getChoosencareSpare() {
+        return choosencareSpare;
+    }
+
+    public void setChoosencareSpare(String choosencareSpare) {
+        this.choosencareSpare = choosencareSpare;
     }
 
 }

@@ -8,6 +8,7 @@ package com.ebaza.tech.controller;
 import com.ebaza.tech.common.DbConstant;
 import com.ebaza.tech.common.SendEmail;
 import com.ebaza.tech.dao.generic.CompledCarDao;
+import com.ebaza.tech.dao.generic.VehicleDetailDao;
 import com.ebaza.tech.dao.impl.BiddingImpl;
 import com.ebaza.tech.dao.impl.CompletedCarImpl;
 import com.ebaza.tech.dao.impl.GarageImpl;
@@ -95,9 +96,13 @@ public class GarageController implements DbConstant, Serializable {
     private String status = "test 2019";
     private String anotherValue = "hello";
     private String keyElement;
+    private String jobType;
+    private List<VehicleDetail> expectiseHistory = new ArrayList<>();
+    private Garage loggedInGarage;
 
     @PostConstruct
     public void init() {
+        System.out.println("----------------------------------------------------");
         doIt();
     }
 
@@ -114,37 +119,50 @@ public class GarageController implements DbConstant, Serializable {
 
     private void doIt() {
         try {
-            listAllGarage = garageImpl.getAll();
+            listAllGarage = garageImpl.getGenericListWithHQLParameter(new String[]{"garageType"}, new Object[]{"Expert"}, "Garage");
             if (user2 != null) {
                 if (user2.getUserType().equalsIgnoreCase("garage")) {
                     GarageOwner owner = new GarageOwnerImpl().getOwner(user2.getUserId());
                     approvedList = new QuotationImpl().getApprovedBidd(new GarageImpl().getOne(owner.getOwnerId()).getGarageId());
                     loggedInUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLoggedIn");
-                    System.out.println("here we go boss wanjye");
                     if (loggedInUser != null) {
                         GarageOwner owners = new GarageOwnerImpl().getOwner(loggedInUser.getUserId());
-                        Garage loggedInGarage = new GarageImpl().getOne(owners.getOwnerId());
-                        this.listOfBid = new QuotationImpl().getGarageBid(loggedInGarage.getGarageId());
-
-                        this.allApproved = new BiddingImpl().getApprovedBd(loggedInGarage.getGarageId());
-                        this.listNewVehicleDetails = new VehicleDetailsImpl().expertiseGarage(loggedInGarage.getGarageId(), "new");
-                        listOfExpectise = new VehicleDetailsImpl().expertiseGarage(loggedInGarage.getGarageId(), "not New");
-                        this.notPaidList = new CompledCarDao().getAllNotPaid(loggedInGarage.getGarageId());
-                        this.AllTransaction = new CompledCarDao().getAllTransaction(loggedInGarage.getGarageId());
-                        this.notPaidForCombine = new CompledCarDao().notPaidInTotalForGarage(loggedInGarage.getGarageId());
+                        Garage loggedInGarages = new GarageImpl().getOne(owners.getOwnerId());
+                        this.loggedInGarage = loggedInGarages;
+                        this.listOfBid = new QuotationImpl().getGarageBid(loggedInGarages.getGarageId());
+                        this.expectiseHistory = new VehicleDetailDao().getExpectiseHistory(loggedInGarages.getGarageId());
+                        this.allApproved = new BiddingImpl().getApprovedBd(loggedInGarages.getGarageId());
+                        this.listNewVehicleDetails = new VehicleDetailsImpl().expertiseGarage(loggedInGarages.getGarageId(), "new");
+                        listOfExpectise = new VehicleDetailsImpl().expertiseGarage(loggedInGarages.getGarageId(), "not New");
+                        this.notPaidList = new CompledCarDao().getAllNotPaid(loggedInGarages.getGarageId());
+                        this.AllTransaction = new CompledCarDao().getAllTransaction(loggedInGarages.getGarageId());
+                        this.notPaidForCombine = new CompledCarDao().notPaidInTotalForGarage(loggedInGarages.getGarageId());
                         this.notpaidAmount = 0.0;
                         for (GaragePayment x : notPaidList) {
                             notpaidAmount += x.getTotalAmount() + (x.getTotalAmount() * 18) / 100;
                         }
 
                     }
+                } else if (user2.getUserType().equalsIgnoreCase("Expert")) {
+                    GarageOwner owners = new GarageOwnerImpl().getOwner(user2.getUserId());
+                    Garage loggedInGarages = new GarageImpl().getOne(owners.getOwnerId());
+                    this.loggedInGarage = loggedInGarages;
+                    this.expectiseHistory = new VehicleDetailDao().getExpectiseHistory(loggedInGarages.getGarageId());
+
                 }
 
             }
         } catch (Exception e) {
+            e.printStackTrace();
             new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
         }
 
+    }
+    
+    public void changeProfile(){
+    
+        
+        
     }
 
     public void changeGarageStatus(User user) {
@@ -246,14 +264,17 @@ public class GarageController implements DbConstant, Serializable {
     }
 
     public void create() {
-
         try {
             FacesContext context = FacesContext.getCurrentInstance();
             User us = new UserImpl().getModelWithMyHQL(new String[]{USERNAME}, new Object[]{
                 user.getUserName()}, SELECT_USERS);
             if (us == null) {
                 this.user.setPassword(new LoginImpl().criptPassword("garage"));
-                this.user.setUserType("garage");
+                if (this.garage.getGarageType().equalsIgnoreCase("Expert")) {
+                    this.user.setUserType("Expert");
+                } else {
+                    this.user.setUserType("garage");
+                }
                 this.user.setStatus("blocked");
                 Garage g = new GarageImpl().getModelWithMyHQL(new String[]{"name"}, new Object[]{
                     this.garage.getName()}, "from Garage");
@@ -533,11 +554,11 @@ public class GarageController implements DbConstant, Serializable {
                 pdfc1.setBorder(Rectangle.BOX);
                 table.addCell(pdfc1);
 
-                pdfc5 = new PdfPCell(new Phrase(ps.getJobDescription() + "", font6));
+                pdfc5 = new PdfPCell(new Phrase(ps.getBrokenCarPart().getCarsparepart().getName() + "", font6));
                 pdfc5.setBorder(Rectangle.BOX);
                 table.addCell(pdfc5);
 
-                pdfc6 = new PdfPCell(new Phrase(ps.getQuantity() + "", font6));
+                pdfc6 = new PdfPCell(new Phrase(ps.getBrokenCarPart().getQuantity() + "", font6));
                 pdfc6.setBorder(Rectangle.BOX);
                 table.addCell(pdfc6);
 
@@ -545,7 +566,7 @@ public class GarageController implements DbConstant, Serializable {
                 pdfc7.setBorder(Rectangle.BOX);
                 table.addCell(pdfc7);
 
-                pdfc8 = new PdfPCell(new Phrase(dcf.format(ps.getPrice() * ps.getQuantity()), font6));
+                pdfc8 = new PdfPCell(new Phrase(dcf.format(ps.getPrice() * ps.getBrokenCarPart().getQuantity()), font6));
                 pdfc8.setBorder(Rectangle.BOX);
                 table.addCell(pdfc8);
                 i++;
@@ -589,7 +610,6 @@ public class GarageController implements DbConstant, Serializable {
             OutputStream out = externalContext.getResponseOutputStream();
             baos.writeTo(out);
             externalContext.responseFlushBuffer();
-            System.out.println("here we go boss we---------------");
             return "dashboard.xhtml?faces-redirect=true";
         } catch (IOException e) {
             return null;
@@ -786,6 +806,38 @@ public class GarageController implements DbConstant, Serializable {
 
     public void setKeyElement(String keyElement) {
         this.keyElement = keyElement;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    public List<VehicleDetail> getExpectiseHistory() {
+        return expectiseHistory;
+    }
+
+    public void setExpectiseHistory(List<VehicleDetail> expectiseHistory) {
+        this.expectiseHistory = expectiseHistory;
+    }
+
+    public Garage getLoggedInGarage() {
+        return loggedInGarage;
+    }
+
+    public void setLoggedInGarage(Garage loggedInGarage) {
+        this.loggedInGarage = loggedInGarage;
     }
 
 }

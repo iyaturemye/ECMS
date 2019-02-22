@@ -56,6 +56,8 @@ public class VehicleDetailsController implements Serializable {
     private Date estimatedDate;
     private List<BrokenCarPart> listOfBrokenCarPart = new ArrayList<>();
     private Set<Carsparepart> listOfBrokenCarParent = new HashSet<>();
+    private double quotationPrice;
+    private Quotation chooseQuotationForPrice = new Quotation();
 
     @PostConstruct
     public void init() {
@@ -96,11 +98,15 @@ public class VehicleDetailsController implements Serializable {
     }
 
     public void addToQuotation() {
-        this.subTotal += (quotation.getPrice() * quotation.getQuantity());
+        this.subTotal += (chooseQuotationForPrice.getPrice() * chooseQuotationForPrice.getBrokenCarPart().getQuantity());
         this.tax = (subTotal * 18) / 100;
         this.totalAmount = subTotal + this.tax;
-        this.lisofQuotation.add(quotation);
-        quotation = new Quotation();
+        for (Quotation z : lisofQuotation) {
+            if (z.equals(chooseQuotationForPrice)) {
+                z.setPrice(chooseQuotationForPrice.getPrice());
+            }
+        }
+        chooseQuotationForPrice = new Quotation();
     }
 
     public void chooseAction() {
@@ -122,8 +128,8 @@ public class VehicleDetailsController implements Serializable {
         }
 
         if (toRemoved != -1) {
-            this.subTotal -= (lisofQuotation.get(toRemoved).getPrice() * lisofQuotation.get(toRemoved).getQuantity());
-            this.subTotal += quotation.getPrice() * quotation.getQuantity();
+            this.subTotal -= (lisofQuotation.get(toRemoved).getPrice() * lisofQuotation.get(toRemoved).getBrokenCarPart().getQuantity());
+            this.subTotal += quotation.getPrice() * quotation.getBrokenCarPart().getQuantity();
             this.tax = (subTotal * 18) / 100;
             this.totalAmount = subTotal + this.tax;
             lisofQuotation.set(toRemoved, quotation);
@@ -139,6 +145,10 @@ public class VehicleDetailsController implements Serializable {
         System.out.println("here we go boss we");
     }
 
+    public void addPriceToQuotation(Quotation q) {
+        this.chooseQuotationForPrice = q;
+    }
+
     public void removeFromQuotation(Quotation quotation) {
         int i = 0;
         int toRemoved = -1;
@@ -150,11 +160,10 @@ public class VehicleDetailsController implements Serializable {
         }
 
         if (toRemoved != -1) {
-            this.subTotal -= (lisofQuotation.get(toRemoved).getPrice() * lisofQuotation.get(toRemoved).getQuantity());
+            this.subTotal -= (lisofQuotation.get(toRemoved).getPrice() * lisofQuotation.get(toRemoved).getBrokenCarPart().getQuantity());
             this.tax = (subTotal * 18) / 100;
             this.totalAmount = subTotal + this.tax;
             lisofQuotation.remove(toRemoved);
-
         }
 
     }
@@ -185,13 +194,18 @@ public class VehicleDetailsController implements Serializable {
         }
     }
 
-    public String initCar(VehicleDetail vehicleDetail) {
+    public String initCar(VehicleDetail vehicleDetail) throws Exception {
         this.choosenVehicle = vehicleDetail;
         this.listOfVehicleImage = new VehicleImageImpl().getAllChoosenImg(choosenVehicle.getUuid());
         listOfBrokenCarPart = new BrokenCarPartImpl().getBrokenCarPart(vehicleDetail.getUuid());
+
         for (BrokenCarPart x : listOfBrokenCarPart) {
             this.listOfBrokenCarParent.add(x.getCarsparepart().getCarsparepart());
+            Quotation q = new Quotation();
+            q.setBrokenCarPart(x);
+            this.lisofQuotation.add(q);
         }
+
         return "carDetails.xhtml?faces-redirect=true";
     }
 
@@ -306,4 +320,21 @@ public class VehicleDetailsController implements Serializable {
     public void setListOfBrokenCarParent(Set<Carsparepart> listOfBrokenCarParent) {
         this.listOfBrokenCarParent = listOfBrokenCarParent;
     }
+
+    public double getQuotationPrice() {
+        return quotationPrice;
+    }
+
+    public void setQuotationPrice(double quotationPrice) {
+        this.quotationPrice = quotationPrice;
+    }
+
+    public Quotation getChooseQuotationForPrice() {
+        return chooseQuotationForPrice;
+    }
+
+    public void setChooseQuotationForPrice(Quotation chooseQuotationForPrice) {
+        this.chooseQuotationForPrice = chooseQuotationForPrice;
+    }
+
 }

@@ -30,16 +30,14 @@ public class LoginController implements Serializable {
     private User user = new User();
     private String whereFrom = "login";
     private User loggedInUser;
-    public static final String[] USERTYPE = {"admin", "garage", "insurance", "client", "police"};
+    public static final String[] USERTYPE = {"admin", "garage", "insurance", "client", "police","Expert"};
     private boolean isLoggedIn;
     private User changePass = new User();
     private String retypePassword;
     private String recentPassword;
 
     public String changePassword() throws Exception {
-
         try {
-
             String location = null;
             changePass.setUserName(user.getUserName());
             User u = new UserImpl().getModelWithMyHQL(new String[]{"userName", "password"}, new Object[]{
@@ -116,6 +114,9 @@ public class LoginController implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginFrom", null);
                             this.whereFrom = null;
                         }
+                    }else if(userLoggedIn.getUserType().equalsIgnoreCase(USERTYPE[5])){
+                        
+                         location = "expert/dashboard.xhtml?faces-redirect=true";
                     }
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Your Account have been blocked please you need to contact your Administrator", null));

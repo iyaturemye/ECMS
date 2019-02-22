@@ -4,7 +4,29 @@ body{
 thead{
     background:#f3f3f3;
 }
-
+.dashboardContainer{
+    box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+    margin-top: 60px;background: white;border:1px solid #ddd;padding: 5px;
+}
+.boxz{
+    background: white;
+    padding: 10px;
+    box-shadow: 1px 1px 3px .1px #ddd;
+    border-radius: 4px;
+    margin: 5px;
+}
+.bigIconStyle{
+    font-size: 30px;
+    border-radius: 50%;
+    padding: 10px;
+    margin-top: 10px;
+}
+.spanTitle{
+    font-size: 15px;
+    font-family: initial;
+    font-weight: bold;
+    color:#0000ab;
+}
 
 .cont {
     margin-left: 0px;

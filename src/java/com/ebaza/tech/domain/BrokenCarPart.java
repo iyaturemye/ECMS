@@ -7,10 +7,13 @@ package com.ebaza.tech.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 /**
@@ -30,6 +33,8 @@ public class BrokenCarPart implements Serializable {
     private Date createdAt=new Date();
     private int quantity;
     private String partNumber;
+    @OneToMany(mappedBy = "brokenCarPart",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Quotation> quotation;
 
     public String getId() {
         return id;
@@ -78,5 +83,13 @@ public class BrokenCarPart implements Serializable {
     public void setPartNumber(String partNumber) {
         this.partNumber = partNumber;
     } 
+
+    public List<Quotation> getQuotation() {
+        return quotation;
+    }
+
+    public void setQuotation(List<Quotation> quotation) {
+        this.quotation = quotation;
+    }
 
 }

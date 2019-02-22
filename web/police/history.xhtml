@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Admin Dashboard</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap.css"></link>
+        <!--<script src="../layout/js/bootstrap.js"></script>-->
+        <link rel="styleSheet" href="css/mystyles.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <div class="container dashboardContainer">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <div class="title">
+                        <div class="container" style="margin-bottom: 10px;">
+                            <div  class="rows">
+                                <div class="col-lg-3">
+                                    <h3>You History</h3>
+                                </div>
+                                <div class="col-lg-3 pull-right">
+                                    <h:form>
+                                        <div class="col-lg-12">
+                                            <h:inputText class="form-control" pt:placeholder="Search by plate Number"/>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="allElement">
+                        <p:messages  globalOnly="true"/>
+                        <h:panelGroup id="tables">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Vehicle Plate Number</th>
+                                    <th>Driver</th>
+                                    <th>Accident Date</th>
+                                    <th>Insurance</th>
+                                    <th>Vehicle b Plate Number</th>
+                                    <th>Expertise Garage</th>
+                                    <th>Garage maintain your car</th>
+                                    <th>maintain phone Number</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="i" items="#{clientController.clientFinishedMentainance}" varStatus="status">
+                                        <c:if test="#{i.status.equalsIgnoreCase('not approved')}">
+                                            <tr>
+                                                <td>${status.index +1}</td>
+                                                <td>#{i.vehicle.plateNum}</td>
+                                                <td>#{(i.driver!=null)? i.driver.name :" Driver was you"}</td>
+                                                <td>
+                                                    <h:outputText value="#{i.createdAt}">
+                                                        <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                                    </h:outputText>
+                                                </td>
+                                                <td>#{i.insurance.name}</td>
+                                                <td>#{i.vehicleb.plateNum}</td>
+                                                <td>#{i.expectiseGarage.garage.name}</td>
+                                                <td>garage one</td>
+                                                <td>0722320568</td>
+                                                <td>#{i.status}</td>
+                                                <td>
+                                                    <h:form>
+                                                        <h:commandLink class="btn btn-info" action="#{garageController.approve(i)}">
+                                                            <i class="fa fa-check" style="color:white;"></i>Approve
+                                                        </h:commandLink>
+                                                    </h:form>
+                                                </td>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

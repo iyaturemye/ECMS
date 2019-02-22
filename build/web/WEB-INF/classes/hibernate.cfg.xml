@@ -8,13 +8,12 @@
             com.mysql.jdbc.Driver
         </property>
         <property name="connection.url">
-           jdbc:mysql://mysql3000.mochahost.com/claude_garage
+           jdbc:mysql://localhost/garage
         </property>
         <property name="connection.username">
-            <!--claude_root-->
+            root
         </property>
         <property name="connection.password">
-            <!--kgltech-->
         </property>
         <property name="dialect">
             org.hibernate.dialect.MySQL5Dialect
