@@ -5,18 +5,27 @@
  */
 package com.ebaza.tech.controller;
 
+import com.ebaza.tech.common.FileUpload;
 import com.ebaza.tech.dao.generic.SessionManager;
 import com.ebaza.tech.dao.impl.GarageImpl;
 import com.ebaza.tech.dao.impl.LoginImpl;
 import com.ebaza.tech.dao.impl.UserImpl;
 import com.ebaza.tech.domain.Garage;
 import com.ebaza.tech.domain.User;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -28,6 +37,35 @@ public class TestController implements  Serializable {
 
     private String searchKey;
     private List<Garage> list;
+    
+     public void handleFileUpload(FileUploadEvent event) {
+        FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        UploadedFile file = event.getFile();
+        try{
+            System.out.println("here we go boss wanjye we");
+            System.out.println(file.getFileName());
+            FileOutputStream fos = new FileOutputStream(new File(file.getFileName()));
+            InputStream is = file.getInputstream();
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int a;
+            while(true){
+                a = is.read(buffer);
+                if(a < 0) break;
+                fos.write(buffer, 0, a);
+                fos.flush();
+            }
+            fos.close();
+            is.close();
+        }catch(IOException e){
+        }
+    }
+    
+    public void Upload(FileUploadEvent event) {
+        new FileUpload().Upload(event, "/layout/");
+        System.out.println("here we go boss wanjye we ");
+    }
 
     public void testing() throws NoSuchAlgorithmException {
         User user=new User();

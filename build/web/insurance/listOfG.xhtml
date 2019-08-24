@@ -5,21 +5,24 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:p="http://primefaces.org/ui">
-     <meta name="viewport" content="width=device-width, 
+    <meta name="viewport" content="width=device-width, 
           initial-scale=1.0, 
           maximum-scale=1.0, 
           user-scalable=no"/>
     <h:head>
         <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
-        <link rel="styleSheet" href="../layout/css/bootstrap1.css"></link>
-        <script src="../layout/js/bootstrap.js"></script>
+        <!--<link rel="styleSheet" href="../layout/css/bootstrap1.css"></link>-->
+        <!--<script src="../layout/js/bootstrap.js"></script>-->
         <link rel="styleSheet" href="css/mystyle.css"></link>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+
+        <!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"/>-->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
         <style>
             .mytableStyle th{
                 background:#41a1ff;
@@ -54,10 +57,10 @@
                     <p:messages globalOnly="true"/>
                     <h:form class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-lg-2">Garage Name</label>
+                            <label class="col-lg-2">Expert Name</label>
                             <div class="col-lg-3">
                                 <h:selectOneMenu value="#{insuranceController.expectiseGarageId}" id="garage" class="form-control" required="true" requiredMessage="Garage is required">
-                                    <f:selectItem itemLabel="Choose Garage" itemValue=""/>
+                                    <f:selectItem itemLabel="Choose Expert" itemValue=""/>
                                     <f:selectItems value="#{garageController.listAllGarage}" var="item" itemLabel="#{item.name}" itemValue="#{item.garageId}"/>
                                 </h:selectOneMenu>
                                 <h:message class="text text-danger"  for="garage"/>
@@ -81,33 +84,12 @@
                         <div class="title">
                             <div class="container" style="margin-bottom: 10px;">
                                 <div  class="rows">
-                                    <label class="col-lg-1" style="margin-top: 10px;">
-                                        List : 
-                                    </label>
-                                    <div class="col-lg-2">
-                                        <h:form>
-                                            <h:selectOneMenu class="mylist form-control" value="#{insuranceController.filterByInfo}">
-                                                <f:selectItem itemLabel="50" itemValue="50"/>
-                                                <f:selectItem itemLabel="100" itemValue="100"/>
-                                                <f:selectItem itemLabel="150" itemValue="150"/>
-                                            </h:selectOneMenu>
-                                        </h:form>
-                                    </div>
-                                    <div class="col-lg-3 col-lg-offset-6">
-                                        <div class="pull-right" style="margin-right: 10px;">
-                                            <h:form>
-                                                <h:inputText pt:placeholder="Search Plate Number" value="#{insuranceController.searchElement}" class="form-control">
-                                                    <f:ajax listener="#{insuranceController.searchByName()}" execute="@form" render="table" event="keydown"/>
-                                                </h:inputText>
-                                            </h:form>
-                                        </div>
-                                    </div>
                                 </div>
                             </div> 
                         </div>
                         <p:messages  globalOnly="true"/>
                         <h:panelGroup id="table">
-                            <table class="table table-bordered table-responsive">
+                            <table class="table table-bordered table-responsive" id="tables">
                                 <thead>
                                     <th>#</th>
                                     <th>Garage Name</th>
@@ -155,15 +137,19 @@
                 </div>
             </div>
         </div>
-        <script src="../layout/js/jquery.js"/>
-        <script src="../layout/js/bootstrap.js"/>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
         <script>
-
             $('.readmore').click(function () {
                 $('#myModal').modal('show');
-
+            });
+            $(function () {
+                $("#tables").DataTable();
+                $(".expert").attr("class","active");
             });
         </script>
+
     </h:body>
 </html>
 

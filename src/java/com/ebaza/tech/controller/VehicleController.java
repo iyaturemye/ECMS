@@ -51,6 +51,7 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 public class VehicleController implements DbConstant, Serializable {
 
+    private static final long serialVersionUID = 1L;
     private Client client = new Client();
     private Vehicle vehicle = new Vehicle();
     private Vehicle vehicleb = new Vehicle();
@@ -59,7 +60,6 @@ public class VehicleController implements DbConstant, Serializable {
     private VehicleImage vehicleImage = new VehicleImage();
     private boolean isClientFound = false;
     private UploadedFile fileUpload;
-    private String destination = "/web\\layout\\image\\blockenCar\\";
     private List<String> listOfImages = new ArrayList<>();
     private VehicleImpl vehicleImpl = new VehicleImpl();
     private User user = new User();
@@ -175,7 +175,6 @@ public class VehicleController implements DbConstant, Serializable {
             }
             return location;
         } catch (Exception e) {
-
             new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
             return null;
         }
@@ -183,8 +182,9 @@ public class VehicleController implements DbConstant, Serializable {
     }
 
     public void Upload(FileUploadEvent event) {
-        listOfImages.add(new FileUpload().Upload(event, "layout\\image\\blockenCar\\"));
-        System.out.println("here we go boss wanjye we ");
+        System.out.println("---------------------------------------------------");
+        String newName = new FileUpload().Upload(event, "layout/image/blockenCar/");
+        listOfImages.add(newName);
     }
 
     public void searchForCar(String vehicletype) {
@@ -195,10 +195,10 @@ public class VehicleController implements DbConstant, Serializable {
             if (!vb.getPlateNum().isEmpty()) {
                 Vehicle v = new VehicleImpl().getVehicle(vb.getPlateNum());
                 if (v != null) {
-                    if(vehicletype.equalsIgnoreCase("vehicleb")){
-                         this.vehicleb=v;
-                    }else{
-                        this.vehicle=v;
+                    if (vehicletype.equalsIgnoreCase("vehicleb")) {
+                        this.vehicleb = v;
+                    } else {
+                        this.vehicle = v;
                     }
                 }
             }
@@ -214,20 +214,20 @@ public class VehicleController implements DbConstant, Serializable {
             if (this.vehicle.getPlateNum().equalsIgnoreCase(this.vehicleb.getPlateNum())) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Car B can't be the same as Car A please verify your information", null));
             } else {
-
-                ExpectiseGarage exg = new ExpectiseGarage();
-                exg.setUuid(expectiseId);
                 FacesContext context = FacesContext.getCurrentInstance();
                 String isInsurance = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("isInsurance");
                 if (listOfImages.size() > 0) {
                     Vehicle v2 = new VehicleImpl().getModelWithMyHQL(new String[]{"plateNum"}, new Object[]{vehicle.getPlateNum()}, "from Vehicle");
-                    Vehicle v3=new VehicleImpl().getModelWithMyHQL(new String[]{"plateNum"}, new Object[]{vehicleb.getPlateNum()}, "from Vehicle");
+                    Vehicle v3 = new Vehicle();
+                    if (vehicleb.getPlateNum() != null) {
+                        v3 = new VehicleImpl().getModelWithMyHQL(new String[]{"plateNum"}, new Object[]{vehicleb.getPlateNum()}, "from Vehicle");
+                    }
                     if (v2 == null) {
                         new VehicleImpl().create(vehicle);
                     } else {
                         vehicle = v2;
                     }
-                    if (v3 == null) {
+                    if (v3 == null && vehicleb.getPlateNum() != null) {
                         new VehicleImpl().create(vehicleb);
                     } else {
                         vehicleb = v3;
@@ -235,10 +235,13 @@ public class VehicleController implements DbConstant, Serializable {
                     InsuranceCompany ins = new InsuranceCompany();
                     ins.setUuid(insurance);
                     InsuranceCompany ins2 = new InsuranceCompany();
-                    ins2.setUuid(insuranceOfVehicleB);
+                    ins2.setUuid((insuranceOfVehicleB != null) ? insuranceOfVehicleB : null);
+                    System.out.println((insuranceOfVehicleB != null) ? insuranceOfVehicleB : "ok");
+
                     vehicleDetails.setVehicleb(this.vehicleb);
+
                     vehicleDetails.setInsurance(ins);
-                    vehicleDetails.setInsuranceOfvehicleb(ins2);
+                    vehicleDetails.setInsuranceOfvehicleb((insuranceOfVehicleB == null) ? ins2 : null);
                     vehicleDetails.setStatus("start");
                     vehicleDetails.setVehicle(vehicle);
                     vehicleDetails.setStatementOfVehicle(null);
@@ -252,7 +255,7 @@ public class VehicleController implements DbConstant, Serializable {
                     } else {
                         vehicleDetails.setDriver(null);
                     }
-                    vehicleDetails.setExpectiseGarage(exg);
+                    vehicleDetails.setExpectiseGarage(null);
                     ExpectiseGarage ex = new ExpectiseImpl().getModelWithMyHQL(new String[]{"uuid"}, new Object[]{expectiseId}, "from ExpectiseGarage");
                     Client client = new Client();
                     InsuranceCompany insc = new InsuranceCompany();
@@ -262,7 +265,6 @@ public class VehicleController implements DbConstant, Serializable {
                     }
                     client = new ClientImpl().getModelWithMyHQL(new String[]{"userId"}, new Object[]{loggedInUser.getUserId()}, "from Client");
                     vehicleDetails.setClient(client);
-                    
                     new VehicleDetailsImpl().create(vehicleDetails);
                     for (String v : listOfImages) {
                         VehicleImage vim = new VehicleImage();
@@ -290,21 +292,17 @@ public class VehicleController implements DbConstant, Serializable {
                         strbuilder.append(vehicleDetails.getVehicle().getPlateNum());
                         strbuilder.append("with chassis Number of ");
                         strbuilder.append(vehicleDetails.getVehicle().getChasisNum());
-                        strbuilder.append("your car will moved to Garage ");
-                        strbuilder.append(ex.getGarage().getName());
-                        strbuilder.append("located at ");
-                        strbuilder.append(ex.getGarage().getLocation());
-                        strbuilder.append(" phone number of ");
-                        strbuilder.append(ex.getGarage().getGarageOwner().getPhoneNumber());
-                        strbuilder.append("for Expectise we will notify you  from day 1 to the end thank you");
-                        String garageMsg = "Sir, There is new broken car you need to do expectise with the following information "
-                                + " Names " + client.getFname() + "   " + client.getLname() + " with vehicle " + vehicleDetails.getVehicle().getName() + " plate number of "
-                                + vehicleDetails.getVehicle().getPlateNum() + " owner PhoneNumber " + client.getPhoneNumber();
-                        System.out.println("here we go boss wanjye");
+                        // here is where we put sommething like where car should be moved to kuyisurirayo
+                        strbuilder.append(" thank you for your declaration we will be notified from day 1 to the end ");
+//                        String garageMsg = "Sir, There is new broken car you need to do expectise with the following information "
+//                                + " Names " + client.getFname() + "   " + client.getLname() + " with vehicle " + vehicleDetails.getVehicle().getName() + " plate number of "
+//                                + vehicleDetails.getVehicle().getPlateNum() + " owner PhoneNumber " + client.getPhoneNumber();
+                        System.out.println("here we go boss wanjye----------"+client.getPhoneNumber());
+                        
                         JSONArray results = gateway.sendMessage(client.getPhoneNumber().replaceAll(" ", ""), strbuilder.toString());
-                        System.out.println(garageMsg + " this is msg for garage   " + ex.getGarage().getGarageOwner().getPhoneNumber());
-                        new SendEmail().sendEmail(ex.getGarage().getGarageOwner().getUser().getUserName(), "New Broken car for Expectise", garageMsg);
-                        JSONArray garageOutput = gateway.sendMessage(ex.getGarage().getGarageOwner().getPhoneNumber().replaceAll(" ", ""), garageMsg);
+                        //System.out.println(garageMsg + " this is msg for garage   " + ex.getGarage().getGarageOwner().getPhoneNumber());
+//                        new SendEmail().sendEmail(ex.getGarage().getGarageOwner().getUser().getUserName(), "New Broken car for Expectise", garageMsg);
+//                        JSONArray garageOutput = gateway.sendMessage(ex.getGarage().getGarageOwner().getPhoneNumber().replaceAll(" ", ""), garageMsg);
                     } catch (Exception e) {
                         e.printStackTrace();
                         new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
@@ -512,14 +510,6 @@ public class VehicleController implements DbConstant, Serializable {
 
     public void setSearchKey(String searchKey) {
         this.searchKey = searchKey;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     public Vehicle getVehicleb() {

@@ -29,17 +29,14 @@ public interface DbConstant {
     public static final String USERID = "userId";
     public static final String DEPID = "departementId";
     public static final String SELECT_DEPARTMENT = "from Departement";
-    /*Requisition Status*/
     public static final String INPROGRESS = "In Progress";
     public static final String NOTYET = "Not Yet";
     public static final String APPROVED = "Approved";
     public static final String APPROVEDBYDIRECTOR = "ApprovedByDirector";
     public static final String REJECT = "Rejected";
-    //Journey
-
     public static final String DEPARTURE = "departure";
     public static final String RETURN = "return";
-    public static final String[] USERTYPE = {"admin", "garage", "insurance", "client"};
+    public static final String[] USERTYPE = {"admin", "garage", "insurance", "client","insuranceUser"};
     public static final Object NOTAPPROVED = "not approved";
 
 }

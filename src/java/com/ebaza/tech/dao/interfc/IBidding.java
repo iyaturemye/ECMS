@@ -25,5 +25,6 @@ public interface IBidding extends Allrelated<Bidding> {
     public List<TemplateClass> orderByAsc(String uid,String plateNumber);
     public List<ApprovedTemplate> getApprovedBd(String uid);
     public Bidding getOne(String bidId);
+    List<ApprovedTemplate> getMissingDocument(String garageId);
     
 }

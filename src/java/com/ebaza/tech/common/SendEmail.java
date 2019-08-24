@@ -5,8 +5,6 @@
  */
 package com.ebaza.tech.common;
 
-import com.ebaza.tech.dao.impl.LoginImpl;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -14,11 +12,9 @@ import java.util.logging.Logger;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -28,7 +24,7 @@ import javax.mail.internet.MimeMessage;
  */
 public class SendEmail {
 
-    public  void sendEmail(String toAddress, String subject, String message) {
+    public void sendEmail(String toAddress, String subject, String message) {
         try {
             Properties properties = new Properties();
             properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -40,12 +36,11 @@ public class SendEmail {
             Authenticator auth = new Authenticator() {
                 @Override
                 public PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication("bafaloclaude@gmail.com", "iyaturemye2017");
+                    return new PasswordAuthentication("bafaloclaude@gmail.com", "iyaturemye2019@1");
                 }
             };
-
+            
             Session session = Session.getInstance(properties, auth);
-
             // creates a new e-mail message
             Message msg = new MimeMessage(session);
 
@@ -60,7 +55,6 @@ public class SendEmail {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static void main(String... jjjj) {
@@ -69,8 +63,13 @@ public class SendEmail {
             String to = "iyaturemyeclaude@gmail.com";
             String subject = "testing";
             new SendEmail().sendEmail(to, subject, mss);
+            System.out.println("he------------------------------------");
         } catch (Exception ex) {
             Logger.getLogger(SendEmail.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
+    
+    
+    
 }

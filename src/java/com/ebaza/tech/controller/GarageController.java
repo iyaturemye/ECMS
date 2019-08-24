@@ -6,6 +6,7 @@
 package com.ebaza.tech.controller;
 
 import com.ebaza.tech.common.DbConstant;
+import com.ebaza.tech.common.FileUpload;
 import com.ebaza.tech.common.SendEmail;
 import com.ebaza.tech.dao.generic.CompledCarDao;
 import com.ebaza.tech.dao.generic.VehicleDetailDao;
@@ -60,6 +61,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.json.JSONArray;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -69,6 +71,7 @@ import org.json.JSONArray;
 @SessionScoped
 public class GarageController implements DbConstant, Serializable {
 
+    private static final long serialVersionUID = 1L;
     private Garage garage = new Garage();
     private User user = new User();
     private GarageOwner garageOwner = new GarageOwner();
@@ -98,12 +101,51 @@ public class GarageController implements DbConstant, Serializable {
     private String keyElement;
     private String jobType;
     private List<VehicleDetail> expectiseHistory = new ArrayList<>();
-    private Garage loggedInGarage;
+    private Garage loggedInGarage = new Garage();
+    private String logoImage;
+    private List<ApprovedTemplate> listOfNeedSatisfactionDocs = new ArrayList<>();
+    private String documentName;
+
+    public void sendDocument(String bidId) throws Exception {
+        Bidding bidding = new Bidding();
+        bidding.setBidId(bidId);
+        CompletedCar finishedCar = new CompletedCarImpl().getModelWithMyHQL(new String[]{"bidding"},
+                new Object[]{bidding}, "From CompletedCar");
+        finishedCar.setDocument(documentName);
+        new CompletedCarImpl().updateInfo(finishedCar);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Satisfaction document has been successfull sent", DEPID));
+        listOfNeedSatisfactionDocs = new BiddingImpl().getMissingDocument(loggedInGarage.getGarageId());
+
+    }
 
     @PostConstruct
     public void init() {
-        System.out.println("----------------------------------------------------");
         doIt();
+    }
+
+    public void Upload(FileUploadEvent event) {
+        String newName = new FileUpload().Upload(event, "layout/image/companyLogo/");
+        logoImage = newName;
+    }
+
+    public void updateProfile() {
+        this.loggedInGarage.setLogo(logoImage);
+        this.loggedInGarage = new GarageImpl().updateInfo(this.loggedInGarage);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "has been successfull changed", null));
+    }
+
+    public void refresh(String location) {
+        if (location.equalsIgnoreCase("notification")) {
+            GarageOwner owner = new GarageOwnerImpl().getOwner(user2.getUserId());
+            approvedList = new QuotationImpl().getApprovedBidd(new GarageImpl().getOne(owner.getOwnerId()).getGarageId());
+            Garage loggedInGarages = new GarageImpl().getOne(owner.getOwnerId());
+            this.listNewVehicleDetails = new VehicleDetailsImpl().expertiseGarage(loggedInGarages.getGarageId(), "new");
+        } else if (location.equalsIgnoreCase("expert")) {
+            GarageOwner owners = new GarageOwnerImpl().getOwner(loggedInUser.getUserId());
+            Garage loggedInGarages = new GarageImpl().getOne(owners.getOwnerId());
+            listOfExpectise = new VehicleDetailsImpl().expertiseGarage(loggedInGarages.getGarageId(), "not New");
+        }
     }
 
     public void searchElement() {
@@ -132,6 +174,7 @@ public class GarageController implements DbConstant, Serializable {
                         this.listOfBid = new QuotationImpl().getGarageBid(loggedInGarages.getGarageId());
                         this.expectiseHistory = new VehicleDetailDao().getExpectiseHistory(loggedInGarages.getGarageId());
                         this.allApproved = new BiddingImpl().getApprovedBd(loggedInGarages.getGarageId());
+                        listOfNeedSatisfactionDocs = new BiddingImpl().getMissingDocument(loggedInGarages.getGarageId());
                         this.listNewVehicleDetails = new VehicleDetailsImpl().expertiseGarage(loggedInGarages.getGarageId(), "new");
                         listOfExpectise = new VehicleDetailsImpl().expertiseGarage(loggedInGarages.getGarageId(), "not New");
                         this.notPaidList = new CompledCarDao().getAllNotPaid(loggedInGarages.getGarageId());
@@ -148,6 +191,8 @@ public class GarageController implements DbConstant, Serializable {
                     Garage loggedInGarages = new GarageImpl().getOne(owners.getOwnerId());
                     this.loggedInGarage = loggedInGarages;
                     this.expectiseHistory = new VehicleDetailDao().getExpectiseHistory(loggedInGarages.getGarageId());
+                    this.listNewVehicleDetails = new VehicleDetailsImpl().expertiseGarage(loggedInGarages.getGarageId(), "new");
+                    listOfExpectise = new VehicleDetailsImpl().expertiseGarage(loggedInGarages.getGarageId(), "not New");
 
                 }
 
@@ -158,11 +203,9 @@ public class GarageController implements DbConstant, Serializable {
         }
 
     }
-    
-    public void changeProfile(){
-    
-        
-        
+
+    public void changeProfile() {
+
     }
 
     public void changeGarageStatus(User user) {
@@ -201,6 +244,13 @@ public class GarageController implements DbConstant, Serializable {
             return null;
         }
 
+    }
+
+    public void Upload2(FileUploadEvent event) {
+        System.out.println("---------------------------------------------------");
+        this.documentName = new FileUpload().Upload(event, "layout/document/");
+
+        //listOfImages.add(newName);
     }
 
     public void respondToApproved(String uuid) {
@@ -317,16 +367,16 @@ public class GarageController implements DbConstant, Serializable {
             if (!document.isOpen()) {
                 document.open();
             }
-            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\images");
-            path = path.substring(0, path.indexOf("\\build"));
-            path = path + "\\web\\layout\\image\\ecmsLogo.jpg";
-            Image image = Image.getInstance(path);
-            image.scaleAbsolute(70, 50);
-            image.setAlignment(Element.ALIGN_LEFT);
-            Paragraph title = new Paragraph();
-            //BEGIN page
-            title.add(image);
-            document.add(title);
+//            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\images");
+//            path = path.substring(0, path.indexOf("\\build"));
+//            path =path+"/layout/image/ecmsLogo.jpg";
+//            Image image = Image.getInstance(path);
+//            image.scaleAbsolute(70, 50);
+//            image.setAlignment(Element.ALIGN_LEFT);
+//            Paragraph title = new Paragraph();
+//            //BEGIN page
+//            title.add(image);
+//            document.add(title);
 
             Font font0 = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL);
             Font font1 = new Font(Font.TIMES_ROMAN, 9, Font.ITALIC, new Color(90, 255, 20));
@@ -554,7 +604,7 @@ public class GarageController implements DbConstant, Serializable {
                 pdfc1.setBorder(Rectangle.BOX);
                 table.addCell(pdfc1);
 
-                pdfc5 = new PdfPCell(new Phrase(ps.getBrokenCarPart().getCarsparepart().getName() + "", font6));
+                pdfc5 = new PdfPCell(new Phrase((ps.getBrokenCarPart().getCarsparepart() != null) ? ps.getBrokenCarPart().getCarsparepart().getName() : ps.getBrokenCarPart().getAdditionInfo().getDescription() + "", font6));
                 pdfc5.setBorder(Rectangle.BOX);
                 table.addCell(pdfc5);
 
@@ -838,6 +888,38 @@ public class GarageController implements DbConstant, Serializable {
 
     public void setLoggedInGarage(Garage loggedInGarage) {
         this.loggedInGarage = loggedInGarage;
+    }
+
+    public String getLogoImage() {
+        return logoImage;
+    }
+
+    public void setLogoImage(String logoImage) {
+        this.logoImage = logoImage;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public List<ApprovedTemplate> getListOfNeedSatisfactionDocs() {
+        return listOfNeedSatisfactionDocs;
+    }
+
+    public void setListOfNeedSatisfactionDocs(List<ApprovedTemplate> listOfNeedSatisfactionDocs) {
+        this.listOfNeedSatisfactionDocs = listOfNeedSatisfactionDocs;
+    }
+
+    public String getDocumentName() {
+        return documentName;
+    }
+
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
     }
 
 }

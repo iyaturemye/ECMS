@@ -2,7 +2,8 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <meta name="viewport" content="width=device-width, 
           initial-scale=1.0, 
           maximum-scale=1.0, 
@@ -64,15 +65,27 @@
                     <div>
                         <ul class="nav navbar-nav  myNavStyle">
                             <li><a href="dashboard.xhtml"><i class="fa fa-tachometer-alt   carIcon"  aria-hidden="true"></i>  Dashboard</a></li>
-                            <li><a href="#"><i class="fas fa-users"></i> profile</a></li>
+                            
+                            <li class="dropdown">
+                                <a href="#"> 
+                                    <i class="far fa-bell carIcon"></i> 
+                                    Notification 
+                                    <span class="badge">
+                                        <h:outputText id="notifie" value=" #{garageController.approvedList.size()+ garageController.listNewVehicleDetails.size()}">
+
+                                        </h:outputText>
+
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            <li><a href="profile.xhtml"><i class="fas fa-users"></i> profile</a></li>
 
                             <li class="dropdown"><a href="biddingList.xhtml"> <i class="fa fa-list-alt  carIcon"  aria-hidden="true"></i> Bidding List</a>
                             </li>
                             <li class="dropdown"><a href="approvedList.xhtml"> <i class="fa fa-list   carIcon"  aria-hidden="true"></i>Approved</a>
                             </li>
                             <li class="dropdown"><a href="changePassword.xhtml"> <i class="fa fa-unlock-alt carIcon"  aria-hidden="true"></i> Change Password</a>
-                            </li>
-                            <li class="dropdown"><a href="#"> <i class="far fa-bell carIcon"></i> Notification <span class="badge">#{garageController.approvedList.size()+ garageController.listNewVehicleDetails.size()}</span></a>
                             </li>
                             <li class="dropdown"><a href="transaction.xhtml"> <i class="fas fa-money-check"></i> Transaction</a>
                             </li>
@@ -85,8 +98,8 @@
                                                 Not paid Report
                                             </h:commandLink> 
                                         </li>
-                                        <li><a href="#">Paid invoice</a></li>
-                                        <li><a href="#">Customer Report</a></li>
+                                        <!--                                        <li><a href="#">Paid invoice</a></li>
+                                                                                <li><a href="#">Customer Report</a></li>-->
                                     </h:form>
 
                                 </ul>
@@ -104,6 +117,6 @@
                 </nav>
             </div>
         </div>
-
+       
     </h:body>
 </html>

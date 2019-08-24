@@ -2,8 +2,34 @@ body{
     background: #fcfcfc;
 }
 thead{
-    background:#f3f3f3;
+    background: white !important;
+    font-size: 12px !important;
 }
+
+input[type="search"]{
+    border:1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px;
+}
+table {
+    border-bottom: none !important;
+}
+.title{
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.listOfElment{
+    padding: 0px;
+}
+.listOfElment li{
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    list-style: none;
+    font-size: 14px;
+}
+
+
 .dashboardContainer{
     box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
     margin-top: 60px;background: white;border:1px solid #ddd;padding: 5px;
@@ -27,6 +53,17 @@ thead{
     font-weight: bold;
     color:#0000ab;
 }
+
+.listOfElment{
+    padding: 0px;
+}
+.listOfElment li{
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    list-style: none;
+    font-size: 14px;
+}
+
 
 .cont {
     margin-left: 0px;

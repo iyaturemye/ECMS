@@ -12,13 +12,15 @@
           user-scalable=no"/>
     <h:head>
         <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
-        <link rel="styleSheet" href="../layout/css/bootstrap1.css"></link>
-        <script src="../layout/js/bootstrap.js"></script>
         <link rel="styleSheet" href="css/mystyle.css"></link>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+        
+        <!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"/>-->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
         <style>
             .mytableStyle th{
                 background:#41a1ff;
@@ -56,35 +58,13 @@
                                     <div class="col-lg-3">
                                         <h3>List of Bidding</h3>
                                     </div>
-                                    <label class="col-lg-1 col-lg-offset-3" style="margin-top: 10px;">
-                                        Filter by: 
-                                    </label>
-
-                                    <h:form>
-                                        <div class="col-lg-2">
-                                            <h:selectOneMenu class="mylist form-control" value="#{insuranceController.filterByInfo}">
-                                                <f:selectItem itemLabel="Low Price" itemValue="low price"/>
-                                                <f:selectItem itemLabel="High Price" itemValue="high price"/>
-                                            </h:selectOneMenu>
-                                        </div>
-                                        <div class="col-lg-2">
-                                            <h:selectOneMenu id="plateNumber" class="mylist form-control" required="true" requiredMessage="Plate number is required" value="#{insuranceController.plateNumber}">
-                                                <f:selectItem itemLabel="Plate Number" itemValue=""/>
-                                                <f:selectItems value="#{insuranceController.listCombo}" var="item" itemValue="#{item.plateNumber}" itemLabel="#{item.plateNumber}"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="plateNumber"/>
-                                        </div>
-                                        <div class="col-lg-1 pull-right">
-                                            <h:commandButton value="submit" class="btn btn-primary submit" action="#{insuranceController.filterBy()}">
-                                            </h:commandButton>
-                                        </div>
-                                    </h:form>
+                                  
                                 </div>
                             </div> 
                         </div>
                         <h:messages class="alert alert-info" globalOnly="true"/>
                         <h:panelGroup id="table">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id="tables">
                                 <thead>
                                     <th>#</th>
                                     <th>Garage Name</th>
@@ -106,12 +86,11 @@
                                                 </h:outputFormat> FRW
                                             </td>
                                             <td>#{i.carName}</td>
-                                            <td>#{i.plateNumber}</td>
-
+                                            <td>#{i.plateNumber.toUpperCase()}</td>
                                             <td>
                                                 <h:form>
                                                     <h:commandLink value="Read more" class="btn btn-primary readmore">
-                                                        <f:ajax listener="#{insuranceController.readMore(i.biddingId,'insurance')}" render="infoPanel"/>
+                                                        <f:ajax listener="#{insuranceController.readMore(i.biddingId,'insurance')}" render="infoPanel" onevent="disableAllElement"/>
                                                     </h:commandLink>
                                                 </h:form>
                                             </td>
@@ -126,17 +105,6 @@
                             You don't have an Bidding now
                         </div>
                     </c:if>
-                    <div class="pull-right">
-                        <!--                        <ul class="pagination pagination-sm">
-                                                    <li><a href="#">&laquo;</a></li>
-                                                    <li><a href="#">1</a></li>
-                                                    <li><a href="#">2</a></li>
-                                                    <li><a href="#">3</a></li>
-                                                    <li><a href="#">4</a></li>
-                                                    <li><a href="#">5</a></li>
-                                                    <li><a href="#">&raquo;</a></li>
-                                                </ul>-->
-                    </div>
                 </div>
             </div>
         </div>
@@ -145,6 +113,9 @@
                 <h:panelGroup >
                     <div class="modal-dialog">
                         <div class="modal-content">
+                            <div class="loading">
+                                <img src="../layout/image/Ripple-1s-200px.gif" class="img-loading"/>
+                            </div>
                             <div class="col-lg-12" style="background:white;border-bottom: 1px solid #ddd;margin-bottom: 15px;padding-bottom: 15px;">
                                 <div class="companiesInfos">
                                     <h1 style="color:#41a1ff; "><center><b>PURCHASE ORDER</b></center></h1>
@@ -177,46 +148,69 @@
                                             <div class="garageInfo">
                                                 <h3>#{insuranceController.billing.vehicleDetails.vehicle.name.toUpperCase()}</h3>
                                                 <h5>Policy Number:#{insuranceController.billing.vehicleDetails.vehicle.policyNumber}</h5>
-                                                <h5>Plate Number:#{insuranceController.billing.vehicleDetails.vehicle.plateNum}</h5>
+                                                <h5>Plate Number:#{insuranceController.billing.vehicleDetails.vehicle.plateNum.toUpperCase()}</h5>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tableInfo">
-                                    <table class="table mytableStyle">
-                                        <thead>
-                                            <th>ITEM</th>
-                                            <th>DESCRIPTION</th>
-                                            <th>QTY</th>
-                                            <th>PART NUMBER</th>
-                                            <th>UNIT PRICE</th>
-                                            <th>TOTAL PRICE</th>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="#{insuranceController.quotation}" var="i" varStatus="status">
-                                                <tr>
-                                                    <td>${status.index + 1}</td>
-                                                    <td>#{i.brokenCarPart.carsparepart.name}</td>
-                                                    <td>#{i.brokenCarPart.quantity}</td>
-                                                    <td>#{i.brokenCarPart.partNumber}</td>
+                                        <table class="table mytableStyle">
+                                            <thead>
+                                                <th>DESCRIPTION</th>
+                                                <th>QTY</th>
+                                                <th>UNIT PRICE</th>
+                                                <th>TOTAL PRICE</th>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="#{insuranceController.quotation}" var="i" varStatus="status">
+                                                    <c:if test="#{i.brokenCarPart.carsparepart!=null}">
+                                                        <tr>
+                                                            <td>#{i.brokenCarPart.carsparepart.name}</td>
+                                                            <td>#{i.brokenCarPart.quantity}</td>
+                                                            <td>
+                                                                <h:outputFormat value="#{i.price}">
+                                                                    <f:convertNumber pattern="###,###,###"/>
+                                                                </h:outputFormat>FRW
+                                                            </td>
+                                                            <td>
+                                                                <h:outputFormat value="#{i.price*i.brokenCarPart.quantity}">
+                                                                    <f:convertNumber pattern="###,###,###"/>
+                                                                </h:outputFormat>
+                                                                FRW
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
+                                                </c:forEach>
 
-                                                    <td>
-                                                        <h:outputFormat value="#{i.price}">
-                                                            <f:convertNumber pattern="###,###,###"/>
-                                                        </h:outputFormat>FRW
-                                                    </td>
-                                                    <td>
-                                                        <h:outputFormat value="#{i.price*i.brokenCarPart.quantity}">
-                                                            <f:convertNumber pattern="###,###,###"/>
-                                                        </h:outputFormat>
-                                                        FRW
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                        <h3>Other information</h3>
+                                        <table class="table mytableStyle">
+                                            <thead>
+                                                <th>i</th>
+                                                <th>DESCRIPTION</th>
+                                                <th>PRICE</th>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="#{insuranceController.quotation}" var="item" varStatus="status2">
+                                                    <c:if test="#{item.brokenCarPart.carsparepart==null}">
+                                                        <tr>
+                                                            <td>${status2.index + 1}</td>
+                                                            <td>#{item.brokenCarPart.additionInfo.description}</td>
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                            <td>
+                                                                <h:outputFormat value="#{item.price}">
+                                                                    <f:convertNumber pattern="###,###,###"/>
+                                                                </h:outputFormat>
+                                                                FRW
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
+                                                </c:forEach>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 <div class="totalDiv">
                                     <div class="rows" >
                                         <div class="col-lg-6">
@@ -268,15 +262,30 @@
                 </h:panelGroup>
             </h:form>
         </div>
-        <script src="../layout/js/jquery.js"/>
-        <script src="../layout/js/bootstrap.js"/>
-
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <script src="../layout/js/bootstrap.min.js"></script>
         <script>
-
             $('.readmore').click(function () {
                 $('#myModal').modal('show');
-
             });
+            $(function(){
+                            $("#tables").DataTable();
+                            $(".bidds").attr("class","active");
+            });
+            var disableAllElement = function (data) {
+                if (data.status === 'begin') {
+                    $(".loading").show();
+                    $(".bidElement").hide();
+                    //$(".submit").attr("disabled", "disabled");
+                } else if (data.status === 'success') {
+                    //$(".submit").removeAttr("disabled");
+                    $(".bidElement").show();
+                    $(".loading").hide();
+                    // $(".readmore").removeAttr("name");
+                }
+            }
         </script>
     </h:body>
 </html>

@@ -5,12 +5,14 @@
  */
 package com.ebaza.tech.controller;
 
+import com.ebaza.tech.dao.impl.AdditionalInfoImpl;
 import com.ebaza.tech.dao.impl.BiddingImpl;
 import com.ebaza.tech.dao.impl.BrokenCarPartImpl;
 import com.ebaza.tech.dao.impl.GarageImpl;
 import com.ebaza.tech.dao.impl.GarageOwnerImpl;
 import com.ebaza.tech.dao.impl.QuotationImpl;
 import com.ebaza.tech.dao.impl.VehicleImageImpl;
+import com.ebaza.tech.domain.AdditionalBrokenCarPart;
 import com.ebaza.tech.domain.Bidding;
 import com.ebaza.tech.domain.BrokenCarPart;
 import com.ebaza.tech.domain.Carsparepart;
@@ -21,6 +23,7 @@ import com.ebaza.tech.domain.User;
 import com.ebaza.tech.domain.VehicleDetail;
 import com.ebaza.tech.domain.VehicleImage;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -58,10 +61,17 @@ public class VehicleDetailsController implements Serializable {
     private Set<Carsparepart> listOfBrokenCarParent = new HashSet<>();
     private double quotationPrice;
     private Quotation chooseQuotationForPrice = new Quotation();
+    private List<AdditionalBrokenCarPart> choosenAdditionalCarPart = new ArrayList<>();
+    private List<Quotation> serviceQuotation = new ArrayList<>();
+    private AdditionalBrokenCarPart additionalBrokenCarPart = new AdditionalBrokenCarPart();
+    private double amount;
+    private List<Quotation> garageQuotationDetails = new ArrayList<>();
+    private boolean isFirstTime;
 
     @PostConstruct
     public void init() {
         checkIfExist();
+        isFirstTime=true;
     }
 
     public String checkIfExist() {
@@ -75,19 +85,19 @@ public class VehicleDetailsController implements Serializable {
         try {
             user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLoggedIn");
             if (user != null) {
-                System.out.println("user is ----------------------" + this.user.getUserName());
-//                user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLoggedIn");
                 GarageOwner gowner = new GarageOwnerImpl().getOwner(user.getUserId());
                 Garage g = new GarageImpl().getOne(gowner.getOwnerId());
                 return (new QuotationImpl().validateIfThereAnotherBidding(choosenVehicle.getUuid(), g.getGarageId()).isEmpty());
             }
-
             return false;
         } catch (Exception e) {
             e.printStackTrace();
             return true;
         }
     }
+    
+    // to check if Already done with bidd or if is the first time
+    
 
     public Garage garageOwner() {
         user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLoggedIn");
@@ -97,8 +107,21 @@ public class VehicleDetailsController implements Serializable {
 
     }
 
+    public Date toDayDate() {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String fomat = sdf.format(new Date());
+            return sdf.parse(fomat);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     public void addToQuotation() {
-        this.subTotal += (chooseQuotationForPrice.getPrice() * chooseQuotationForPrice.getBrokenCarPart().getQuantity());
+        //chooseQuotationForPrice.setPrice(quotationPrice);
+        this.subTotal += (chooseQuotationForPrice.getBrokenCarPart().getCarsparepart() != null) ? chooseQuotationForPrice.getPrice() * chooseQuotationForPrice.getBrokenCarPart().getQuantity() : chooseQuotationForPrice.getPrice();
         this.tax = (subTotal * 18) / 100;
         this.totalAmount = subTotal + this.tax;
         for (Quotation z : lisofQuotation) {
@@ -133,7 +156,6 @@ public class VehicleDetailsController implements Serializable {
             this.tax = (subTotal * 18) / 100;
             this.totalAmount = subTotal + this.tax;
             lisofQuotation.set(toRemoved, quotation);
-            System.out.println(toRemoved + "    " + lisofQuotation.get(toRemoved));
 //            lisofQuotation.remove(toRemoved);
         }
 
@@ -142,7 +164,6 @@ public class VehicleDetailsController implements Serializable {
     public void edit(Quotation q) {
         this.quotation = q;
         this.text = "Update";
-        System.out.println("here we go boss we");
     }
 
     public void addPriceToQuotation(Quotation q) {
@@ -183,6 +204,25 @@ public class VehicleDetailsController implements Serializable {
                 q.setBidding(bid);
                 new QuotationImpl().create(q);
             }
+
+            // step 1 save additinal car part
+            // step 2 save brokencar part
+            // setp 3 save quotation
+            for (Quotation quotatons : garageQuotationDetails) {
+                // step 1
+                AdditionalBrokenCarPart add = quotatons.getBrokenCarPart().getAdditionInfo();
+                AdditionalBrokenCarPart add2 = new AdditionalInfoImpl().create(add);
+                // step 2
+                BrokenCarPart broken = quotatons.getBrokenCarPart();
+                broken.setAdditionInfo(add2);
+                broken.setVehicleDetails(choosenVehicle);
+                BrokenCarPart saveBrokenCarPart = new BrokenCarPartImpl().create(broken);
+                // step 3
+                quotatons.setBidding(bid);
+                quotatons.setBrokenCarPart(saveBrokenCarPart);
+                new QuotationImpl().create(quotatons);
+            }
+
             quotation = new Quotation();
             lisofQuotation = new ArrayList<>();
             subTotal = 0;
@@ -191,21 +231,48 @@ public class VehicleDetailsController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_INFO, "Your "
                     + "Bidding have been successfull processed you will be notified", text));
+            this.isFirstTime=false;
         }
+    }
+
+    public void addGarageInformation() {
+        BrokenCarPart brp = new BrokenCarPart();
+        brp.setVehicleDetails(choosenVehicle);
+        // add additional Information into particular object
+        brp.setAdditionInfo(additionalBrokenCarPart);
+        // add broken Car part to Quotation 
+        Quotation garageQu = new Quotation();
+        garageQu.setPrice(amount);
+        garageQu.setBrokenCarPart(brp);
+        this.subTotal += amount;
+        this.tax = (subTotal * 18) / 100;
+        this.totalAmount = subTotal + this.tax;
+        this.garageQuotationDetails.add(garageQu);
+        this.amount = 0;
+        this.additionalBrokenCarPart = new AdditionalBrokenCarPart();
+    }
+
+    public void removeQuotation(Quotation quotation) {
+        this.subTotal -= quotation.getPrice();
+        this.tax = (subTotal * 18) / 100;
+        this.totalAmount = subTotal + this.tax;
+        garageQuotationDetails.remove(quotation);
     }
 
     public String initCar(VehicleDetail vehicleDetail) throws Exception {
         this.choosenVehicle = vehicleDetail;
         this.listOfVehicleImage = new VehicleImageImpl().getAllChoosenImg(choosenVehicle.getUuid());
         listOfBrokenCarPart = new BrokenCarPartImpl().getBrokenCarPart(vehicleDetail.getUuid());
-
         for (BrokenCarPart x : listOfBrokenCarPart) {
-            this.listOfBrokenCarParent.add(x.getCarsparepart().getCarsparepart());
+            if (x.getCarsparepart() != null) {
+                this.listOfBrokenCarParent.add(x.getCarsparepart().getCarsparepart());
+            } else {
+                this.choosenAdditionalCarPart.add(x.getAdditionInfo());
+            }
             Quotation q = new Quotation();
             q.setBrokenCarPart(x);
             this.lisofQuotation.add(q);
         }
-
         return "carDetails.xhtml?faces-redirect=true";
     }
 
@@ -336,5 +403,54 @@ public class VehicleDetailsController implements Serializable {
     public void setChooseQuotationForPrice(Quotation chooseQuotationForPrice) {
         this.chooseQuotationForPrice = chooseQuotationForPrice;
     }
+
+    public List<AdditionalBrokenCarPart> getChoosenAdditionalCarPart() {
+        return choosenAdditionalCarPart;
+    }
+
+    public void setChoosenAdditionalCarPart(List<AdditionalBrokenCarPart> choosenAdditionalCarPart) {
+        this.choosenAdditionalCarPart = choosenAdditionalCarPart;
+    }
+
+    public List<Quotation> getServiceQuotation() {
+        return serviceQuotation;
+    }
+
+    public void setServiceQuotation(List<Quotation> serviceQuotation) {
+        this.serviceQuotation = serviceQuotation;
+    }
+
+    public AdditionalBrokenCarPart getAdditionalBrokenCarPart() {
+        return additionalBrokenCarPart;
+    }
+
+    public void setAdditionalBrokenCarPart(AdditionalBrokenCarPart additionalBrokenCarPart) {
+        this.additionalBrokenCarPart = additionalBrokenCarPart;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public List<Quotation> getGarageQuotationDetails() {
+        return garageQuotationDetails;
+    }
+
+    public void setGarageQuotationDetails(List<Quotation> garageQuotationDetails) {
+        this.garageQuotationDetails = garageQuotationDetails;
+    }
+
+    public boolean isIsFirstTime() {
+        return isFirstTime;
+    }
+
+    public void setIsFirstTime(boolean isFirstTime) {
+        this.isFirstTime = isFirstTime;
+    }
+    
 
 }

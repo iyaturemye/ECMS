@@ -18,9 +18,12 @@
         <script src="layout/js/bootstrap.js" type="text/javascript"/>
         <link rel="stylesheet" type="text/css" href="layout/css/style.css"/>
         <link rel="stylesheet" type="text/css" href="layout/css/bootstrap.min.css"/>
-
         <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
-
+        <link rel="stylesheet" type="text/css" href="layout/datePicker/jquery-ui.css"/>
+        <link rel="stylesheet" href="layout/css/calendar/fullcalendar.min.css"/>
+        <link rel="stylesheet" href="layout/css/calendar/fullcalendar.print.min.css"/>
+        <link rel="stylesheet" href="layout/css/data-table/bootstrap-table.css"/>
+        <link rel="stylesheet" href="layout/css/data-table/bootstrap-editable.css"/>
         <style>
             .container2{
                 background: white;
@@ -72,22 +75,63 @@
         </style>
     </h:head>
     <h:body>
+        <p:growl />
         <ui:insert>
             <ui:include src="header.xhtml"/>
         </ui:insert>
         <h:form>
             <c:if test="#{!vehicleDetailsController.checkIfAlreadyDone()}">
-                <div class="container container2" style="margin-bottom: 16.6%;">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="alert alert-warning">
-                                <p:messages globalOnly="true"/>
-                                <h3> It looks like You have been successfull Bid on this Car please wait for The answer</h3>
+                <c:if test="#{vehicleDetailsController.isFirstTime}">
+                    <div class="container container2" style="margin-bottom: 16.6%;margin-top: 10%;">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div style="padding:20px;margin-top: 80px;">
+                                    <h2 class="text text-warning" style="font-weight: bold;">You finished your bid on this car</h2>
+                                    <span>
+                                        Which means you Already  bid on this car before so 
+                                        you need to wait for insurance decision their make,
+                                        or check in your panel to see if you win or loose on that bid thank u
+                                    </span><br/>
+                                    <div style="margin-top: 20px;">
+                                        <button class="btn btn-info">Continue to bid</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <img src="layout/image/successPage3.jpg"/>
                             </div>
                         </div>
                     </div>
-                </div>
+                </c:if>
             </c:if>
+            <c:if test="#{!vehicleDetailsController.checkIfAlreadyDone()}">
+                <c:if test="#{!vehicleDetailsController.isFirstTime}">
+                    <div class="container container2" style="margin-bottom: 16.6%;margin-top: 10%;">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div style="padding:20px;margin-top: 80px;">
+                                    <h2 class="text text-success" style="font-weight: bold;">
+                                       Congratulation your request has been successfull sent 
+                                    </h2>
+                                    <span>
+                                        This means that you has been sent your bid to the insurance ,
+                                        insurance will review bid and compare to other bid which sent and 
+                                        choose the best for them depend on their needs
+                                        thank u
+                                    </span><br/>
+                                    <div style="margin-top: 20px;">
+                                        <button class="btn btn-info">Continue to bid</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <img src="layout/image/successPage3.jpg"/>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+            </c:if>
+
 
             <c:if test="#{vehicleDetailsController.checkIfAlreadyDone()}">
                 <div class="container container2" style="background:none;border:none;margin-top: 10%;">
@@ -150,39 +194,120 @@
                                             <th>DESCRIPTION</th>
                                             <th>QTY</th>
                                             <th>PART NUMBER</th>
+                                            <th>CONDITION</th>
                                             <th>UNIT PRICE</th>
                                             <th>TOTAL PRICE</th>
                                             <th>ACTION</th>
                                         </thead>
                                         <tbody>
                                             <c:forEach items="#{vehicleDetailsController.lisofQuotation}" var="i" varStatus="status">
-                                                <tr>
-                                                    <td>${status.index + 1}</td>
-                                                    <td>#{i.brokenCarPart.carsparepart.name}</td>
-                                                    <td>#{i.brokenCarPart.quantity}</td>
-                                                    <td>#{i.brokenCarPart.partNumber}</td>
-                                                    <td>#{i.price}</td>
-                                                    <td>#{i.price * i.brokenCarPart.quantity} FRW</td>
-                                                    <td>
-                                                        <h:form>
-                                                            <h:commandLink title="Add price" class="addnew" >
-                                                                <i class="fa fa-plus"></i>
-                                                                <f:ajax listener="#{vehicleDetailsController.addPriceToQuotation(i)}" execute="@form" onevent="displayPopupform"/>
-                                                            </h:commandLink>
-                                                        </h:form>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
+                                                <c:if test="#{i.brokenCarPart.carsparepart!=null}">
+                                                    <tr>
+                                                        <td>${status.index + 1}</td>
+                                                        <td>#{i.brokenCarPart.carsparepart.name}</td>
+                                                        <td>#{i.brokenCarPart.quantity}</td>
+                                                        <td>#{i.brokenCarPart.partNumber}</td>
+                                                        <td>#{i.brokenCarPart.status}</td>
+                                                        <td>
+                                                            <h:outputText value="#{i.price}">
+                                                                <f:convertNumber pattern="###,###,###"/>
+                                                            </h:outputText>
 
+                                                        </td>
+                                                        <td>
+                                                            <h:outputText value="#{i.price * i.brokenCarPart.quantity}">
+                                                                <f:convertNumber pattern="###,###,###"/>
+                                                            </h:outputText>
+
+
+                                                            FRW</td>
+                                                        <td>
+                                                            <h:form>
+                                                                <h:commandLink title="Add price" class="addnew" >
+                                                                    <i class="fa fa-plus"></i>
+                                                                    <f:ajax listener="#{vehicleDetailsController.addPriceToQuotation(i)}"  onevent="displayPopupform"/>
+                                                                </h:commandLink>
+                                                            </h:form>
+                                                        </td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:forEach>
                                         </tbody>
                                     </table>
+                                    <h4>Additional Information</h4>
+                                    <table class="table mytableStyle">
+                                        <thead>
+                                            <th>ITEM</th>
+                                            <th>DESCRIPTION</th>
+                                            <th>PRICE</th>
+                                            <th>ACTION</th>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="#{vehicleDetailsController.lisofQuotation}" var="i" varStatus="status">
+                                                <c:if test="#{i.brokenCarPart.carsparepart==null}">
+                                                    <tr>
+                                                        <td>${status.index + 1}</td>
+                                                        <td>#{i.brokenCarPart.additionInfo.description}</td>
+                                                        <td>
+                                                            <h:outputText value="#{i.price}">
+                                                                <f:convertNumber pattern="###,###,###"/>
+                                                            </h:outputText>
+                                                        </td>
+                                                        <td>
+                                                            <h:form>
+                                                                <h:commandLink title="Add price" class="addnew" >
+                                                                    <i class="fa fa-plus"></i>
+                                                                    <f:ajax listener="#{vehicleDetailsController.addPriceToQuotation(i)}"  onevent="displayPopupform"/>
+                                                                </h:commandLink>
+                                                            </h:form>
+                                                        </td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="line" style="border-bottom: 1px solid #ddd;"></div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4>Service</h4>
+                                            <small><a href="#" class="newService">Add Other Service</a></small>
+                                            <h:panelGroup id="garageQuotation">
+                                                <table class="table mytableStyle">
+                                                    <thead>
+                                                        <th>ITEM</th>
+                                                        <th>DESCRIPTION</th>
+                                                        <th>PRICE</th>
+                                                        <th>ACTION</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach items="#{vehicleDetailsController.garageQuotationDetails}" var="i" varStatus="status">
+                                                            <tr>
+                                                                <td>${status.index + 1}</td>
+                                                                <td>#{i.brokenCarPart.additionInfo.description}</td>
+                                                                <td>#{i.price}</td>
+                                                                <td>
+                                                                    <h:form>
+                                                                        <h:commandLink title="remove" class="addnew" >
+                                                                            <i class="fa fa-trash"></i>
+                                                                            <f:ajax listener="#{vehicleDetailsController.removeQuotation(i)}" render="garageQuotation"/>
+                                                                        </h:commandLink>
+                                                                    </h:form>
+                                                                </td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </h:panelGroup>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="totalDiv">
                                     <div class="row" >
                                         <div class="col-lg-4">
                                             <b>estimate Date and time when work will be done:</b>
-                                            <p:calendar required="true" requiredMessage="Estimate time and date to the work to be done" value="#{vehicleDetailsController.estimatedDate}" pattern="dd-MM-yyyy hh:mm:ss" placeholder="19/09/1990 00:00:01"/>
-
+                                            <p:calendar required="true" requiredMessage="Estimate time and date to the work to be done" value="#{vehicleDetailsController.estimatedDate}" pattern="dd-MM-yyyy" placeholder="19/09/1990" mindate="#{vehicleDetailsController.toDayDate()}"/>
                                         </div>
                                         <div class="col-lg-3 col-lg-offset-5" style="padding: 0px;text-align: right;">
                                             <table class="table mysecondTable">
@@ -253,9 +378,62 @@
             </h:panelGroup>
 
         </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="anotherModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">
+                            Provide your service information
+                        </h4>
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+
+                    </div>
+                    <h:form class="horizontal">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-lg-4">
+                                    Price
+                                </label>
+                                <div class="col-lg-8">
+                                    <h:inputText value="#{vehicleDetailsController.amount}" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-12">Job Description</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-12">
+                                    <h:inputTextarea value="#{vehicleDetailsController.additionalBrokenCarPart.description}" class="form-control" rows="3">
+
+                                    </h:inputTextarea>
+                                </label>
+                            </div>
+                            <div style="height: 30px;"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" 
+                                    data-dismiss="modal">Close
+                            </button>
+                            <h:commandButton class="btn btn-primary" action="#{vehicleDetailsController.addGarageInformation()}" value="Submit"/>
+                        </div>
+                    </h:form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
         <ui:insert>
             <ui:include src="footer.xhtml"/>
         </ui:insert>
+
+
+
+        <script src="layout/datePicker/jquery-ui.js"></script>
         <!--<script src="layout/js/jquery.js"/>-->
         <script>
             var displayPopupform = function (data) {
@@ -268,18 +446,16 @@
             $(".edit").click(function () {
                 $('#myModal').modal('show');
             });
-
-        </script>
-        <script type="text/javascript" src="layout/js/jqzoom.js"></script>
-        <script type="text/javascript">
-            $("#bzoom").zoom({
-                zoom_area_width: 500,
-                thumb_image_width: 500,
-                autoplay_interval: 3000,
-                autoplay: true
+            $(function () {
+                $("#estimatedDate").datepicker();
+                $("#mobile-nav-toggle").find("i").attr("class", "fas fa-align-justify");
+                $(".newService").click(function () {
+                    $("#anotherModel").modal('show');
+                });
             });
         </script>
-        <script src="layout/js/jquery.js"></script>
+
+        <!--<script src="layout/js/jquery.js"></script>-->
         <!--<script src="layout/js/popper.min.js"></script>-->
         <script src="layout/js/bootstrap.js"></script>			
         <script src="layout/js/easing.min.js"></script>			

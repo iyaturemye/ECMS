@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
+        <!--<link rel="styleSheet" href="../layout/css/bootstrap1.css"></link>-->
+        <!--<script src="../layout/js/bootstrap.js"></script>-->
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+
+        <!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"/>-->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+        <style>
+            .mytableStyle th{
+                background:#41a1ff;
+                color:white;
+                border-bottom: 2px solid #41a1ff !important;
+            }
+            .mytableStyle td{
+                border: 2px solid #41a1ff;
+                border-collapse: collapse;
+            }
+            .mytableStyle{
+                border: 2px solid #41a1ff;
+            }
+            .mysecondTable td{
+                border:none !important;
+            }
+            .leftOne{
+                background:#41a1ff;
+                color:white;
+                padding: 5px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <div class="container" style="margin-top: 60px;background: white;border:1px solid #ddd;padding: 5px;">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <h3>User registration </h3><br/>
+                    <p:messages globalOnly="true"/>
+                    <h:form class="form-horizontal">
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2">First name</label>
+                            <div class="col-lg-3">
+                                <h:inputText value="#{insuranceController.employee.fname}" class="form-control" id="fname" required="true" requiredMessage="First name is required" />
+                                <h:message class="text text-danger"  for="fname"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2">Last name</label>
+                            <div class="col-lg-3">
+                                <h:inputText class="form-control" value="#{insuranceController.employee.lname}" id="lname" required="true" requiredMessage="Last name is required" />
+                                <h:message class="text text-danger"  for="lname"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2">E-mail Address</label>
+                            <div class="col-lg-3">
+                                <h:inputText class="form-control" value="#{insuranceController.user.userName}" id="email" required="true" requiredMessage="E-mail is required" />
+                                <h:message class="text text-danger"  for="email"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2">National ID</label>
+                            <div class="col-lg-3">
+                                <h:inputText class="form-control" value="#{insuranceController.employee.nationalId}" id="nationalId" required="true" requiredMessage="National ID is required" />
+                                <h:message class="text text-danger"  for="nationalId"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2">&nbsp;</label>
+                            <div class="col-lg-3">
+                                <h:commandButton value="Save" action="#{insuranceController.createNewUser()}" class="btn btn-primary"/>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="margin-top: 60px;background: white;border:1px solid #ddd;padding: 5px;">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <c:if test="#{insuranceController.employeeList.size()>0}">
+                        <div class="title">
+                            <div class="container" style="margin-bottom: 10px;">
+                                <div  class="rows">
+                                </div>
+                            </div> 
+                        </div>
+                        <p:messages  globalOnly="true"/>
+                        <h:panelGroup id="table">
+                            <table class="table table-bordered table-responsive" id="tables">
+                                <thead>
+                                    <th>#</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>National ID</th>
+                                    <th>Email Address</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="item"  items="#{insuranceController.employeeList}" varStatus="status">
+                                        <tr>
+                                            <td>${status.index + 1}</td>
+                                            <td>#{item.fname}</td>
+                                            <td>#{item.lname}</td>
+                                            <td>#{item.nationalId}</td>
+                                            <td>
+                                                #{item.user.userName}
+                                            </td>
+                                            <td>#{item.user.status}</td>
+                                            <td>
+                                                <h:form>
+                                                    
+                                                    <h:commandLink action="#{insuranceController.deleteEmployee(item)}" class="btn btn-warning">
+                                                        delete
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+
+                        </h:panelGroup>
+                    </c:if>
+                    <c:if test="#{insuranceController.expectiseGarage.size()==0}">
+                        <div class="alert alert-info">
+                            You don't have Any Garage which can do expectise please try add some
+                        </div>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <script>
+            $('.readmore').click(function () {
+                $('#myModal').modal('show');
+            });
+            $(function () {
+                $("#tables").DataTable();
+                $(".expert").attr("class","active");
+            });
+        </script>
+
+    </h:body>
+</html>
+

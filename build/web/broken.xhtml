@@ -81,7 +81,7 @@
                         <div class="form-group">
                             <label class="col-lg-3">#{msg['phoneNumber']}:</label>
                             <div class="col-lg-8">
-                                <p:inputMask value="#{vehicleController.client.phoneNumber}" pt:placeholder="+250722320568" mask="+250 999 999 9999" required="true" requiredMessage="Phone Number is required" class="form-control" id="phone"/>
+                                <p:inputMask value="#{vehicleController.client.phoneNumber}" pt:placeholder="+250722320568" mask="+250 999 999 999" required="true" requiredMessage="Phone Number is required" class="form-control" id="phone"/>
                                 <h:message class="text text-danger" for="phone"/>
                             </div>
                         </div>
@@ -111,6 +111,11 @@
         </div>
         <!--<script src="layout/js/jquery.js"></script>-->
         <script src="layout/js/bootstrap.js"/>
+        <script type="text/javascript">
+            $(function(){
+                 $("#mobile-nav-toggle").find("i").attr("class","fas fa-align-justify");
+            });
+        </script>
     </h:body>
 </html>
 

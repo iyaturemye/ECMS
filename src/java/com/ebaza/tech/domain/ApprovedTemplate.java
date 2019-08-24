@@ -5,6 +5,8 @@
  */
 package com.ebaza.tech.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author Godwin
@@ -18,7 +20,8 @@ public class ApprovedTemplate {
     private String bidId;
     private String comment;
     private String plateNumber;
-   
+    private Date estimatedDate;
+    private String document;
 
     public Double getTotalPrice() {
         return totalPrice;
@@ -83,7 +86,21 @@ public class ApprovedTemplate {
     public void setPlateNumber(String plateNumber) {
         this.plateNumber = plateNumber;
     }
-    
-    
+
+    public Date getEstimatedDate() {
+        return estimatedDate;
+    }
+
+    public void setEstimatedDate(Date estimatedDate) {
+        this.estimatedDate = estimatedDate;
+    }
+
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
+    }
     
 }

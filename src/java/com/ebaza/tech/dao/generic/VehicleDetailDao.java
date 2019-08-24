@@ -30,6 +30,21 @@ public class VehicleDetailDao {
             q.setString(0, userId);
             q.setString(1, "completed");
             list = q.list();
+            s.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<VehicleDetail> getCarNeedExpert(String insuranceId) {
+        List<VehicleDetail> list = new ArrayList<>();
+        try {
+            Session s = SessionManager.getSession();
+            Query q = s.createQuery("select a from VehicleDetail a where a.insurance.uuid=? AND a.status='start' and a.expectiseGarage is NULL ORDER BY a.createdAt DESC");
+            q.setString(0, insuranceId);
+            list = q.list();
+            s.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,8 +87,8 @@ public class VehicleDetailDao {
 
     public int getCount(VehicleDetail vd) {
         try {
-            String sql = "select count(vehicleDetail.vehicleId) as numbers from VehicleDetail "
-                    + "where status='completed' AND YEAR(createdAt)=YEAR(now()) and vehicleDetail.vehicleId='" + vd.getVehicle().getVehicleId() + "' group by VehicleDetail.vehicleId";
+            String sql = "select count(VehicleDetail.vehicleId) as numbers from VehicleDetail "
+                    + "where status='completed' AND YEAR(createdAt)=YEAR(now()) and VehicleDetail.vehicleId='" + vd.getVehicle().getVehicleId() + "' group by VehicleDetail.vehicleId";
             Session ss = SessionManager.getSession();
             SQLQuery qry = ss.createSQLQuery(sql);
             qry.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);

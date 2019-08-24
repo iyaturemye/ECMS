@@ -73,16 +73,19 @@
                 <c:if test="#{vehicleDetailsController.choosenVehicle!=null}">
                     <div class="col-lg-5">
                         <div class="img-header" style="padding: 10px;">
-                            <h3><i class="fa fa-car"  aria-hidden="true"></i> #{vehicleDetailsController.choosenVehicle.vehicle.name.toUpperCase()}
+                            <h3><i class="fa fa-car"  aria-hidden="true"></i> 
+                                #{vehicleDetailsController.choosenVehicle.vehicle.name.toUpperCase()}
                             </h3>
                         </div>
                         <div class="form-horizontal" style="margin-top: 20px;">
                             <div class="form-group">
-                                <div class="col-lg-12">#{msg['policyNumber']}&nbsp; #{vehicleDetailsController.choosenVehicle.vehicle.policyNumber}</div>
+                                <div class="col-lg-12">#{msg['policyNumber']}&nbsp; 
+                                    #{vehicleDetailsController.choosenVehicle.vehicle.policyNumber}</div>
 
                             </div>
                             <div class="form-group">
-                                <div class="col-lg-12">#{msg['plateNum']}: &nbsp; #{vehicleDetailsController.choosenVehicle.vehicle.plateNum}</div>
+                                <div class="col-lg-12">#{msg['plateNum']}: &nbsp; 
+                                    #{vehicleDetailsController.choosenVehicle.vehicle.plateNum}</div>
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-12" style="">
@@ -103,6 +106,14 @@
                                                 </tr>
                                             </c:forEach>
                                         </table>
+                                        <h3>Additional Information</h3>
+                                        <ul>
+                                            <c:forEach items="#{vehicleDetailsController.choosenAdditionalCarPart}" var="item">
+                                                <li>
+                                                    #{item.description}
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +158,7 @@
                     As simple as that
                 </div>
 
-                <c:forEach items="#{vehicleController.brokenCar}" var="items">
+                <c:forEach items="#{vehicleController.brokenCar2}" var="items">
                     <c:forEach items="#{vehicleController.images}" var="i">
                         <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
                             <div class="single-portfolio col-sm-3 all vector">
@@ -155,7 +166,7 @@
                                     <div class="thumb">
                                         <h:form>
                                             <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                                <img class="image img-fluid" src="layout/image/blockenCar/#{i.image}" alt=""/>
+                                                <img class="image img-fluid image-slide" src="layout/image/blockenCar/#{i.image}" alt=""/>
                                             </h:commandLink>
                                         </h:form>
                                     </div>
@@ -209,6 +220,11 @@
         <script src="layout/js/owl.carousel.min.js"></script>							
         <script src="layout/js/mail-script.js"></script>	
         <script src="layout/js/main.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                 $("#mobile-nav-toggle").find("i").attr("class","fas fa-align-justify");
+            });
+        </script>
     </h:body>
 </html>
 

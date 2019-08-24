@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+        <style>
+            .mytableStyle th{
+                background:#41a1ff;
+                color:white;
+                border-bottom: 2px solid #41a1ff !important;
+            }
+            .mytableStyle td{
+                border: 2px solid #41a1ff;
+                border-collapse: collapse;
+            }
+            .mytableStyle{
+                border: 2px solid #41a1ff;
+            }
+            .mysecondTable td{
+                border:none !important;
+            }
+            .leftOne{
+                background:#41a1ff;
+                color:white;
+                padding: 5px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <div class="container" style="margin-top: 60px;background: white;border:1px solid #ddd;padding: 5px;">
+            <div class="rows">
+                <div class="col-lg-12">
+                    <div class="container" style="margin-top: 20px;">
+                        <div class="rows">
+                            <div class="col-lg-6">
+                                <div class="chart">
+                                    <div class="title">
+                                        <i class="fas fa-chart-line"></i> Accident Statistic
+                                        <div class="pull-right">
+                                            <!--                                <div id="reportrange" class="pull-right" style="margin-top: -8px;background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                                                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                                                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                                                            </div>-->
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <canvas id="lineChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="chart">
+                                    <div class="title">
+                                        <i class="fas fa-chart-line"></i> Money Paid Statistic
+                                        <div class="pull-right">
+                                            <!--                                <div id="reportrange2" class="pull-right" style="margin-top: -8px;background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                                                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                                                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                                                                            </div>-->
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <canvas id="barChart"></canvas>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+        <script src="../layout/js/chart.js"/>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <script>
+            $('.readmore').click(function () {
+                $('#myModal').modal('show');
+            });
+            $(function () {
+                $("#tables").DataTable();
+                $(".statistics").attr("class","active");
+            });
+        </script>
+    </h:body>
+</html>
+

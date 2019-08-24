@@ -9,6 +9,7 @@ import com.ebaza.tech.dao.generic.AbstractDao;
 import com.ebaza.tech.dao.generic.VehicleDetailDao;
 import com.ebaza.tech.dao.interfc.IVehicleDetails;
 import com.ebaza.tech.domain.VehicleDetail;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,55 +59,73 @@ public class VehicleDetailsImpl extends AbstractDao<Long, VehicleDetail> impleme
 
     @Override
     public List<VehicleDetail> getBrokenCar(int number) {
+        List<VehicleDetail> list = new ArrayList<>();
         try {
-            return getListModelWithMyHQL(new String[]{"status"}, new Object[]{"proccessed"}, "from VehicleDetail", number);
+            list = getListModelWithMyHQL(new String[]{"status"}, new Object[]{"proccessed"}, "from VehicleDetail", number);
         } catch (Exception ex) {
             Logger.getLogger(VehicleDetailsImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
         }
+        return list;
     }
 
     @Override
     public List<VehicleDetail> getAllBrokenCar() {
+        List<VehicleDetail> list = new ArrayList<>();
         try {
-            return getListModelWithMyHQL(new String[]{"status"}, new Object[]{"proccessed"}, "from VehicleDetail", 0);
+            list = getListModelWithMyHQL(new String[]{"status"}, new Object[]{"proccessed"}, "from VehicleDetail", 0);
         } catch (Exception ex) {
             Logger.getLogger(VehicleDetailsImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+
         }
+        return list;
     }
 
     @Override
     public List<VehicleDetail> getListOfVehicleDetails(String InsuranceId) {
+        List<VehicleDetail> list = new ArrayList<>();
         try {
-            return getListModelWithMyHQL(new String[]{"insuranceId"}, new Object[]{InsuranceId}, "from VehicleDetail", 0);
+            list = getListModelWithMyHQL(new String[]{"insuranceId"}, new Object[]{InsuranceId}, "from VehicleDetail", 0);
         } catch (Exception ex) {
             Logger.getLogger(VehicleDetailsImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+
         }
+        return list;
     }
 
     @Override
     public List<VehicleDetail> getNewAccident(String InsuranceId, String condition) {
+        List<VehicleDetail> list = new ArrayList<>();
         try {
             if (condition.equalsIgnoreCase("new")) {
-                return getListModelWithMyHQL(new String[]{"insuranceId", "status", "readOrUnread"}, new Object[]{InsuranceId, "pending", "unread"}, "from VehicleDetail", 0);
+                list = getListModelWithMyHQL(new String[]{"insuranceId", "status", "readOrUnread"}, new Object[]{InsuranceId, "pending", "unread"}, "from VehicleDetail", 0);
             }
-            return getListModelWithMyHQL(new String[]{"insuranceId", "status"}, new Object[]{InsuranceId, "pending"}, "from VehicleDetail", 0);
+            list = getListModelWithMyHQL(new String[]{"insuranceId", "status"}, new Object[]{InsuranceId, "pending"}, "from VehicleDetail", 0);
         } catch (Exception ex) {
             Logger.getLogger(VehicleDetailsImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+
         }
+        return list;
     }
 
     @Override
     public List<VehicleDetail> expertiseGarage(String garageId, String condition) {
-        return new VehicleDetailDao().getSome(garageId, condition);
+        List<VehicleDetail> list = new VehicleDetailDao().getSome(garageId, condition);
+        return list;
     }
 
     @Override
     public List<VehicleDetail> clientFinishedCar(String userId) {
         return new VehicleDetailDao().getClientFinishedCar(userId);
+    }
+
+    public List<VehicleDetail> getCarNeedExpertise(String insuranceId) {
+        try {
+            return new VehicleDetailDao().getCarNeedExpert(insuranceId);
+        } catch (Exception e) {
+            Logger.getLogger(VehicleDetailsImpl.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        }
+
     }
 
 }

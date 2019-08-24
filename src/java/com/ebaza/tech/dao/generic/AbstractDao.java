@@ -208,7 +208,6 @@ public class AbstractDao<K, T> implements IRootDao<K, T> {
             LOGGER.error("System Error has occured. {}", ex);
             throw new Exception(ex);
         } finally {
-
             if (!t.wasCommitted()) {
                 t.commit();
             }

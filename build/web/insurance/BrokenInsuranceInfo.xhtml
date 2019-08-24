@@ -19,7 +19,8 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
-        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+        <!--<link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/>--> 
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"/>
         <style>
             .mytableStyle th{
                 background:#41a1ff;
@@ -62,6 +63,9 @@
                 overflow-x: visible;
                 background: white !important;
             }
+            body{
+                font-family: 'Open Sans Condensed', sans-serif !important;
+            }
 
         </style>
     </h:head>
@@ -73,34 +77,34 @@
             <div class="container" style="background: white;border:1px solid #ddd;padding: 5px;">
                 <div class="row">
                     <div class="col-lg-4">
-                        <h3>Owner Information</h3>
+                        <h3><b>OWNER INFORMATION</b></h3>
                         <table class="table">
                             <tr>
-                                <td><b>Client Name:</b></td>
+                                <td><b>CLIENT NAME:</b></td>
                                 <td>#{insuranceController.vehicleDetail.client.fname}</td>
                             </tr>
                             <tr>
-                                <td><b>Phone Number:</b></td>
+                                <td><b>PHONE NUMBER:</b></td>
                                 <td>#{insuranceController.vehicleDetail.client.phoneNumber}</td>
                             </tr>
                             <tr>
-                                <td><b>Plate Number:</b></td>
-                                <td>#{insuranceController.vehicleDetail.vehicle.plateNum}</td>
+                                <td><b>PLATE NUMBER:</b></td>
+                                <td>#{insuranceController.vehicleDetail.vehicle.plateNum.toUpperCase()}</td>
                             </tr>
                             <tr>
-                                <td><b>Name:</b></td>
+                                <td><b>NAME:</b></td>
                                 <td>#{insuranceController.vehicleDetail.vehicle.name}</td>
                             </tr>
                             <tr>
-                                <td><b>Policy Number:</b></td>
+                                <td><b>POLICY NUMBER:</b></td>
                                 <td>#{insuranceController.vehicleDetail.vehicle.policyNumber}</td>
                             </tr>
                             <tr>
-                                <td><b>Location:</b></td>
+                                <td><b>ACCIDENT LOCATION:</b></td>
                                 <td>#{insuranceController.vehicleDetail.location}</td>
                             </tr>
                             <tr>
-                                <td><b>Published At:</b></td>
+                                <td><b>PUBLICATION DATE:</b></td>
                                 <td>
                                     <h:outputFormat value="#{insuranceController.vehicleDetail.createdAt}">
                                         <f:convertDateTime pattern="dd-MMM-yyyy"/>
@@ -108,17 +112,25 @@
                                 </td>
                             </tr>
                         </table>
-                        <label><b>Reason</b></label>
+                        <label><b>REASON</b></label>
                         <pre>
                         <h:outputFormat value="#{insuranceController.vehicleDetail.whatHappen}" escape="false"/>
                         </pre>
+                        <div class="form-group">
+                            <label class="col-lg-3">Estimated Market Value</label>
+                            <div class="col-lg-6">
+                                <h:outputText value="#{insuranceController.vehicleDetail.estamedMarketValue}">                           
+                                    <f:convertNumber pattern="###,###,###"/>
+                                </h:outputText>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-4" style="border-right: 1px solid #ddd;border-left: 1px solid #ddd;" >
-                        <h3>Broken Car A</h3>
+                        <h3><b>BROKEN CAR A</b></h3>
                         <table class="table">
                             <tr>
                                 <td>Plate Number</td>
-                                <td>#{insuranceController.vehicleDetail.vehicle.plateNum}</td>
+                                <td>#{insuranceController.vehicleDetail.vehicle.plateNum.toUpperCase()}</td>
                             </tr>
                             <tr>
                                 <td>Type</td>
@@ -134,43 +146,44 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-lg-4">
-                        <h3>Broken Car B</h3>
-                        <table class="table">
-                            <tr>
-                                <td>Plate Number</td>
-                                <td>#{insuranceController.vehicleDetail.vehicleb.plateNum}</td>
-                            </tr>
-                            <tr>
-                                <td>Type</td>
-                                <td>#{insuranceController.vehicleDetail.vehicleb.name}</td>
-                            </tr>
-                            <tr>
-                                <td>Chasis number</td>
-                                <td>#{insuranceController.vehicleDetail.vehicleb.chasisNum}</td>
-                            </tr>
-                            <tr>
-                                <td>Policy Number</td>
-                                <td>#{insuranceController.vehicleDetail.vehicleb.policyNumber}</td>
-                            </tr>
-                            <tr>
-                                <td>Insurance</td>
-                                <td>#{insuranceController.vehicleDetail.insuranceOfvehicleb.name}</td>
-                            </tr>
-                        </table>
-                    </div>
+                    <c:if test="#{insuranceController.vehicleDetail.vehicleb!=null}">
+                        <div class="col-lg-4">
+                            <h3><b>BROKEN CAR B</b></h3>
+                            <table class="table">
+                                <tr>
+                                    <td>Plate Number</td>
+                                    <td>#{insuranceController.vehicleDetail.vehicleb.plateNum.toUpperCase()}</td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td>#{insuranceController.vehicleDetail.vehicleb.name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Chasis number</td>
+                                    <td>#{insuranceController.vehicleDetail.vehicleb.chasisNum}</td>
+                                </tr>
+                                <tr>
+                                    <td>Policy Number</td>
+                                    <td>#{insuranceController.vehicleDetail.vehicleb.policyNumber}</td>
+                                </tr>
+                                <tr>
+                                    <td>Insurance</td>
+                                    <td>#{insuranceController.vehicleDetail.insuranceOfvehicleb.name}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </c:if>
                     <div class="col-lg-8" style="border-left: 1px solid #ddd;">
                         <div class="line" style="border-bottom:1px solid #ddd;"></div>
 
-                        <h3>Broken Car Image</h3>
-                        <img style="width: 200px;" src="../layout/image/blockenCar/25db19a3-92f2-4475-baae-e9dcf90d5b30.jpg" class="img-thumbnail"/>
-                        <img style="width: 200px;" src="../layout/image/blockenCar/25db19a3-92f2-4475-baae-e9dcf90d5b30.jpg" class="img-thumbnail"/>
-                        <img style="width: 200px;" src="../layout/image/blockenCar/25db19a3-92f2-4475-baae-e9dcf90d5b30.jpg" class="img-thumbnail"/>
-
+                        <h3><b>BROKEN CAR IMAGE</b></h3>
+                        <c:forEach items="#{insuranceController.accidentVehicleImage}" var="item">
+                            <img style="width: 200px;max-height: 150px;" src="../layout/image/blockenCar/#{item.image}" class="img-thumbnail"/>
+                        </c:forEach>
                     </div>
                     <div class="col-lg-8" style="border-left: 1px solid #ddd;">
                         <div class="line" style="border-bottom:1px solid #ddd;margin:10px;"></div>
-                        <h3>Broken Car Part</h3>
+                        <h3><b>BROKEN CAR PART</b></h3>
                         <div class="brokenCarPart">
                             <table class="table table-responsive table-condensed">
                                 <c:forEach items="#{insuranceController.allBrokenPartParent}" var="ele">
@@ -187,6 +200,25 @@
                                 </c:forEach>
                             </table>
                         </div>
+                        <c:if test="#{insuranceController.choosenAdditionalInfo.size()>0}">
+                            <div>
+                                <h3><b>NONE CLASSIFIED</b></h3>
+                                <table class="table">
+                                    <thead>
+                                        <td>ID</td>
+                                        <td>Description</td>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="#{insuranceController.choosenAdditionalInfo}" var="item" varStatus="status">
+                                            <tr>
+                                                <td>#{status.index + 1}</td>
+                                                <td>#{item.description} </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -206,7 +238,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Plate Number</td>
-                                                <td>#{element.iyagonzeVehicle.plateNum}</td>
+                                                <td>#{element.iyagonzeVehicle.plateNum.toUpperCase()}</td>
                                             </tr>
                                             <tr>
                                                 <td>Chasis Number</td>
@@ -223,7 +255,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Plate Number</td>
-                                                <td>#{element.iyagonzweVehicle.plateNum}</td>
+                                                <td>#{element.iyagonzweVehicle.plateNum.toUpperCase()}</td>
                                             </tr>
                                             <tr>
                                                 <td>Chasis Number</td>

@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-     <meta name="viewport" content="width=device-width, 
+    <meta name="viewport" content="width=device-width, 
           initial-scale=1.0, 
           maximum-scale=1.0, 
           user-scalable=no"/>
@@ -18,7 +18,10 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
-        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/>
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
         <style>
             .mytableStyle th{
                 background:#41a1ff;
@@ -53,33 +56,13 @@
                         <div class="title">
                             <div class="container" style="margin-bottom: 10px;">
                                 <div  class="rows">
-                                    <label class="col-lg-1" style="margin-top: 10px;">
-                                        List : 
-                                    </label>
-                                    <div class="col-lg-2">
-                                        <h:form>
-                                            <h:selectOneMenu class="mylist form-control" value="#{insuranceController.filterByInfo}">
-                                                <f:selectItem itemLabel="50" itemValue="50"/>
-                                                <f:selectItem itemLabel="100" itemValue="100"/>
-                                                <f:selectItem itemLabel="150" itemValue="150"/>
-                                            </h:selectOneMenu>
-                                        </h:form>
-                                    </div>
-                                    <div class="col-lg-3 col-lg-offset-6">
-                                        <div class="pull-right" style="margin-right: 10px;">
-                                            <h:form>
-                                                <h:inputText pt:placeholder="Search Plate Number" value="#{insuranceController.searchElement}" class="form-control">
-                                                    <f:ajax listener="#{insuranceController.search()}" render="table" event="keyup"/>
-                                                </h:inputText>
-                                            </h:form>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div> 
                         </div>
                         <h:messages class="alert alert-info" globalOnly="true"/>
                         <h:panelGroup id="table">
-                            <table class="table table-bordered table-responsive">
+                            <table class="table table-striped table-bordered" id="tables">
                                 <thead>
                                     <th>#</th>
                                     <th>Plate Number</th>
@@ -89,15 +72,15 @@
                                     <th>Completed Date</th>
                                     <th>Done By</th>
                                     <th>Garage Phone Number </th>
+                                    <th>Garage Timing</th>
                                     <th>Status</th>
-                                    
                                 </thead>
                                 <tbody>
                                     <c:forEach var="item"  items="#{insuranceController.completedList}" varStatus="status">
                                         <tr>
                                             <td>${status.index + 1}</td>
 
-                                            <td>#{item.bidding.vehicleDetails.vehicle.plateNum}</td>
+                                            <td>#{item.bidding.vehicleDetails.vehicle.plateNum.toUpperCase()}</td>
                                             <td>#{item.bidding.vehicleDetails.vehicle.policyNumber}</td>
                                             <td>#{item.bidding.vehicleDetails.vehicle.name}</td>
                                             <td>#{item.bidding.vehicleDetails.client.phoneNumber}</td>
@@ -109,8 +92,14 @@
                                             <td>#{item.bidding.garage.name}</td>
                                             <td>#{item.bidding.garage.garageOwner.phoneNumber} </td>
                                             <td>
+                                                <div class="label #{(insuranceController.convertDateBetweenTwoDate(item.createdAt, item.bidding.estimatedDate).status.equals('late'))? 'label-danger':'label-success'}">
+                                                    <h:outputText value="#{insuranceController.convertDateBetweenTwoDate(item.createdAt, item.bidding.estimatedDate).message}"/> 
+                                                    #{(insuranceController.convertDateBetweenTwoDate(item.createdAt, item.bidding.estimatedDate).status.equals('late'))? '':'was remaining'}
+                                                </div>
+                                            </td>
+                                            <td>
                                                 <span class="label #{(item.isPaid)?'label-success':'label-default'}">
-                                                    #{(item.isPaid)? "have paid":"not yet paid"}
+                                                    #{(item.isPaid)? "Paid":"not yet paid"}
                                                 </span>
                                             </td>
                                         </tr>
@@ -125,28 +114,19 @@
                             You don't have Any Car
                         </div>
                     </c:if>
-<!--                    <div class="pull-right">
-                        <ul class="pagination pagination-sm">
-                            <li><a href="#">&laquo;</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">&raquo;</a></li>
-                        </ul>
-                    </div>-->
                 </div>
             </div>
         </div>
-        <script src="../layout/js/jquery.js"/>
-        <script src="../layout/js/bootstrap.js"/>
-
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
         <script>
-
             $('.readmore').click(function () {
                 $('#myModal').modal('show');
-
+            });
+            $(function () {
+                $("#tables").DataTable();
+                $(".completedCar").attr("class","active");
             });
         </script>
     </h:body>

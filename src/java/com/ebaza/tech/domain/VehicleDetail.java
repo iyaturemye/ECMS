@@ -74,6 +74,7 @@ public class VehicleDetail implements Serializable {
     private Date vehiclebEnsuranceStartDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date vehiclebEnsuranceEndingDate;
+    private double estamedMarketValue;
 
     public String getUuid() {
         return uuid;
@@ -251,4 +252,13 @@ public class VehicleDetail implements Serializable {
     public void setVehiclebEnsuranceEndingDate(Date vehiclebEnsuranceEndingDate) {
         this.vehiclebEnsuranceEndingDate = vehiclebEnsuranceEndingDate;
     }
+
+    public double getEstamedMarketValue() {
+        return estamedMarketValue;
+    }
+
+    public void setEstamedMarketValue(double estamedMarketValue) {
+        this.estamedMarketValue = estamedMarketValue;
+    }
+    
 }

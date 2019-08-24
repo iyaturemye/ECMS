@@ -5,6 +5,8 @@
  */
 package com.ebaza.tech.dto;
 
+import java.util.Date;
+
 /**
  *
  * @author Godwin
@@ -16,6 +18,9 @@ public class GaragePayment {
     private String insuranceName;
     private double totalAmount;
     private boolean status;
+    private Date estimatedDate;
+    private Date completeCarDate;
+    private String document;
 
     public Long getPurchasingOrderNum() {
         return purchasingOrderNum;
@@ -55,6 +60,30 @@ public class GaragePayment {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public Date getEstimatedDate() {
+        return estimatedDate;
+    }
+
+    public void setEstimatedDate(Date estimatedDate) {
+        this.estimatedDate = estimatedDate;
+    }
+
+    public Date getCompleteCarDate() {
+        return completeCarDate;
+    }
+
+    public void setCompleteCarDate(Date completeCarDate) {
+        this.completeCarDate = completeCarDate;
+    }  
+
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
     }
     
     

@@ -2,11 +2,12 @@ body{
     background: #fcfcfc;
 }
 thead{
-    background:#f3f3f3;
+    background: white !important;
+    font-size: 12px !important;
 }
 .formmenu{
     padding: 10px;
-    
+
 }
 .formmenu a{
     text-decoration: none;

@@ -25,7 +25,6 @@ public class CarsparepartDao {
             Criteria cr=s.createCriteria(Carsparepart.class);
             cr.add(Restrictions.isNull("carsparepart"));
             List<Carsparepart> list=cr.list();
-                        System.out.println("here we have the following output"+list.size());
 
             s.close();
             return list;

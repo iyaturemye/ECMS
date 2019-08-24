@@ -2,8 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>ECMS(Electronic Claims Management System) </title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -52,10 +51,10 @@
                     <div class="pull-right">
                         <h:form>
                             <h:commandLink action="#{changeLanguage.changeLanguage('kin_rw')}">
-                                <img src="/layout/image/Kinyarwanda.png" width="25px;" title="mu kinyarwanda"/>
+                                <img src="layout/image/Kinyarwanda.png" width="25px;" title="mu kinyarwanda"/>
                             </h:commandLink>
                             <h:commandLink action="#{changeLanguage.changeLanguage('en')}" title="In English">
-                                <img src="/layout/image/UK.png" width="25px;"/>
+                                <img src="layout/image/UK.png" width="25px;"/>
                             </h:commandLink>
                         </h:form>
                     </div>
@@ -74,7 +73,7 @@
                             <li><a href="GarageRegistration.xhtml"><i class="fas fa-wrench"></i> #{msg['garageRegistration']}</a></li>
                             <li><a href="broken.xhtml"><i class="far fa-user"></i> #{msg['clientRegistration']}</a></li>
                             <li><a href="insuranceRegistration.xhtml"><i class="fas fa-user-shield"></i> #{msg['insuranceReg']}</a></li>
-                            <li><a href="policeReport.xhtml"><i class="fas fa-traffic-light"></i> #{msg['policeReport']}</a></li>
+                            <li><a href="allBrokenCar.xhtml"><i class="fas fa-car-crash"></i> #{msg['allCar']}</a></li>
                             <li><a href="aboutUs.xhtml"><i class="fas fa-info-circle"></i> #{msg['aboutUs']}</a></li>
                             <li><a href="contact.xhtml"><i class="fas fa-mobile-alt"></i> #{msg['contactUs']}</a></li>
                             <c:if test="#{loginController.loggedInUser==null}">
@@ -87,7 +86,7 @@
                                             <a href="#{(loginController.loggedInUser.userType.equalsIgnoreCase('admin')?'members':loginController.loggedInUser.userType)}/dashboard.xhtml"><i class="fa fa-tachometer-alt"  aria-hidden="true"></i>Dashboard</a>
                                         </li>
                                         <li>
-                                            <a href="#{(loginController.loggedInUser.userType.equalsIgnoreCase('admin')?'members':loginController.loggedInUser.userType)}/dashboard.xhtml"><i class="fa fa-settings"  aria-hidden="true"></i>Setting</a>
+                                            <a href="#{(loginController.loggedInUser.userType.equalsIgnoreCase('admin')?'members':loginController.loggedInUser.userType)}/dashboard.xhtml"><i class="fas fa-cog"></i> Setting</a>
                                         </li>
                                         <li>
                                             <h:form>
@@ -108,8 +107,8 @@
         </header><!-- #header -->
         <!--</nav>-->
         <script>
-            $(function(){
-                $("#mobile-nav-toggle").find("i").attr("class","fas fa-align-justify");
+            $(function () {
+                $("#mobile-nav-toggle").find("i").attr("class", "fas fa-align-justify");
             });
         </script>
     </h:body>

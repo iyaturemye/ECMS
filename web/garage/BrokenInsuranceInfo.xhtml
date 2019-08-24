@@ -1,0 +1,402 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <meta name="viewport" content="width=device-width, 
+          initial-scale=1.0, 
+          maximum-scale=1.0, 
+          user-scalable=no"/>
+    <h:head>
+        <title>Insurance Dashboard#{(insuranceController.newOne.size()==0)? '':(insuranceController.newOne.size())}</title>
+        <link rel="styleSheet" href="../layout/css/bootstrap1.css"></link>
+        <!--<script src="../layout/js/jquery.js"/>-->
+        <script src="../layout/js/bootstrap.js"></script>
+        <link rel="styleSheet" href="css/mystyle.css"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Slabo+27px" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto+Condensed" rel="stylesheet"/> 
+        <style>
+            .mytableStyle th{
+                background:#41a1ff;
+                color:white;
+                border-bottom: 2px solid #41a1ff !important;
+            }
+            .mytableStyle td{
+                border: 2px solid #41a1ff;
+                border-collapse: collapse;
+            }
+            .mytableStyle{
+                border: 2px solid #41a1ff;
+            }
+            .mysecondTable td{
+                border:none !important;
+            }
+            .leftOne{
+                background:#41a1ff;
+                color:white;
+                padding: 5px;
+            }
+            .table td{
+                border:none !important;
+            }
+            .mytitle a{
+                font-size: 12px;
+                font-weight: bold;
+            }
+            .myheading{
+                padding:4px !important;
+            }
+            .mypanelbody{
+                font-size: 10px !important;
+            }
+            pre{
+                min-height: 150px !important;
+            }
+            .loadImagess{
+                position: absolute;
+                margin-top: -30px;
+                width: 100px;
+                margin-left: -20px;
+                display: none;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:insert>
+            <ui:include src="menu.xhtml"/>
+        </ui:insert>
+        <c:if test="#{insuranceController.vehicleDetail!=null}">
+            <div class="container" style="background: white;border:1px solid #ddd;padding: 5px;">
+                <p:messages globalOnly="true"/>
+                <div class="rows">
+                    <div class="col-lg-4">
+                        <table class="table">
+                            <tr>
+                                <td><b>Client Name:</b></td>
+                                <td>#{insuranceController.vehicleDetail.client.fname}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Phone Number:</b></td>
+                                <td>#{insuranceController.vehicleDetail.client.phoneNumber}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Plate Number:</b></td>
+                                <td>#{insuranceController.vehicleDetail.vehicle.plateNum.toUpperCase()}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Name:</b></td>
+                                <td>#{insuranceController.vehicleDetail.vehicle.name}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Policy Number:</b></td>
+                                <td>#{insuranceController.vehicleDetail.vehicle.policyNumber}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Location:</b></td>
+                                <td>#{insuranceController.vehicleDetail.location}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Published At:</b></td>
+                                <td>
+                                    <h:outputFormat value="#{insuranceController.vehicleDetail.createdAt}">
+                                        <f:convertDateTime pattern="dd-MMM-yyyy"/>
+                                    </h:outputFormat>
+                                </td>
+                            </tr>
+                        </table>
+                        <label><b>Reason</b></label>
+                        <pre>
+                        <h:outputFormat value="#{insuranceController.vehicleDetail.whatHappen}" escape="false"/>
+                        </pre>
+                    </div>
+                    <div class="col-lg-8" >
+                        <div class="brokencarImage">
+                            <label>Picture</label><br/>
+                            <c:forEach var="i" items="#{insuranceController.getImages(insuranceController.vehicleDetail)}">
+                                <img style="width: 200px; margin: 5px;" class="image img-thumbnail img-responsive" src="../layout/image/blockenCar/${i.image}"/>
+                            </c:forEach>
+                        </div>
+                        <!--Statement of Vehicle start here-->
+
+                        <div class="form-group">
+                            <c:forEach var="i"  items="#{insuranceController.allParentCarsparepart}" varStatus="status">
+                                <div class="col-lg-4">
+                                    <div class="panel-group" id="accordion${status.index + 1}">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading myheading">
+                                                <h4 class="panel-title mytitle">
+                                                    <a data-toggle="collapse" data-parent="#accordion${status.index + 1}" 
+                                                       href="#collapse${status.index + 1}">
+                                                        <span>#{i.name}</span>
+                                                        <h:form>
+                                                            <h:commandLink style="margin-top: -15px;" value="View All" class="pull-right text text-justify link">
+                                                                <f:ajax listener="#{insuranceController.initi(i)}" render="infoPanel" onevent="out" execute="@form"/>
+                                                            </h:commandLink>
+                                                        </h:form>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse${status.index + 1}" class="panel-collapse collapse">
+                                                <div class="panel-body mypanelbody">
+                                                    <ul class="listOfElment">
+                                                        <h:panelGroup id="one" class="paneld">
+                                                            <c:forEach items="#{insuranceController.addedBrokenCar}" var="i2">
+                                                                <c:if test="#{i2.carsparepart.carsparepart.id.equalsIgnoreCase(i.id)}">
+                                                                    <li>
+                                                                        #{i2.carsparepart.name}
+                                                                        <h:form>
+                                                                            <h:commandButton class="pull-right cancelbutton" value="&times;">
+                                                                                <f:ajax  listener="#{insuranceController.removeFromList(i2)}" execute="@form" render="one" onevent="out"/>
+                                                                            </h:commandButton>
+                                                                        </h:form>
+                                                                    </li>
+                                                                </c:if>
+                                                            </c:forEach>
+
+                                                        </h:panelGroup>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>   
+                        <div class="form-group">
+
+                            <div class="col-lg-12">
+                                <div><br/>
+                                    <h4><a href="#" data-toggle="modal" data-target="#myModal2">Add Additional Information</a></h4>
+                                </div>
+                                <h:panelGroup id="additionalInfo">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <th>ID</th>
+                                            <th>Description</th>
+                                            <th>Action</th>
+                                        </thead>
+                                        <tbody>
+
+                                            <c:forEach items="#{insuranceController.additionalInfo}" var="item" varStatus="status">
+
+                                                <tr>
+                                                    <td>${status.index + 1}</td>
+                                                    <td>#{item.description}</td>
+                                                    <td>
+                                                        <h:form>
+                                                            <h:commandLink  class="btn btn-default removeBtn">
+                                                                Remove
+                                                                <f:ajax listener="#{insuranceController.removeAdditionalInfo(item)}" onevent="removeadditionalInfo" render="additionalInfo"/>
+                                                            </h:commandLink>
+                                                        </h:form>
+                                                    </td>
+                                                </tr>  
+
+                                            </c:forEach>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                        <!--end of Statement of Vehicle-->
+                    </div>
+
+                </div>
+
+            </div>
+            <h:form>
+                <div class="container" style="background:white;padding: 15px;border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;margin-bottom: 30px;">
+                    <div class="rows">
+                        <div class="col-lg-12">
+                            <h:commandButton class="btn btn-primary" value="Confirm" action="#{insuranceController.approveCar('expectise.xhtml?faces-redirect=true')}"/>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+                <h:form id="infoPanel">
+                    <div class="modal-dialog" >
+                        <div class="modal-content">
+                            <div class="loading" style="display:none;">
+                                <img src="../layout/image/Ripple-1s-200px.gif" style="margin-left: 30%;"/>
+                            </div>
+                            <div class="all" style="display: none;">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        All Items of #{insuranceController.chooseCarspart.name}
+                                    </h4>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px;overflow-x: hidden;">
+                                    <h:selectManyCheckbox value="#{insuranceController.engineList}" layout="pagedirection" onclick="bringitOn(this)">
+                                        <f:selectItems value="#{insuranceController.listOfChoosenCarPart}" itemLabel="#{item.name}" itemValue="#{item.id}"  var="item"/>
+                                    </h:selectManyCheckbox>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary"   data-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <h:commandButton action="#{insuranceController.addToList()}" class="btn btn-default" value="Save"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <h:form>
+                    <h:inputText value="#{insuranceController.choosencareSpare}" style="display: none;" class="hidden1" />
+                    <h:commandButton value="removeIt" style="display:none;" class="removeIt">
+                        <f:ajax listener="#{insuranceController.removingBrokenPart()}"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+
+            <div class="modal fade" id="partNumberModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+                <h:form id="infoPanel2" class="form-horizontal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    Additional Information
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <h:inputText value="#{insuranceController.choosencareSpare}" id="choosen" style="display: none;" class="choosen"/>
+                                    <label class="col-lg-3">Quantity</label>
+                                    <div class="col-lg-3">
+                                        <h:inputText class="form-control" id="quantity" value="#{insuranceController.choosenBrokenPart.quantity}" required="true" requiredMessage="Quantity is required"/>
+                                        <h:message for="quantity" class="text text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3">Part Number</label>
+                                    <div class="col-lg-3">
+                                        <h:inputText class="form-control" id="partnumber" value="#{insuranceController.choosenBrokenPart.partNumber}"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary"   data-dismiss="modal">
+                                    Close
+                                </button>
+                                <img src="../layout/image/Ripple-1s-200px.gif" class="loadImagess"/>
+                                <h:commandButton  class="btn btn-default saveP" value="Save">
+                                    <f:ajax listener="#{insuranceController.additToList()}" execute="@form" onevent="hidePopupPanel" render="@form"/>
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </c:if>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" 
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Additional Information on broken car part
+                        </h4>
+                    </div>
+                    <h:form class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-lg-3">Description</label>
+                                <div class="col-lg-8">
+                                    <h:inputTextarea class="form-control" value="#{insuranceController.descriptions}">
+                                    </h:inputTextarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default closeBtn" 
+                                    data-dismiss="modal">Close
+                            </button>
+                            <h:commandButton  value="Save" action="#{insuranceController.addAdditionalInfo()}" class="btn btn-primary savead">
+
+                            </h:commandButton>
+                        </div>
+                    </h:form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </h:body>
+    <script src="../layout/js/jquery.js"/>
+    <script src="../layout/js/bootstrap.js"/>
+    <script type="text/javascript">
+                                        $(function () {
+
+                                            $(".link").click(function () {
+
+                                                $(".loading").show();
+                                                $("#myModal").modal("show");
+                                            });
+                                        });
+                                        var out = function (data) {
+                                            if (data.status === 'success') {
+                                                $(".containAllElement").show();
+                                                $(".loading").hide();
+                                                $(".all").show();
+                                            } else {
+                                                $(".containAllElement").hide();
+                                                $(".load").show();
+                                            }
+                                        }
+                                        var hidePopupPanel = function (data) {
+                                            if (data.status === 'success') {
+                                                $(".saveP").attr("disabled", "disabled");
+                                                $(".loadImagess").show();
+                                                $("#partNumberModal").modal("hide");
+                                                $(".saveP").removeAttr("disabled");
+                                                $(".loadImagess").hide();
+                                            }
+
+                                        }
+
+                                        function bringitOn(element) {
+                                            var value = $(element).val();
+                                            console.log(value);
+                                            if ($(element).is(':not(:checked)')) {
+                                                $(".hidden1").val(value);
+                                                $(".removeIt").trigger("click");
+                                            } else {
+                                                $("#partNumberModal").modal("show");
+                                                $(".choosen").val(value);
+                                                console.log("is checked");
+                                            }
+                                        }
+                                        var removeadditionalInfo = function (data) {
+                                            if (data.status === 'success') {
+                                                $(".removeBtn").removeAttr("disabled");
+                                                //$("#myModal2").modal('hide');
+                                                //$(".closeBtn").trigger('click');
+                                                window.location = "";
+                                            } else {
+                                                $(".removeBtn").attr("disabled", "disabled");
+                                            }
+
+                                        }
+
+
+    </script>
+</html>
+

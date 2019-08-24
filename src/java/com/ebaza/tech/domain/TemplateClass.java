@@ -22,6 +22,7 @@ public class TemplateClass {
     private String phoneNumber;
     private Date createdAt;
     private String plateNumber;
+    private Date estamatedDate;
 
     public String getBiddingId() {
         return biddingId;
@@ -94,4 +95,14 @@ public class TemplateClass {
     public void setPlateNumber(String plateNumber) {
         this.plateNumber = plateNumber;
     }
+
+    public Date getEstamatedDate() {
+        return estamatedDate;
+    }
+
+    public void setEstamatedDate(Date estamatedDate) {
+        this.estamatedDate = estamatedDate;
+    }
+    
+    
 }

@@ -4,19 +4,41 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title>Facelet Title</title>
-        <link rel="stylesheet" href="layout/css/bootstrap1.css"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-        <script src="layout/js/jquery.js"/>
-        <script src="layout/js/bootstrap.min.js"/>
+        <h:outputStylesheet library = "css" name = "bootstrap.css"  /> 
     </h:head>
     <h:body>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                     
-                </div>
-            </div>
+        <div class="container" style="padding: 100px 50px 10px;" >
+            <button type="button" class="btn btn-default" title="Popover title"  
+                    data-container="body" data-toggle="popover" data-placement="left" 
+                    data-content="Some content in Popover on left">
+                Popover on left
+            </button>
+            <button type="button" class="btn btn-primary" title="Popover title"  
+                    data-container="body" data-toggle="popover" data-placement="top" 
+                    data-content="Some content in Popover on top">
+                Popover on top
+            </button>
+            <button type="button" class="btn btn-success" title="Popover title"  
+                    data-container="body" data-toggle="popover" data-placement="bottom" 
+                    data-content="Some content in Popover on bottom">
+                Popover on bottom
+            </button>
+            <button type="button" class="btn btn-warning" title="Popover title"  
+                    data-container="body" data-toggle="popover" data-placement="right" 
+                    data-content="Some content in Popover on right">
+                Popover on right
+            </button>
         </div>
+        <script src="layout/js/jquery.js"></script>
+        <script src="layout/js/bootstrap.js"></script>
+        <script>
+            $(function ()
+            {
+                alert("is working boss wanjy we");
+                $("[data-toggle='popover']").popover();
+            });
+        </script>
+        
     </h:body>
 </html>
 

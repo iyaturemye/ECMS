@@ -39,7 +39,8 @@ body{
     background: #fcfcfc;
 }
 thead{
-    background:#f3f3f3;
+    background: white !important;
+    font-size: 12px !important;
 }
 .calendars{
     position: absolute;
@@ -151,6 +152,9 @@ thead{
 .textrepresent{
     color: white;
     font-size: 30px;
+}
+.active{
+    background: #f2f2f2 !important;
 }
 .myicon:hover{
     text-decoration: none;

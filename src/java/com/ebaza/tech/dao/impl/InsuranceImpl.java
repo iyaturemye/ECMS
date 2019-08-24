@@ -34,7 +34,6 @@ public class InsuranceImpl extends AbstractDao<Long, InsuranceCompany> implement
     public List<InsuranceCompany> getAll() {
         try {
             return (List<InsuranceCompany>) (Object) getModelList();
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;

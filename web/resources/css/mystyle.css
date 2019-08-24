@@ -43,7 +43,7 @@ select.form-control {
     background-position: 95% 52%;
     background-size: auto;
     background-repeat: no-repeat;
-    background-image: url(../image/down-arrow.png);
+    background-image: url(../layout/image/down-arrow.png);
     padding-right: 15px;
     border: 1px solid #d2d2e4;
     border-radius: 2px;
@@ -70,7 +70,7 @@ body{
     color:white;
 }
 .contain{
-    background: linear-gradient( rgba(0, 0, 0, 0.54), rgba(5, 5, 5, 0.72) ), url("../image/cars.jpg");
+    background: linear-gradient(rgba(0, 0, 0, 0.54), rgba(5, 5, 5, 0.72) ), url("../layout/image/cars.jpg");
     background-size: cover;
     margin-top: -20px;
     height:570px;
@@ -231,6 +231,7 @@ body{
     border: 1px solid #ddd;
     padding: 10px;
     height: auto;
+    background: linear-gradient(rgba(0, 0, 0, 0.54), rgba(5, 5, 5, 0.72) ), url("../layout/image/cars.jpg");
 }
 .input-form{
     width: 90%;

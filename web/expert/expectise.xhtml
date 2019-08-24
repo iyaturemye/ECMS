@@ -13,10 +13,12 @@
     <h:head>
         <title>Garage Dashboard(#{garageController.approvedList.size()})</title>
         <link rel="styleSheet" href="../layout/css/bootstrap1.css"></link>
-        <script src="../
-        vnlayout/js/bootstrap.js"></script>
+        <script src="../layout/js/bootstrap.js"></script>
         <link rel="styleSheet" href="css/mystyle.css"></link>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"/>-->
+         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
     </h:head>
     <h:body>
         <ui:insert>
@@ -39,7 +41,7 @@
                         </div>
                         <h:messages class="alert alert-info" globalOnly="true"/>
                         <h:panelGroup id="tables">
-                            <table class="table table-bordered table-responsive">
+                            <table class="table table-responsive table-bordered" id="example">
                                 <thead>
                                     <th>#</th>
                                     <th>Client </th>
@@ -58,7 +60,7 @@
                                             <td>${status.index + 1}</td>
                                             <td>#{i.client.fname}&nbsp; #{i.client.lname}</td>
                                             <td>#{i.client.phoneNumber}</td>
-                                            <td>#{i.vehicle.plateNum}</td>
+                                            <td>#{i.vehicle.plateNum.toUpperCase()}</td>
                                             <td>#{i.vehicle.name}</td>
                                             <td>#{i.vehicle.policyNumber}</td>
                                             <td>#{i.location}</td>
@@ -87,14 +89,20 @@
                 </div>
             </div>
         </div>
-        <script src="../layout/js/jquery.js"/>
-        <script src="../layout/js/bootstrap.js"/>
+         
+<!--        <script src="../layout/js/jquery.js"/>
+        <script src="../layout/js/bootstrap.js"/>-->
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <!--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
         <script>
             $(function () {
                 $('.readmore').attr("data-placement", "bottom");
                 $('.tooltip-show').hover(function () {
                     $('.tooltip-show').tooltip('show');
                 });
+                $('#example').DataTable();
             });
             $('.readmore').click(function () {
                 $('#myModal').modal('show');

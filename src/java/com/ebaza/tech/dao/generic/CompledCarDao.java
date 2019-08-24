@@ -8,6 +8,7 @@ package com.ebaza.tech.dao.generic;
 import com.ebaza.tech.domain.CompletedCar;
 import com.ebaza.tech.dto.GaragePayment;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +42,12 @@ public class CompledCarDao {
 
         try {
             Session s = SessionManager.getSession();
-            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,"
-                    + "sum(Quotation.price*BrokenCarPart.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
+            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,CompletedCar.document,"
+                    + "Bidding.estimatedDate,CompletedCar.CreatedAt,sum(CASE WHEN BrokenCarPart.carsparepart_id IS NULL  THEN Quotation.price "
+                    + " ELSE Quotation.price * BrokenCarPart.quantity END) as totalAmount "
+                    + "from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
                     + "where "
-                    +"Quotation.brokenCarPart=BrokenCarPart.id AND "
+                    + "Quotation.brokenCarPart=BrokenCarPart.id AND "
                     + "Bidding.bidid=Quotation.biddingId "
                     + "AND Bidding.status='completed' "
                     + "AND Bidding.garageId='" + garageId + "' "
@@ -68,13 +71,14 @@ public class CompledCarDao {
     }
 
     public List<GaragePayment> getAllTransaction(String garageId) {
-
         try {
             Session s = SessionManager.getSession();
-            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,"
-                    + "sum(Quotation.price*BrokenCarPart.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
+            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,CompletedCar.document,"
+                    + "Bidding.estimatedDate,CompletedCar.CreatedAt,sum(CASE WHEN BrokenCarPart.carsparepart_id IS NULL  THEN Quotation.price "
+                    + " ELSE Quotation.price * BrokenCarPart.quantity END) as totalAmount "
+                    + "from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
                     + "where "
-                    +"Quotation.brokenCarPart=BrokenCarPart.id "
+                    + "Quotation.brokenCarPart=BrokenCarPart.id "
                     + "AND  Bidding.bidid=Quotation.biddingId "
                     + "AND Bidding.status='completed' "
                     + "AND Bidding.garageId='" + garageId + "' "
@@ -82,13 +86,11 @@ public class CompledCarDao {
                     + "AND VehicleDetail.vehicleId=Vehicle.vehicleId "
                     + "AND VehicleDetail.insuranceId=InsuranceCompany.uuid "
                     + "AND CompletedCar.bidding=Bidding.bidid "
-                   
                     + " Group by Quotation.biddingId");
             List<GaragePayment> list;
             sql.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
             sql.setMaxResults(10);
             List data = sql.list();
-            System.out.println(data);
             list = mapListToEntity(data);
             return list;
         } catch (Exception e) {
@@ -100,13 +102,15 @@ public class CompledCarDao {
     public List<GaragePayment> notPaidInTotalForGarage(String garageId) {
         try {
             Session s = SessionManager.getSession();
-            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,"
-                    + "sum(Quotation.price* BrokenCarPart.quantity) as totalAmount from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
+            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,Vehicle.plateNum,InsuranceCompany.name,CompletedCar.purchaseOrdernum,CompletedCar.document,"
+                    + "Bidding.estimatedDate,CompletedCar.CreatedAt,sum(CASE WHEN BrokenCarPart.carsparepart_id IS NULL  THEN Quotation.price "
+                    + " ELSE Quotation.price * BrokenCarPart.quantity END) as totalAmount "
+                    + " from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,BrokenCarPart  "
                     + "where "
                     + "Bidding.bidid=Quotation.biddingId "
                     + "AND Bidding.status='completed' "
                     + "AND Bidding.garageId='" + garageId + "' "
-                    +"AND BrokenCarPart.id=Quotation.brokenCarPart "
+                    + "AND BrokenCarPart.id=Quotation.brokenCarPart "
                     + "AND Bidding.vehicleDetailsId=VehicleDetail.uuid "
                     + "AND VehicleDetail.vehicleId=Vehicle.vehicleId "
                     + "AND VehicleDetail.insuranceId=InsuranceCompany.uuid "
@@ -129,21 +133,53 @@ public class CompledCarDao {
     public List<GaragePayment> notPaidInsurance(String insuranceId) {
         try {
             Session s = SessionManager.getSession();
-            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,"
-                    + "Vehicle.plateNum,Garage.name,CompletedCar.purchaseOrdernum,"
-                    + "sum(Quotation.price*BrokenCarPart.quantity) as totalAmount "
+            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,CompletedCar.document,"
+                    + "Bidding.estimatedDate,CompletedCar.CreatedAt,Vehicle.plateNum,Garage.name,CompletedCar.purchaseOrdernum,"
+                    + "sum(CASE WHEN BrokenCarPart.carsparepart_id IS NULL  THEN Quotation.price "
+                    + " ELSE Quotation.price * BrokenCarPart.quantity END) as totalAmount "
                     + "from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,Garage,BrokenCarPart "
                     + "  where Bidding.bidid=Quotation.biddingId "
-                    +"AND Bidding.garageId=Garage.garageId "
+                    + "AND Bidding.garageId=Garage.garageId "
+                    + "AND Bidding.status='completed'"
+                    + "AND Bidding.vehicleDetailsId=VehicleDetail.uuid AND "
+                    + "VehicleDetail.insuranceId='" + insuranceId + "' AND "
+                    + "VehicleDetail.vehicleId=Vehicle.vehicleId AND "
+                    + "VehicleDetail.insuranceId=InsuranceCompany.uuid AND "
+                    + "CompletedCar.bidding=Bidding.bidid AND "
+                    + "CompletedCar.isPaid='0'"
+                    + "AND BrokenCarPart.id=Quotation.brokenCarPart "
+                    + "Group by Quotation.biddingId");
+            List<GaragePayment> list;
+            sql.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+            List data = sql.list();
+            System.out.println(data);
+            list = mapListToEntity(data);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<GaragePayment> paidInsurance(String insuranceId) {
+        try {
+            Session s = SessionManager.getSession();
+            SQLQuery sql = s.createSQLQuery("select CompletedCar.createdAt,CompletedCar.isPaid,CompletedCar.document,"
+                    + "Vehicle.plateNum,Garage.name,CompletedCar.purchaseOrdernum,"
+                    + "Bidding.estimatedDate,CompletedCar.CreatedAt,sum(CASE WHEN BrokenCarPart.carsparepart_id IS NULL  THEN Quotation.price "
+                    + " ELSE Quotation.price * BrokenCarPart.quantity END) as totalAmount "
+                    + "from Vehicle,CompletedCar,InsuranceCompany,Quotation,Bidding,VehicleDetail,Garage,BrokenCarPart "
+                    + "  where Bidding.bidid=Quotation.biddingId "
+                    + "AND Bidding.garageId=Garage.garageId "
                     + "AND Bidding.status='completed' "
                     + "AND Bidding.vehicleDetailsId=VehicleDetail.uuid AND "
                     + "VehicleDetail.insuranceId='" + insuranceId + "' AND "
                     + "VehicleDetail.vehicleId=Vehicle.vehicleId AND "
                     + "VehicleDetail.insuranceId=InsuranceCompany.uuid AND "
                     + "CompletedCar.bidding=Bidding.bidid AND "
-                    + "CompletedCar.isPaid='0' "
-                    +"AND BrokenCarPart.id=Quotation.brokenCarPart "
-                    + "Group by Quotation.biddingId AND InsuranceCompany.uuid");
+                    + "CompletedCar.isPaid='1'"
+                    + "AND BrokenCarPart.id=Quotation.brokenCarPart "
+                    + "Group by Quotation.biddingId");
             List<GaragePayment> list;
             sql.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
             List data = sql.list();
@@ -158,17 +194,29 @@ public class CompledCarDao {
 
     public List<GaragePayment> mapListToEntity(List data) {
         List<GaragePayment> list = new ArrayList<>();
-        for (Object object : data) {
-            GaragePayment obj = new GaragePayment();
-            Map row = (Map) object;
-            obj.setInsuranceName(row.get("name").toString());
-            obj.setPlateNum(row.get("plateNum").toString());
-            obj.setStatus((boolean) row.get("isPaid"));
-            BigInteger big = (BigInteger) row.get("purchaseOrdernum");
-            obj.setPurchasingOrderNum(big.longValue());
-            obj.setTotalAmount(Double.parseDouble(row.get("totalAmount").toString()));
-            list.add(obj);
+        try {
+            for (Object object : data) {
+                GaragePayment obj = new GaragePayment();
+                Map row = (Map) object;
+                obj.setInsuranceName(row.get("name").toString());
+                obj.setPlateNum(row.get("plateNum").toString());
+                obj.setStatus((boolean) row.get("isPaid"));
+                BigInteger big = (BigInteger) row.get("purchaseOrdernum");
+                obj.setPurchasingOrderNum(big.longValue());
+                obj.setTotalAmount(Double.parseDouble(row.get("totalAmount").toString()));
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                String dateFormat = sdf.format(row.get("estimatedDate"));
+                obj.setEstimatedDate(sdf.parse(dateFormat));
+                String dateFormat2 = sdf.format(row.get("CreatedAt"));
+                obj.setCompleteCarDate(sdf.parse(dateFormat2));
+                obj.setDocument((row.get("document")==null)? null :row.get("document").toString());
+                list.add(obj);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return list;
     }
 

@@ -11,10 +11,20 @@
           user-scalable=no"/>
     <h:head>
         <title>Garage Ltd</title>
-        <link rel="stylesheet" href="layout/css/bootstrap1.css"/>
+        <!--<link rel="stylesheet" href="layout/css/bootstrap1.css"/>-->
         <link rel="stylesheet" href="layout/css/mystyle.css"/>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
         <!--layout/font-awesome-4.7.0/css/bgpanel.png-->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+        <style>
+            .myImageSystle{
+                max-width: 100px;
+            }
+            select.form-control:not([size]):not([multiple]) {
+                height: calc(3rem + 2px) !important;
+            }
+        </style>
     </h:head>
     <h:body>
         <ui:insert>
@@ -23,71 +33,72 @@
         </ui:insert>    
         <div class="container " style="margin-top: 100px;background: white;padding: 10px; border: 1px solid #ddd;margin-top: 10%;">
             <div class="row">
-                <c:forEach items="#{vehicleController.brokenCar}" var="items">
-                    <c:forEach items="#{vehicleController.images}" var="i">
-                        <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
-                            <div class="single-portfolio col-sm-3 all vector">
-                                <div class="relative">
-                                    <div class="thumb">
-                                        <h:form>
-                                            <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                                <img class="image img-fluid" src="layout/image/blockenCar/#{i.image}" alt=""/>
-                                            </h:commandLink>
-                                        </h:form>
-                                    </div>
-                                </div>
-                                <div class="p-inner">
-                                    <h:form>
-                                        <h:commandLink action="#{vehicleDetailsController.initCar(items)}">
-                                            <h4>#{items.vehicle.name},<span>#{items.vehicle.plateNum}</span></h4>
-                                        </h:commandLink>
-                                    </h:form>
-                                    <div class="cat">
-                                        <h:outputText value="#{items.createdAt}">
-                                            <f:convertDateTime pattern="dd-MM-yyyy HH:mm"/>
-                                        </h:outputText>
-                                    </div>
-                                </div>					                               
-                            </div>
-                        </c:if>
-                    </c:forEach>
-                </c:forEach>
-            </div>
-        </div>
-        <div class="container">
-            <div class="rows">
                 <div class="col-lg-12">
-                    <ul class="pagination pagination-sm pull-right">
-                        <li><a href="#">&laquo;</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                    </ul>
+                    <table class="table table-striped table-bordered tablez" id="table">
+                        <thead>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Plate Number</th>
+                            <th>Model</th>
+                            <th>Policy Number</th>
+                            <th>Accident Location</th>
+                            <th>Publication Date</th>
+                            <th>Estimated Market Value</th>
+                            <th>Read More</th>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="items"  items="#{vehicleController.allBrokenCar}" varStatus="status">
+                                <tr>
+                                    <td>${status.index + 1}</td>
+                                    <td>
+                                        <c:forEach items="#{vehicleController.images}" var="i">
+                                            <c:if test="#{items.uuid.equalsIgnoreCase(i.vehicleDetail.uuid)}">
+                                                <img class="image myImageSystle img-fluid image-slide img-thumbnail" src="layout/image/blockenCar/#{i.image}" alt=""/>
+                                            </c:if>
+                                        </c:forEach>
+                                    </td>
+                                    <td>#{items.vehicle.plateNum.toUpperCase()}</td>
+                                    <td>#{items.vehicle.name}</td>
+                                    <td>#{items.vehicle.policyNumber}</td>
+                                    <td>#{items.location}</td>
+                                    <td>
+                                        <h:outputFormat value="#{items.createdAt}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss"/>
+                                        </h:outputFormat>
+                                    </td>
+
+                                    <td>
+                                        <h:outputText value="#{items.estamedMarketValue}">
+                                            <f:convertNumber pattern="###,###,###"/>
+                                        </h:outputText>
+                                    </td>
+                                    <td>
+                                        <h:form>
+                                            <h:commandLink value="Read more" action="#{vehicleDetailsController.initCar(items)}" class="btn btn-primary">
+                                            </h:commandLink>
+                                        </h:form> 
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-        <script src="layout/js/jquery.js"></script>
-        <!--<script src="layout/js/popper.min.js"></script>-->
-        <script src="layout/js/bootstrap.min.js"></script>			
-        <script src="layout/js/easing.min.js"></script>			
-        <script src="layout/js/hoverIntent.js"></script>
-        <script src="layout/js/superfish.min.js"></script>	
-        <!--<script src="layout/js/jquery.ajaxchimp.min.js"></script>-->
-        <script src="layout/js/jquery.magnific-popup.min.js"></script>	
-        <!--<script src="layout/js/jquery.tabs.min.js"></script>-->						
-        <script src="layout/js/jquery.nice-select.min.js"></script>	
-        <script src="layout/js/isotope.pkgd.min.js"></script>			
-        <script src="layout/js/waypoints.min.js"></script>
-        <script src="layout/js/jquery.counterup.min.js"></script>
-        <script src="layout/js/simple-skillbar.js"></script>							
-        <script src="layout/js/owl.carousel.min.js"></script>							
-        <script src="layout/js/mail-script.js"></script>	
-        <script src="layout/js/main.js"></script>
-
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $("#mobile-nav-toggle").find("i").attr("class", "fas fa-align-justify");
+                $(".tablez").DataTable();
+                $("#table_wrapper").find(".row").css("width", "100%");
+                $("#table_wrapper").find(".dataTables_length").parent().removeAttr("class");
+                $("#table_wrapper").find(".dataTables_length").parent().attr("class", "col-sm-2 col-lg-2");
+                $("#table_wrapper").find(".dataTables_length").parent().next().removeAttr("class");
+                $("#table_wrapper").find(".dataTables_length").parent().next().attr("class", "col-sm-3 col-lg-3 col-lg-offset-7");
+            });
+        </script>
     </h:body>
 </html>
 

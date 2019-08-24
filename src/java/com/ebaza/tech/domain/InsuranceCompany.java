@@ -33,6 +33,7 @@ public class InsuranceCompany implements Serializable {
     @JoinColumn(name = "userId")
     private User user;
     private String phoneNumber;
+    private String logo;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "insurance")
     private List<VehicleDetail> insuranceCompanyVehicle;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "insurance")
@@ -113,6 +114,15 @@ public class InsuranceCompany implements Serializable {
     public void setVehicleDetails(List<VehicleDetail> vehicleDetails) {
         this.vehicleDetails = vehicleDetails;
     }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+    
     
 
 }

@@ -122,4 +122,14 @@ public class BiddingImpl extends AbstractDao<Long, Bidding> implements IBidding,
         }
     }
 
+    @Override
+    public List<ApprovedTemplate> getMissingDocument(String garageId) {
+        try {
+            return new BiddingDao().listMissContract(garageId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

@@ -37,9 +37,7 @@ public class ClientController implements Serializable {
 
     @PostConstruct
     public void init() {
-        System.out.println("the loggedin User is ----------------"+user.getUserName());
         clientFinishedMentainance = new VehicleDetailsImpl().clientFinishedCar(user.getUserId());
-        System.out.println("--------------------------"+clientFinishedMentainance.size());
     }
 
     public void changeStatus(User user) {

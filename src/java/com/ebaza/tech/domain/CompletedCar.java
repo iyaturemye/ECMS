@@ -41,6 +41,7 @@ public class CompletedCar implements Serializable {
     private Long purchaseOrdernum;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedAt=new Date();
+    private String document;
 
 
     public Bidding getBidding() {
@@ -107,7 +108,14 @@ public class CompletedCar implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
+
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
+    }
     
 
 }

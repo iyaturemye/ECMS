@@ -51,8 +51,10 @@ public class QuotationDao {
     public List<Quotation> getGarageBid(String garageId) {
         try {
             List<Quotation> list = new ArrayList<>();
-            String query = "select v.name as vname,v.chasisNum,v.plateNum,ins.name,SUM(q.price * BrokenCarPart.quantity) as"
-                    + " totalPrice,bid.status bidStatus,bid.bidId,"
+            String query = "select v.name as vname,v.chasisNum,v.plateNum,ins.name,"
+                    +"sum(CASE WHEN BrokenCarPart.carsparepart_id IS NULL  THEN q.price "
+                    + " ELSE q.price * BrokenCarPart.quantity END) as "
+                    + " totalPrice,bid.status bidStatus,bid.bidId,bid.isApproved,"
                     + "vd.status,bid.createAt from VehicleDetail vd,InsuranceCompany ins,Vehicle v,Quotation q,BrokenCarPart,"
                     + "Bidding bid where "
                     + "ins.uuid=vd.insuranceId "
@@ -61,7 +63,7 @@ public class QuotationDao {
                     + "and bid.garageId='" + garageId + "' "
                     +" AND BrokenCarPart.id=q.brokenCarPart "
                     + "AND bid.bidId=q.biddingId "
-                    + "ORDER BY bid.createAt DESC";
+                    + "group by bid.bidId";
 
             Session s = SessionManager.getSession();
             SQLQuery q = s.createSQLQuery(query);
@@ -97,6 +99,8 @@ public class QuotationDao {
                 System.out.println(bid.getCreateAt());
                 bid.setBidId(row.get("bidId").toString());
                 bid.setStatus(row.get("bidStatus").toString());
+                boolean output=(boolean)row.get("isApproved");
+                bid.setIsApproved(output);
                 v.setChasisNum((row.get("chasisNum")!=null )? row.get("chasisNum").toString():"");
                 v.setPlateNum(row.get("plateNum").toString());
                 v.setName(row.get("vname").toString());

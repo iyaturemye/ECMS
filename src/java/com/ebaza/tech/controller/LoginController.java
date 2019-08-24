@@ -6,11 +6,15 @@
 package com.ebaza.tech.controller;
 
 import com.ebaza.tech.common.SendEmail;
+import com.ebaza.tech.dao.impl.ForgetPasswordImpl;
 import com.ebaza.tech.dao.impl.LoginImpl;
 import com.ebaza.tech.dao.impl.UserImpl;
+import com.ebaza.tech.domain.ForgetPassword;
 import com.ebaza.tech.domain.User;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.Random;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,11 +34,50 @@ public class LoginController implements Serializable {
     private User user = new User();
     private String whereFrom = "login";
     private User loggedInUser;
-    public static final String[] USERTYPE = {"admin", "garage", "insurance", "client", "police","Expert"};
+    public static final String[] USERTYPE = {"admin", "garage", "insurance", "client", "police", "Expert", "insuranceUser"};
     private boolean isLoggedIn;
     private User changePass = new User();
     private String retypePassword;
     private String recentPassword;
+    private String mailAddress;
+    private String sendCode;
+
+    public String change() {
+        return null;
+    }
+
+    public String forgetPassword() {
+        try {
+            User user1 = new UserImpl().getModelWithMyHQL(new String[]{"userName"}, new Object[]{mailAddress}, "from User");
+            if (user1 == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Invalid E-mail please try again later", null));
+                return "forgetPassword.xhtml";
+            } else {
+                ForgetPassword forgetPassword = new ForgetPassword();
+                forgetPassword.setCreateDate(new Date());
+                Random r = new Random();
+                int max = 1000000000;
+                int min = 100000;
+                int out = r.nextInt((max - min) + 1) + min;
+                forgetPassword.setUser(user1);
+                forgetPassword.setGeneratedValue(out);
+                ForgetPassword f = new ForgetPasswordImpl().create(forgetPassword);
+                String msg = "Dear, " + user.getUserName() + " you requesting to reset password please use  the following code "
+                        + out;
+                System.out.println(msg);
+                new SendEmail().sendEmail(user.getUserName(), "E-mail Verfication", msg);
+                if (f != null) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please check your email and fill this code which is provided", null));
+                    return "verficationCode.xhtml";
+                }
+                return "forgetPassword.xhtml";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
     public String changePassword() throws Exception {
         try {
@@ -58,7 +101,7 @@ public class LoginController implements Serializable {
             return location;
 
         } catch (Exception ex) {
-            
+
             new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", ex.getMessage());
             return null;
         }
@@ -86,20 +129,29 @@ public class LoginController implements Serializable {
                     } else if (userLoggedIn.getUserType().equalsIgnoreCase(USERTYPE[1])) {
                         if (whereFrom != null && whereFrom.equalsIgnoreCase("biddingPage")) {
                             location = "biddingPage.xhtml?faces-redirect=true";
+                        } else if (whereFrom != null && whereFrom.equalsIgnoreCase("allBrokenCar")) {
+                            location = "allBrokenCar.xhtml?faces-redirect=true";
                         } else {
                             location = "garage/dashboard.xhtml?faces-redirect=true";
                         }
                     } else if (userLoggedIn.getUserType().equalsIgnoreCase(USERTYPE[2])) {
+                        System.out.println("we reach here boss wanjye we---------------------------------");
                         if (whereFrom != null && whereFrom.equals("carRegistration")) {
                             location = "CarRegistration.xhtml?faces-redirect=true";
                         } else {
                             location = "insurance/dashboard.xhtml?faces-redirect=true";
                         }
+                    } else if (userLoggedIn.getUserType().equalsIgnoreCase(USERTYPE[6])) {
+                        location = "insurance/dashboard.xhtml?faces-redirect=true";
                     } else if (userLoggedIn.getUserType().equalsIgnoreCase(USERTYPE[3])) {
 
                         location = "client/dashboard.xhtml?faces-redirect=true";
+                        // when everything is ok  i can do the rest
+                        //location = "login.xhtml?faces-redirect=true";
                         if (whereFrom == null) {
+                            // when everything is ok  i can do the rest
                             location = "client/dashboard.xhtml?faces-redirect=true";
+                            //location = "login.xhtml?faces-redirect=true";
                         } else if (whereFrom.equals("carRegistration")) {
                             location = "CarRegistration.xhtml?faces-redirect=true";
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginFrom", null);
@@ -114,9 +166,9 @@ public class LoginController implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginFrom", null);
                             this.whereFrom = null;
                         }
-                    }else if(userLoggedIn.getUserType().equalsIgnoreCase(USERTYPE[5])){
-                        
-                         location = "expert/dashboard.xhtml?faces-redirect=true";
+                    } else if (userLoggedIn.getUserType().equalsIgnoreCase(USERTYPE[5])) {
+
+                        location = "expert/dashboard.xhtml?faces-redirect=true";
                     }
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Your Account have been blocked please you need to contact your Administrator", null));
@@ -124,7 +176,7 @@ public class LoginController implements Serializable {
             }
             return location;
         } catch (Exception e) {
-            
+            e.printStackTrace();
             new SendEmail().sendEmail("iyaturemyeclaude@gmail.com", "error", e.getMessage());
             return null;
         }
@@ -200,4 +252,29 @@ public class LoginController implements Serializable {
     public void setRecentPassword(String recentPassword) {
         this.recentPassword = recentPassword;
     }
+
+    public String getCLASSNAME() {
+        return CLASSNAME;
+    }
+
+    public void setCLASSNAME(String CLASSNAME) {
+        this.CLASSNAME = CLASSNAME;
+    }
+
+    public String getMailAddress() {
+        return mailAddress;
+    }
+
+    public void setMailAddress(String mailAddress) {
+        this.mailAddress = mailAddress;
+    }
+
+    public String getSendCode() {
+        return sendCode;
+    }
+
+    public void setSendCode(String sendCode) {
+        this.sendCode = sendCode;
+    }
+
 }

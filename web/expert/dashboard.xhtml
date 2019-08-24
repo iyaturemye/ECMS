@@ -14,7 +14,10 @@
         <script src="../layout/js/bootstrap.js"></script>
         <link rel="styleSheet" href="css/mystyle.css"></link>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+        <!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"/>-->
 
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
     </h:head>
     <h:body>
         <ui:insert>
@@ -27,7 +30,7 @@
                         Total Car Repair
                     </span>
                     <i class="fa fa-car bigIconStyle pull-right" style="background:#dffaff !important;color: #25d5f2 !important"></i>
-                    <h3>30</h3>
+                    <h3>0</h3>
                 </div>
                 <div class="col-lg-3  boxz">
                     <span class="spanTitle">
@@ -41,7 +44,7 @@
                         Working with Insurance
                     </span>
                     <i class="fa fa-money-bill-alt bigIconStyle pull-right" style="background:#ffdbe6 !important;color: #ff407b !important"></i>
-                    <h3>20 </h3>
+                    <h3>0</h3>
                 </div>
             </div>
         </div>
@@ -59,7 +62,7 @@
                         <h:messages class="alert alert-info" globalOnly="true"/>
                         <h:panelGroup id="tables">
                             <div class="table-responsive">
-                                <table class="table table-bordered">
+                                <table class="table table-striped table-bordered" id="dataTable">
                                     <thead>
                                         <th>#</th>
                                         <th>Client </th>
@@ -78,7 +81,7 @@
                                                 <td>${status.index + 1}</td>
                                                 <td>#{i.client.fname}&nbsp; #{i.client.lname}</td>
                                                 <td>#{i.client.phoneNumber}</td>
-                                                <td>#{i.vehicle.plateNum}</td>
+                                                <td>#{i.vehicle.plateNum.toUpperCase()}</td>
                                                 <td>#{i.vehicle.name}</td>
                                                 <td>#{i.vehicle.policyNumber}</td>
                                                 <td>#{i.location}</td>
@@ -108,6 +111,14 @@
                 </div>
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <script>
+            $(function () {
+                $('#dataTable').DataTable();
+            });
+        </script>
     </h:body>
 </html>
 

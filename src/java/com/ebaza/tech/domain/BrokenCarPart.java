@@ -35,7 +35,9 @@ public class BrokenCarPart implements Serializable {
     private String partNumber;
     @OneToMany(mappedBy = "brokenCarPart",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Quotation> quotation;
-
+    @ManyToOne
+    private AdditionalBrokenCarPart additionInfo;
+    private String status;
     public String getId() {
         return id;
     }
@@ -92,4 +94,20 @@ public class BrokenCarPart implements Serializable {
         this.quotation = quotation;
     }
 
+    public AdditionalBrokenCarPart getAdditionInfo() {
+        return additionInfo;
+    }
+
+    public void setAdditionInfo(AdditionalBrokenCarPart additionInfo) {
+        this.additionInfo = additionInfo;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
 }

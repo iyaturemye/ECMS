@@ -62,7 +62,7 @@
                                     <div class="garageInfo">
                                         <h3>#{insuranceController.billing.vehicleDetails.vehicle.name.toUpperCase()}</h3>
                                         <h5>Policy Number:#{insuranceController.billing.vehicleDetails.vehicle.policyNumber}</h5>
-                                        <h5>Plate Number:#{insuranceController.billing.vehicleDetails.vehicle.plateNum}</h5>
+                                        <h5>Plate Number:#{insuranceController.billing.vehicleDetails.vehicle.plateNum.toUpperCase()}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -78,24 +78,50 @@
                                 </thead>
                                 <tbody>
                                     <c:forEach items="#{insuranceController.quotation}" var="i" varStatus="status">
-                                        <tr>
-                                            <td>${status.index + 1}</td>
-                                            <td>#{i.brokenCarPart.carsparepart.name}</td>
-                                            <td>#{i.brokenCarPart.quantity}</td>
-                                            <td>
-                                                <h:outputFormat value="#{i.price}">
-                                                    <f:convertNumber pattern="###,###,###"/>
-                                                </h:outputFormat>FRW
-                                            </td>
-                                            <td>
-                                                <h:outputFormat value="#{i.price*i.brokenCarPart.quantity}">
-                                                    <f:convertNumber pattern="###,###,###"/>
-                                                </h:outputFormat>
-                                                FRW
-                                            </td>
-                                        </tr>
+                                        <c:if test="#{i.brokenCarPart.carsparepart!=null}">
+                                            <tr>
+                                                <td>${status.index + 1}</td>
+                                                <td>#{i.brokenCarPart.carsparepart.name}</td>
+                                                <td>#{i.brokenCarPart.quantity}</td>
+                                                <td>
+                                                    <h:outputFormat value="#{i.price}">
+                                                        <f:convertNumber pattern="###,###,###"/>
+                                                    </h:outputFormat>FRW
+                                                </td>
+                                                <td>
+                                                    <h:outputFormat value="#{i.price*i.brokenCarPart.quantity}">
+                                                        <f:convertNumber pattern="###,###,###"/>
+                                                    </h:outputFormat>
+                                                    FRW
+                                                </td>
+                                            </tr>
+                                        </c:if>
                                     </c:forEach>
 
+                                </tbody>
+                            </table>
+                            <h3>Additional Information</h3>
+                            <table class="table mytableStyle">
+                                <thead>
+                                    <th>ITEM</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>PRICE</th>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="#{insuranceController.quotation}" var="items" varStatus="status">
+                                        <c:if test="#{items.brokenCarPart.carsparepart==null}">
+                                            <tr>
+                                                <td>${status.index + 1}</td>
+                                                <td>#{items.brokenCarPart.additionInfo.description}</td>
+                                                <td>
+                                                    <h:outputFormat value="#{items.price}">
+                                                        <f:convertNumber pattern="###,###,###"/>
+                                                    </h:outputFormat>
+                                                    FRW
+                                                </td>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div>

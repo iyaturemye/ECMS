@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,6 +29,12 @@ public class User implements Serializable {
     private String userType;
     private String password;
     private String status;
+    @ManyToOne
+    private User parent;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Employee> employees;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<User> user;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Client> client;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -36,6 +43,8 @@ public class User implements Serializable {
     private List<InsuranceCompany> insuranceCompany;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Police> police;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ForgetPassword> forgetPassword;
 
     public String getUserId() {
         return userId;
@@ -112,5 +121,40 @@ public class User implements Serializable {
     public void setPolice(List<Police> police) {
         this.police = police;
     }
+
+    public List<ForgetPassword> getForgetPassword() {
+        return forgetPassword;
+    }
+
+    public void setForgetPassword(List<ForgetPassword> forgetPassword) {
+        this.forgetPassword = forgetPassword;
+    }
+
+    public User getParent() {
+        return parent;
+    }
+
+    public void setParent(User parent) {
+        this.parent = parent;
+    }
+
+    public List<User> getUser() {
+        return user;
+    }
+
+    public void setUser(List<User> user) {
+        this.user = user;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+    
+    
+    
 
 }
